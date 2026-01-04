@@ -22,6 +22,7 @@ import { ProjectAvatarField } from './project-avatar-field';
 import { DeployToField } from './deploy-to-field';
 import { ProjectLifecycleField } from './project-lifecycle-field';
 import { useNavigate } from 'react-router-dom';
+import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
 
 interface CreateProjectFormProps {
   className?: string;
@@ -29,6 +30,7 @@ interface CreateProjectFormProps {
 
 export function CreateProjectForm({ className }: CreateProjectFormProps) {
   const navigate = useNavigate();
+  const { getSpaceUrl } = useSpaceUrl()
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -46,7 +48,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
     try {
       await projectApi.createProject(data);
       toast.success('Project created successfully!');
-      navigate('/dashboard');
+      navigate(getSpaceUrl('/'));
     } catch (error) {
       toast.error('Failed to create project', {
         description: error instanceof Error ? error.message : 'Unknown error'

@@ -9,13 +9,13 @@ export function SocialAuthButtons() {
   const handleAppleLogin = () => {
     // TODO: Implement Apple login
     toast('Apple login clicked');
-    navigate('/dashboard')
+    navigate('/default')
   };
 
   const handleGoogleLogin = () => {
     // TODO: Implement Google login
     toast('Google login clicked');
-    navigate('/dashboard')
+    navigate('/default')
   };
 
   return (

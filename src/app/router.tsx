@@ -10,7 +10,7 @@ import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/sign-in" replace />
+    element: <Navigate to="/default" replace />
   },
   {
     element: <AuthLayout />,
@@ -29,12 +29,17 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: '/dashboard',
-        element: <DashboardPage />
-      },
-      {
-        path: '/projects/create',
-        element: <CreateProjectPage />
+        path: '/:spaceSlug',
+        children: [
+          {
+            path: 'projects/create',
+            element: <CreateProjectPage />
+          },
+          {
+            index: true,
+            element: <DashboardPage />
+          }
+        ]
       }
     ]
   },

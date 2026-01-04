@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
 import {
   Collapsible,
@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/shared/ui/sidebar"
+import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
 
 export function NavMain({
   items,
@@ -33,6 +34,8 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const { getSpaceUrl } = useSpaceUrl()
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -57,7 +60,7 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <Link to={subItem.url}>
+                        <Link to={getSpaceUrl(subItem.url)}>
                           <span>{subItem.title}</span>
                         </Link>
                       </SidebarMenuSubButton>
