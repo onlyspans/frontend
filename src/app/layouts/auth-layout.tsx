@@ -1,30 +1,13 @@
 import { CodeXml } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
-import type { ComponentProps, ReactNode } from 'react';
 import { FieldDescription } from '@/shared/ui/field.tsx';
 import { ThemeToggle } from '@/shared/ui/theme-toggle.tsx';
+import { Outlet } from 'react-router-dom';
 
-interface AuthLayoutProps extends ComponentProps<'div'> {
-  children: ReactNode;
-}
-
-export function AuthLayout(
-  {
-    children,
-    className,
-    ...props
-  }: AuthLayoutProps
-) {
+export function AuthLayout() {
   return (
-    <div
-      className={cn(
-        'bg-muted dark:bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10',
-        className
-      )}
-      {...props}
-    >
-      <div className='fixed top-4 right-4'>
-        <ThemeToggle variant='ghost'/>
+    <div className="bg-muted dark:bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+      <div className="fixed top-4 right-4">
+        <ThemeToggle variant="ghost" />
       </div>
       <div className="flex w-full max-w-sm flex-col gap-6">
         <a
@@ -36,8 +19,8 @@ export function AuthLayout(
           </div>
           OnlySpans
         </a>
-        <div className={cn('flex flex-col gap-6', className)}>
-          <>{children}</>
+        <div className="flex flex-col gap-6">
+          <Outlet />
           <FieldDescription className="px-6 text-center">
             By clicking continue, you agree to our <a href="#">Terms of Service</a>{' '}
             and <a href="#">Privacy Policy</a>.
@@ -47,4 +30,3 @@ export function AuthLayout(
     </div>
   );
 }
-

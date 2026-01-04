@@ -1,16 +1,21 @@
 import { Button } from '@/shared/ui/button';
 import { Field } from '@/shared/ui/field';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export function SocialAuthButtons() {
+  const navigate = useNavigate();
+
   const handleAppleLogin = () => {
     // TODO: Implement Apple login
     toast('Apple login clicked');
+    navigate('/dashboard')
   };
 
   const handleGoogleLogin = () => {
     // TODO: Implement Google login
     toast('Google login clicked');
+    navigate('/dashboard')
   };
 
   return (

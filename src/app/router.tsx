@@ -1,20 +1,37 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import SignInPage from '@/pages/auth/sign-in-page';
 import SignUpPage from '@/pages/auth/sign-up-page';
 import NotFoundPage from '@/pages/not-found-page';
+import { DashboardPage } from '@/pages/dashboard/dashboard-page';
+import { MainLayout } from '@/app/layouts/main-layout';
+import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <SignInPage />
+    element: <Navigate to="/sign-in" replace />
   },
   {
-    path: '/sign-in',
-    element: <SignInPage />
+    element: <AuthLayout />,
+    children: [
+      {
+        path: 'sign-in',
+        element: <SignInPage />
+      },
+      {
+        path: 'sign-up',
+        element: <SignUpPage />
+      }
+    ]
   },
   {
-    path: '/sign-up',
-    element: <SignUpPage />
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/dashboard',
+        element: <DashboardPage />
+      }
+    ]
   },
   {
     path: '*',

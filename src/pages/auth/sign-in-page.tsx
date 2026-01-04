@@ -1,10 +1,5 @@
-import { AuthLayout } from '@/widgets/auth-layout';
 import { SignInForm } from '@/features/auth';
 
 export default function SignInPage() {
-  return (
-    <AuthLayout>
-      <SignInForm />
-    </AuthLayout>
-  );
+  return <SignInForm />;
 }
