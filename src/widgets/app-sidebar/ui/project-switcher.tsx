@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronsUpDown, Plus, Search } from 'lucide-react';
+import { ChevronsUpDown, Plus, Search, Loader2, PackageOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   DropdownMenu,
@@ -21,17 +22,34 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { Input } from '@/shared/ui/input';
 
+interface ProjectSwitcherProject {
+  id: string;
+  name: string;
+  avatar?: string;
+  description?: string;
+}
+
 export function ProjectSwitcher(
-  { projects }: {
-    projects: {
-      name: string
-      avatar?: string
-      description?: string
-    }[]
-  }) {
+  {
+    projects,
+    isLoading = false
+  }: {
+    projects: ProjectSwitcherProject[];
+    isLoading?: boolean;
+  }
+) {
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
-  const [activeProject, setActiveProject] = React.useState(projects[0]);
+  const [activeProject, setActiveProject] = React.useState<ProjectSwitcherProject | undefined>(
+    projects[0]
+  );
   const [searchQuery, setSearchQuery] = React.useState('');
+
+  React.useEffect(() => {
+    if (projects.length > 0 && !activeProject) {
+      setActiveProject(projects[0]);
+    }
+  }, [projects, activeProject]);
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -64,10 +82,6 @@ export function ProjectSwitcher(
     };
   }, [projects]);
 
-  if (!activeProject) {
-    return null;
-  }
-
   const filteredProjects = projects.filter((project) =>
     project.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -91,16 +105,17 @@ export function ProjectSwitcher(
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="size-8 rounded-lg">
-                {activeProject.avatar && (
+                {activeProject && activeProject.avatar && (
                   <AvatarImage src={activeProject.avatar} alt={activeProject.name} />
                 )}
                 <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground rounded-lg">
-                  {getInitials(activeProject.name)}
+                  {activeProject ? getInitials(activeProject.name) : <PackageOpen className="size-4" />}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeProject.name}</span>
-                {activeProject.description && (
+                <span
+                  className="truncate font-medium">{activeProject ? activeProject.name : 'Project not selected'}</span>
+                {activeProject && activeProject.description && (
                   <span className="truncate text-xs text-muted-foreground">{activeProject.description}</span>
                 )}
               </div>
@@ -131,10 +146,14 @@ export function ProjectSwitcher(
               </div>
             </div>
             <div className="max-h-[300px] overflow-y-auto">
-              {filteredProjects.length > 0 ? (
+              {isLoading ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                </div>
+              ) : filteredProjects.length > 0 ? (
                 filteredProjects.map((project, index) => (
                   <DropdownMenuItem
-                    key={project.name}
+                    key={project.id}
                     onClick={() => setActiveProject(project)}
                     className="gap-2 p-2"
                   >
@@ -157,7 +176,10 @@ export function ProjectSwitcher(
               )}
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem
+              className="gap-2 p-2"
+              onClick={() => navigate('/projects/create')}
+            >
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>

@@ -25,6 +25,8 @@ import {
   SidebarHeader,
   SidebarRail
 } from '@/shared/ui/sidebar';
+import { projectApi, type Project } from '@/entities/project';
+import { toast } from 'sonner';
 
 const data = {
   user: {
@@ -237,10 +239,31 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [projects, setProjects] = React.useState<Project[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setIsLoading(true);
+        const loadedProjects = await projectApi.getProjects();
+        setProjects(loadedProjects);
+      } catch (error) {
+        toast.error('Failed to load projects', {
+          description: error instanceof Error ? error.message : 'Unknown error'
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, []);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <ProjectSwitcher projects={data.projects} />
+        <ProjectSwitcher projects={projects} isLoading={isLoading} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

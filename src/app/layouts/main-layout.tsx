@@ -23,7 +23,7 @@ export function MainLayout() {
           </div>
           <ThemeToggle variant="ghost" />
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-8">
+        <div className="flex flex-1 flex-col p-6">
           <Outlet />
         </div>
       </SidebarInset>
