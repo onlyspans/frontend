@@ -49,17 +49,13 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
       <CardHeader className="text-center">
         <CardTitle className="text-xl">Create your account</CardTitle>
         <CardDescription>
-          Sign up with your Apple or Google account
+          Enter your email below to create your account
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <SocialAuthButtons />
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
-              </FieldSeparator>
               <FormField
                 control={form.control}
                 name="name"
@@ -132,7 +128,7 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                   />
                 </div>
                 <FieldDescription>
-                  Must be at least 8 characters long.
+                  Must be at least 8 characters long
                 </FieldDescription>
               </Field>
               <Field>
@@ -145,6 +141,12 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                     ? 'Creating account...'
                     : 'Create Account'}
                 </Button>
+              </Field>
+              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                Or continue with
+              </FieldSeparator>
+              <SocialAuthButtons />
+              <Field>
                 <FieldDescription className="text-center">
                   Already have an account?{' '}
                   <Link
@@ -162,4 +164,3 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
     </Card>
   );
 }
-

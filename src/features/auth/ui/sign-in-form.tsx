@@ -48,17 +48,13 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
       <CardHeader className="text-center">
         <CardTitle className="text-xl">Welcome back</CardTitle>
         <CardDescription>
-          Sign in with your Apple or Google account
+          Enter your email below to login to your account
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <SocialAuthButtons />
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
-              </FieldSeparator>
               <FormField
                 control={form.control}
                 name="email"
@@ -109,6 +105,12 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
                 >
                   {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
                 </Button>
+              </Field>
+              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                Or continue with
+              </FieldSeparator>
+              <SocialAuthButtons />
+              <Field>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{' '}
                   <Link
