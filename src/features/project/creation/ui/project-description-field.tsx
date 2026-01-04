@@ -5,7 +5,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/shared/ui/form';
-import { Field, FieldDescription } from '@/shared/ui/field';
+import { Field } from '@/shared/ui/field';
 import { Textarea } from '@/shared/ui/textarea';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
@@ -31,9 +31,6 @@ export function ProjectDescriptionField({ form }: ProjectDescriptionFieldProps) 
                 {...field}
               />
             </FormControl>
-            <FieldDescription>
-              Provide a brief description of your project
-            </FieldDescription>
             <FormMessage />
           </Field>
         </FormItem>
