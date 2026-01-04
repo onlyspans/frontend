@@ -148,7 +148,7 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                 <FieldDescription className="text-center">
                   Already have an account?{' '}
                   <Link
-                    to="/login"
+                    to="/sign-in"
                     className="underline-offset-4 hover:underline"
                   >
                     Sign in

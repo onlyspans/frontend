@@ -112,7 +112,7 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{' '}
                   <Link
-                    to="/signup"
+                    to="/sign-up"
                     className="underline-offset-4 hover:underline"
                   >
                     Sign up
