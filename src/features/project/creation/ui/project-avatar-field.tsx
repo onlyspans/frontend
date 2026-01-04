@@ -49,6 +49,14 @@ export function ProjectAvatarField({ form }: ProjectAvatarFieldProps) {
 
   const handleAvatarFileChange = (file: File | undefined) => {
     if (file) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error('Invalid file type', {
+          description: 'Please select a JPG, PNG, or WebP image'
+        });
+        return;
+      }
+
       const reader = new FileReader();
       reader.onerror = () => {
         toast.error('Failed to read image file');
@@ -147,7 +155,7 @@ export function ProjectAvatarField({ form }: ProjectAvatarFieldProps) {
             <Label>Upload Image</Label>
             <Input
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 handleAvatarFileChange(file);

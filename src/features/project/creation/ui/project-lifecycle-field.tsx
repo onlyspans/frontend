@@ -51,7 +51,7 @@ export function ProjectLifecycleField({ form }: ProjectLifecycleFieldProps) {
                 <SelectContent>
                   {lifecycles.map((lifecycle) => (
                     <SelectItem key={lifecycle.id} value={lifecycle.id}>
-                      <div className="flex flex-col">
+                      <div className="flex flex-row gap-2 items-center">
                         <span>{lifecycle.name}</span>
                         <span className="text-xs text-muted-foreground">
                           {lifecycle.description}
