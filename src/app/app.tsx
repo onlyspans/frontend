@@ -1,11 +1,11 @@
 import { RouterProvider } from 'react-router-dom';
-import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/shared/ui/sonner';
 import { router } from './router';
+import { ThemeProvider } from '@/app/providers/theme-provider.tsx';
 
 export function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider defaultTheme="light" storageKey="app-theme">
       <RouterProvider router={router} />
       <Toaster />
     </ThemeProvider>

@@ -2,6 +2,7 @@ import { CodeXml } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { ComponentProps, ReactNode } from 'react';
 import { FieldDescription } from '@/shared/ui/field.tsx';
+import { ThemeToggle } from '@/shared/ui/theme-toggle.tsx';
 
 interface AuthLayoutProps extends ComponentProps<'div'> {
   children: ReactNode;
@@ -17,15 +18,18 @@ export function AuthLayout(
   return (
     <div
       className={cn(
-        'bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10',
+        'bg-muted dark:bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10',
         className
       )}
       {...props}
     >
+      <div className='fixed top-4 right-4'>
+        <ThemeToggle variant='ghost'/>
+      </div>
       <div className="flex w-full max-w-sm flex-col gap-6">
         <a
           href="#"
-          className="flex items-center gap-2 self-center font-medium"
+          className="flex items-center gap-2 self-center font-medium text-xl"
         >
           <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
             <CodeXml className="size-4" />
