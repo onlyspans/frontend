@@ -3,15 +3,28 @@ import { Field, FieldDescription, FieldTitle } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
-import type { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn, FieldValues, Path } from 'react-hook-form';
 import { toast } from 'sonner';
-import type { CreateSpaceFormData } from '@/entities/space/model/create-space-schema';
 
-interface SpaceAvatarFieldProps {
-  form: UseFormReturn<CreateSpaceFormData>;
+interface AvatarFieldProps<T extends FieldValues> {
+  form: UseFormReturn<T>;
+  title: string;
+  defaultInitials?: string;
+  nameFieldName?: Path<T>;
+  avatarFieldName?: Path<T>;
+  avatarFileFieldName?: Path<T>;
 }
 
-export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
+export function AvatarUploadField<T extends FieldValues>(
+  {
+    form,
+    title,
+    defaultInitials = 'AV',
+    nameFieldName = 'name' as Path<T>,
+    avatarFieldName = 'avatar' as Path<T>,
+    avatarFileFieldName = 'avatarFile' as Path<T>
+  }: AvatarFieldProps<T>
+) {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarMode, setAvatarMode] = useState<'url' | 'file' | 'initials'>(
     'initials'
@@ -19,10 +32,10 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
   const [urlError, setUrlError] = useState<string | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(false);
 
-  const spaceName = form.watch('name');
+  const name = form.watch(nameFieldName) as string | undefined;
 
-  const getInitials = (name: string) => {
-    if (!name) return 'SP';
+  const getInitials = (name: string | undefined) => {
+    if (!name) return defaultInitials;
     const words = name.trim().split(/\s+/);
     if (words.length >= 2) {
       return (words[0][0] + words[1][0]).toUpperCase();
@@ -68,12 +81,12 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
         setUrlError(null);
       };
       reader.readAsDataURL(file);
-      form.setValue('avatarFile', file);
-      form.setValue('avatar', '');
+      form.setValue(avatarFileFieldName, file as any);
+      form.setValue(avatarFieldName, '' as any);
       setAvatarMode('file');
     } else {
       setAvatarPreview(null);
-      form.setValue('avatarFile', undefined);
+      form.setValue(avatarFileFieldName, undefined as any);
       setAvatarMode('initials');
     }
   };
@@ -82,7 +95,7 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
     setUrlError(null);
 
     if (!url.trim()) {
-      form.setValue('avatar', '');
+      form.setValue(avatarFieldName, '' as any);
       setAvatarPreview(null);
       setAvatarMode('initials');
       return;
@@ -90,14 +103,14 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
 
     if (!isValidUrl(url)) {
       setUrlError('Please enter a valid image URL.');
-      form.setValue('avatar', '');
+      form.setValue(avatarFieldName, '' as any);
       setAvatarPreview(null);
       setAvatarMode('initials');
       return;
     }
 
-    form.setValue('avatar', url);
-    form.setValue('avatarFile', undefined);
+    form.setValue(avatarFieldName, url as any);
+    form.setValue(avatarFileFieldName, undefined as any);
     setAvatarPreview(url);
     setAvatarMode('url');
     setIsImageLoading(true);
@@ -109,25 +122,28 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
     setUrlError('Failed to load image from URL. Please check the link or use a different image.');
     setAvatarPreview(null);
     setAvatarMode('initials');
-    form.setValue('avatar', '');
+    form.setValue(avatarFieldName, '' as any);
     toast.error('Invalid image URL', {
       description: 'The provided URL does not point to a valid image'
     });
   };
 
+  // Handle successful image load
   const handleImageLoad = () => {
     setIsImageLoading(false);
     setUrlError(null);
   };
 
+  const avatarValue = form.watch(avatarFieldName) as string | undefined;
+
   return (
     <Field>
-      <FieldTitle>Space Avatar</FieldTitle>
+      <FieldTitle>{title}</FieldTitle>
       <div className="flex items-start gap-6">
         <Avatar className="size-20">
           {avatarMode === 'initials' ? (
             <AvatarFallback className="text-2xl">
-              {getInitials(spaceName || '')}
+              {getInitials(name)}
             </AvatarFallback>
           ) : (
             <>
@@ -143,7 +159,7 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
               )}
               {!isImageLoading && avatarMode === 'url' && !avatarPreview && (
                 <AvatarFallback className="text-2xl">
-                  {getInitials(spaceName || '')}
+                  {getInitials(name)}
                 </AvatarFallback>
               )}
             </>
@@ -166,7 +182,7 @@ export function SpaceAvatarField({ form }: SpaceAvatarFieldProps) {
             <Input
               type="url"
               placeholder="https://example.com/avatar.png"
-              value={form.watch('avatar') || ''}
+              value={avatarValue || ''}
               onChange={(e) => handleAvatarUrlChange(e.target.value)}
               className={urlError ? 'border-destructive' : ''}
             />

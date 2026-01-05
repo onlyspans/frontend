@@ -18,11 +18,11 @@ import {
 import { toast } from 'sonner';
 import { ProjectNameField } from './project-name-field';
 import { ProjectDescriptionField } from './project-description-field';
-import { ProjectAvatarField } from './project-avatar-field';
 import { DeployToField } from './deploy-to-field';
 import { ProjectLifecycleField } from './project-lifecycle-field';
 import { useNavigate } from 'react-router-dom';
 import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
+import { AvatarUploadField } from '@/shared/ui/avatar-upload-field.tsx';
 
 interface CreateProjectFormProps {
   className?: string;
@@ -69,7 +69,11 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <ProjectAvatarField form={form} />
+              <AvatarUploadField
+                form={form}
+                title="Project Avatar"
+                defaultInitials="PR"
+              />
               <ProjectNameField form={form} />
               <ProjectDescriptionField form={form} />
               <DeployToField form={form} />

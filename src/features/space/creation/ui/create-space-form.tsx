@@ -16,11 +16,11 @@ import {
   useCreateSpace
 } from '@/entities/space';
 import { toast } from 'sonner';
-import { SpaceAvatarField } from './space-avatar-field';
 import { SpaceNameField } from './space-name-field';
 import { SpaceSlugField } from './space-slug-field';
 import { SpaceDescriptionField } from './space-description-field';
 import { useNavigate } from 'react-router-dom';
+import { AvatarUploadField } from '@/shared/ui/avatar-upload-field.tsx';
 
 interface CreateSpaceFormProps {
   className?: string;
@@ -65,7 +65,11 @@ export function CreateSpaceForm({ className }: CreateSpaceFormProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <SpaceAvatarField form={form} />
+              <AvatarUploadField
+                form={form}
+                title="Space Avatar"
+                defaultInitials="SP"
+              />
               <SpaceNameField form={form} />
               <SpaceSlugField form={form} />
               <SpaceDescriptionField form={form} />
