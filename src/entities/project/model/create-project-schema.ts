@@ -15,8 +15,12 @@ export const createProjectSchema = z
       .min(10, 'Description must be at least 10 characters')
       .max(300, 'Description must be less than 300 characters'),
     avatar: z
-      .union([z.string().url(), z.literal('')])
-      .optional(),
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || val === '' || val.startsWith('http://') || val.startsWith('https://') || /^[\p{Emoji}\p{Emoji_Presentation}\p{Emoji_Modifier_Base}]$/u.test(val),
+        'Avatar must be a valid URL or a single emoji'
+      ),
     avatarFile: z
       .instanceof(File, { message: 'File must be a valid image file' })
       .optional()
