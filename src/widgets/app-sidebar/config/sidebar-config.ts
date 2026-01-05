@@ -115,21 +115,7 @@ export const sidebarConfig: SidebarConfig = {
     {
       title: 'Projects',
       url: '/projects',
-      icon: Bot,
-      items: [
-        {
-          title: 'All Projects',
-          url: '/projects'
-        },
-        {
-          title: 'Active',
-          url: '/projects/active'
-        },
-        {
-          title: 'Archived',
-          url: '/projects/archived'
-        }
-      ]
+      icon: Bot
     },
     {
       title: 'Deployments',
