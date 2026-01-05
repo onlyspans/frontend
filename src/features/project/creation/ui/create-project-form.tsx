@@ -13,7 +13,7 @@ import { Form } from '@/shared/ui/form';
 import {
   createProjectSchema,
   type CreateProjectFormData,
-  projectApi
+  useCreateProject
 } from '@/entities/project';
 import { toast } from 'sonner';
 import { ProjectNameField } from './project-name-field';
@@ -30,7 +30,8 @@ interface CreateProjectFormProps {
 
 export function CreateProjectForm({ className }: CreateProjectFormProps) {
   const navigate = useNavigate();
-  const { getSpaceUrl } = useSpaceUrl()
+  const { getSpaceUrl } = useSpaceUrl();
+  const createProjectMutation = useCreateProject();
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -46,7 +47,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
 
   const onSubmit = async (data: CreateProjectFormData) => {
     try {
-      await projectApi.createProject(data);
+      await createProjectMutation.mutateAsync(data);
       toast.success('Project created successfully!');
       navigate(getSpaceUrl('/'));
     } catch (error) {
@@ -80,9 +81,9 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={form.formState.isSubmitting}
+                  disabled={form.formState.isSubmitting || createProjectMutation.isPending}
                 >
-                  {form.formState.isSubmitting
+                  {form.formState.isSubmitting || createProjectMutation.isPending
                     ? 'Creating...'
                     : 'Create Project'}
                 </Button>

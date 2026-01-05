@@ -1,32 +1,17 @@
 // import { apiClient, extractData } from '@/shared/api';
 // import type { ApiResponse } from '@/shared/api/types';
 import type { CreateProjectFormData } from '@/entities/project';
-
-export interface Project {
-  id: string;
-  name: string;
-  description: string;
-  avatar?: string;
-  deployTo: 'aws' | 'yandex-cloud' | 'kubernetes';
-  lifecycleId: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ProjectLifecycle {
-  id: string;
-  name: string;
-  description: string;
-}
+import type { Project } from '../model/project';
 
 // Mocked API calls - replace with real API endpoints when ready
 export const projectApi = {
-  createProject: async (data: CreateProjectFormData): Promise<Project> => {
+  createProject: async (data: CreateProjectFormData, spaceId: string): Promise<Project> => {
     // Mock implementation
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
           id: `project-${Date.now()}`,
+          spaceId,
           name: data.name,
           description: data.description,
           avatar: data.avatar || undefined,
@@ -62,44 +47,14 @@ export const projectApi = {
     // return extractData(response);
   },
 
-  getLifecycles: async (): Promise<ProjectLifecycle[]> => {
-    // Mock implementation
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          {
-            id: 'lifecycle-1',
-            name: 'Standard',
-            description: 'Standard lifecycle with dev, staging, and production environments'
-          },
-          {
-            id: 'lifecycle-2',
-            name: 'Simple',
-            description: 'Simple lifecycle with dev and production environments'
-          },
-          {
-            id: 'lifecycle-3',
-            name: 'Custom',
-            description: 'Custom lifecycle that you can configure yourself'
-          }
-        ]);
-      }, 500);
-    });
-
-    // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<ProjectLifecycle[]>>(
-    //   '/projects/lifecycles'
-    // );
-    // return extractData(response);
-  },
-
-  getProjects: async (): Promise<Project[]> => {
+  getProjects: async (spaceId: string): Promise<Project[]> => {
     // Mock implementation
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
           {
             id: 'project-1',
+            spaceId,
             name: 'My Awesome Project',
             description: 'A sample project for demonstration purposes',
             avatar: 'https://via.placeholder.com/150',
@@ -110,6 +65,7 @@ export const projectApi = {
           },
           {
             id: 'project-2',
+            spaceId,
             name: 'Backend Service',
             description: 'Main backend service for handling API requests',
             deployTo: 'kubernetes',
@@ -119,6 +75,7 @@ export const projectApi = {
           },
           {
             id: 'project-3',
+            spaceId,
             name: 'Frontend App',
             description: 'React application for the user interface',
             deployTo: 'yandex-cloud',
@@ -131,7 +88,7 @@ export const projectApi = {
     });
 
     // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<Project[]>>('/projects');
+    // const response = await apiClient.get<ApiResponse<Project[]>>(`/spaces/${spaceId}/projects`);
     // return extractData(response);
   },
 
@@ -142,6 +99,7 @@ export const projectApi = {
         const mockProjects: Project[] = [
           {
             id: 'project-1',
+            spaceId: 'space-1',
             name: 'My Awesome Project',
             description: 'A sample project for demonstration purposes',
             avatar: 'https://via.placeholder.com/150',
@@ -152,6 +110,7 @@ export const projectApi = {
           },
           {
             id: 'project-2',
+            spaceId: 'space-1',
             name: 'Backend Service',
             description: 'Main backend service for handling API requests',
             deployTo: 'kubernetes',
@@ -161,6 +120,7 @@ export const projectApi = {
           },
           {
             id: 'project-3',
+            spaceId: 'space-1',
             name: 'Frontend App',
             description: 'React application for the user interface',
             deployTo: 'yandex-cloud',

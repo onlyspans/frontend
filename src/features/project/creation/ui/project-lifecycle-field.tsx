@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   FormControl,
   FormField,
@@ -14,8 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/shared/ui/select';
-import { projectApi, type ProjectLifecycle } from '@/entities/project';
-import { toast } from 'sonner';
+import { useLifecycles } from '@/entities/lifecycle';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
 
@@ -24,16 +22,7 @@ interface ProjectLifecycleFieldProps {
 }
 
 export function ProjectLifecycleField({ form }: ProjectLifecycleFieldProps) {
-  const [lifecycles, setLifecycles] = useState<ProjectLifecycle[]>([]);
-
-  // Load lifecycles
-  useEffect(() => {
-    projectApi.getLifecycles().then(setLifecycles).catch((error) => {
-      toast.error('Failed to load lifecycles', {
-        description: error.message
-      });
-    });
-  }, []);
+  const { data: lifecycles = [], isLoading } = useLifecycles();
 
   return (
     <FormField
@@ -44,9 +33,9 @@ export function ProjectLifecycleField({ form }: ProjectLifecycleFieldProps) {
           <Field>
             <FormLabel>Project Lifecycle</FormLabel>
             <FormControl>
-              <Select value={field.value} onValueChange={field.onChange}>
+              <Select value={field.value} onValueChange={field.onChange} disabled={isLoading}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a lifecycle" />
+                  <SelectValue placeholder={isLoading ? 'Loading...' : 'Select a lifecycle'} />
                 </SelectTrigger>
                 <SelectContent>
                   {lifecycles.map((lifecycle) => (
