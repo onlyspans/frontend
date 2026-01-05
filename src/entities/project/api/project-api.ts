@@ -49,41 +49,25 @@ export const projectApi = {
 
   getProjects: async (spaceId: string): Promise<Project[]> => {
     // Mock implementation
+
+    const names: string[] = ['My Awesome Project', 'Backend Service', 'Frontend App'];
+    const descriptions: string[] = ['A sample project for demonstration purposes', 'Main backend service for handling API requests', 'React application for the user interface'];
+
+    const projects = Array.from({ length: 83 }, (_id, _index) => ({
+      id: crypto.randomUUID(),
+      spaceId,
+      name: `${names[Math.floor(Math.random() * names.length)]} ${crypto.randomUUID().substring(0, 4)}`,
+      description: descriptions[Math.floor(Math.random() * descriptions.length)],
+      avatar: 'https://via.placeholder.com/150',
+      deployTo: 'aws' as 'aws' | 'yandex-cloud' | 'kubernetes',
+      lifecycleId: `lifecycle-${_index % 3 + 1}`,
+      createdAt: new Date(Date.now() - 86400000).toISOString(),
+      updatedAt: new Date(Date.now() - 86400000).toISOString()
+    }));
+
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve([
-          {
-            id: 'project-1',
-            spaceId,
-            name: 'My Awesome Project',
-            description: 'A sample project for demonstration purposes',
-            avatar: 'https://via.placeholder.com/150',
-            deployTo: 'aws',
-            lifecycleId: 'lifecycle-1',
-            createdAt: new Date(Date.now() - 86400000).toISOString(),
-            updatedAt: new Date(Date.now() - 86400000).toISOString()
-          },
-          {
-            id: 'project-2',
-            spaceId,
-            name: 'Backend Service',
-            description: 'Main backend service for handling API requests',
-            deployTo: 'kubernetes',
-            lifecycleId: 'lifecycle-2',
-            createdAt: new Date(Date.now() - 172800000).toISOString(),
-            updatedAt: new Date(Date.now() - 172800000).toISOString()
-          },
-          {
-            id: 'project-3',
-            spaceId,
-            name: 'Frontend App',
-            description: 'React application for the user interface',
-            deployTo: 'yandex-cloud',
-            lifecycleId: 'lifecycle-1',
-            createdAt: new Date(Date.now() - 259200000).toISOString(),
-            updatedAt: new Date(Date.now() - 259200000).toISOString()
-          }
-        ]);
+        resolve(projects);
       }, 500);
     });
 

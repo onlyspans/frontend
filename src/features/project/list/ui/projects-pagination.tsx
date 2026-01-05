@@ -1,4 +1,12 @@
-import { Button } from '@/shared/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@/shared/ui/pagination';
 
 interface ProjectsPaginationProps {
   currentPage: number;
@@ -23,57 +31,99 @@ export function ProjectsPagination(
     return null;
   }
 
+  const handlePageClick = (e: React.MouseEvent<HTMLAnchorElement>, page: number) => {
+    e.preventDefault();
+    onPageChange(page);
+  };
+
+  const renderPageNumbers = () => {
+    const pages: (number | 'ellipsis')[] = [];
+
+    if (totalPages <= 6) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      const start = Math.max(2, currentPage - 2);
+      const end = Math.min(totalPages - 1, currentPage + 2);
+
+      if (start > 2) {
+        pages.push('ellipsis');
+      }
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      if (end < totalPages - 1) {
+        pages.push('ellipsis');
+      }
+
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   return (
-    <div className="flex items-center justify-between">
-      <div className="text-sm text-muted-foreground">
+    <div className="grid grid-cols-4 items-center">
+      <div className="col-span-1 text-sm text-muted-foreground">
         Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} projects
       </div>
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-        <div className="flex items-center gap-1">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-            if (
-              page === 1 ||
-              page === totalPages ||
-              (page >= currentPage - 1 && page <= currentPage + 1)
-            ) {
+      <Pagination className="col-span-3 justify-end">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                  onPageChange(currentPage - 1);
+                }
+              }}
+              className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+            />
+          </PaginationItem>
+
+          {renderPageNumbers().map((page, index) => {
+            if (page === 'ellipsis') {
               return (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => onPageChange(page)}
-                  className="min-w-[40px]"
-                >
-                  {page}
-                </Button>
-              );
-            } else if (page === currentPage - 2 || page === currentPage + 2) {
-              return (
-                <span key={page} className="px-2 text-muted-foreground">
-                  ...
-                </span>
+                <PaginationItem key={`ellipsis-${index}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
               );
             }
-            return null;
+
+            return (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => handlePageClick(e, page)}
+                  isActive={currentPage === page}
+                  className="cursor-pointer"
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            );
           })}
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </Button>
-      </div>
+
+          <PaginationItem>
+            <PaginationNext
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                  onPageChange(currentPage + 1);
+                }
+              }}
+              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }
