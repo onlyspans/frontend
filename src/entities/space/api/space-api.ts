@@ -88,7 +88,7 @@ export const spaceApi = {
           id: `space-${Date.now()}`,
           slug: data.slug,
           name: data.name,
-          description: 'New workspace',
+          description: data.description || 'New workspace',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         });

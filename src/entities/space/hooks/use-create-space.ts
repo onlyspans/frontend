@@ -19,7 +19,7 @@ export function useCreateSpace() {
           id: `temp-${Date.now()}`,
           slug: newSpaceData.slug,
           name: newSpaceData.name,
-          description: 'New workspace',
+          description: newSpaceData.description || 'New workspace',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };

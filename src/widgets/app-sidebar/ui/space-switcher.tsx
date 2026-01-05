@@ -56,6 +56,9 @@ export function SpaceSwitcher(
     if (!params.spaceSlug && spaces.length > 0) {
       const firstSpace = spaces[0];
       const currentPath = window.location.pathname;
+      if (currentPath === '/spaces/create') {
+        return;
+      }
       if (!currentPath.startsWith(`/${firstSpace.slug}`)) {
         navigate(`/${firstSpace.slug}${currentPath === '/' ? '/dashboard' : currentPath}`);
       }
