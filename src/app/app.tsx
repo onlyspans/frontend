@@ -6,7 +6,7 @@ import { QueryProvider } from '@/app/providers/query-provider.tsx';
 
 export function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="app-theme">
+    <ThemeProvider defaultTheme="light" defaultColorScheme='default'>
       <QueryProvider>
         <RouterProvider router={router} />
         <Toaster />

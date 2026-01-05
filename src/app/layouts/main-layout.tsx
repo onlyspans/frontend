@@ -8,6 +8,7 @@ import {
   SidebarTrigger
 } from '@/shared/ui/sidebar';
 import { ThemeToggle } from '@/shared/ui/theme-toggle.tsx';
+import { ColorSchemeToggle } from '@/shared/ui/color-scheme-toggle.tsx';
 
 export function MainLayout() {
   return (
@@ -21,7 +22,10 @@ export function MainLayout() {
               <h1 className="font-semibold">Developer Platform</h1>
             </div>
           </div>
-          <ThemeToggle variant="ghost" />
+          <div>
+            <ThemeToggle variant="ghost" />
+            <ColorSchemeToggle variant="ghost" />
+          </div>
         </header>
         <div className="flex flex-1 flex-col p-6">
           <Outlet />
