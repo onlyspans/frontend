@@ -37,9 +37,14 @@ export const API_ENDPOINTS = {
     PROFILE: '/profile',
     UPDATE_PROFILE: '/profile',
   }),
+
+  SPACES: createEndpoints('/spaces', {
+    BASE: '',
+    BY_ID: (id: string) => `/${id}`,
+    BY_SLUG: (slug: string) => `/slug/${slug}`,
+  }),
 } as const;
 
 export const getApiBaseUrl = (): string => {
   return import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 };
-

@@ -28,7 +28,7 @@ import {
 import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CreateSpaceDialog } from '@/features/space/creation/ui/create-space-dialog';
-import type { CreateSpaceFormData } from '@/entities/space';
+import { useSpaces, useCreateSpace, type CreateSpaceFormData } from '@/entities/space';
 
 const data = {
   user: {
@@ -240,75 +240,37 @@ const data = {
   ]
 };
 
-interface Space {
-  id: string;
-  slug: string;
-  name: string;
-  avatar?: string;
-  description?: string;
-}
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [spaces, setSpaces] = React.useState<Space[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
+  
+  const { data: spaces = [], isLoading } = useSpaces();
+  const createSpaceMutation = useCreateSpace();
 
-  React.useEffect(() => {
-    const loadSpaces = async () => {
-      try {
-        setIsLoading(true);
-        // TODO: Replace with actual spaces API call
-        const loadedSpaces: Space[] = [];
-        
-        if (loadedSpaces.length === 0) {
-          const defaultSpace: Space = {
-            id: 'default',
-            slug: 'default',
-            name: 'Default Space',
-            description: 'Default workspace'
-          };
-          loadedSpaces.push(defaultSpace);
-        }
-        
-        setSpaces(loadedSpaces);
-      } catch (error) {
-        toast.error('Failed to load spaces', {
-          description: error instanceof Error ? error.message : 'Unknown error'
-        });
-      } finally {
-        setIsLoading(false);
+  const handleCreateSpace = React.useCallback(async (data: CreateSpaceFormData) => {
+    try {
+      const newSpace = await createSpaceMutation.mutateAsync(data);
+      
+      const currentPath = location.pathname;
+      const pathParts = currentPath.split('/').filter(Boolean);
+      
+      if (pathParts.length > 1 && pathParts[0] !== 'sign-in' && pathParts[0] !== 'sign-up') {
+        const routeAfterSpace = pathParts.slice(1).join('/');
+        navigate(`/${newSpace.slug}/${routeAfterSpace}`);
+      } else {
+        navigate(`/${newSpace.slug}`);
       }
-    };
-
-    loadSpaces();
-  }, []);
-
-  const handleCreateSpace = React.useCallback((data: CreateSpaceFormData) => {
-    const newSpace: Space = {
-      id: `space-${Date.now()}`,
-      slug: data.slug,
-      name: data.name,
-      description: 'New workspace'
-    };
-    
-    setSpaces((prev) => [...prev, newSpace]);
-    
-    const currentPath = location.pathname;
-    const pathParts = currentPath.split('/').filter(Boolean);
-    
-    if (pathParts.length > 1 && pathParts[0] !== 'sign-in' && pathParts[0] !== 'sign-up') {
-      const routeAfterSpace = pathParts.slice(1).join('/');
-      navigate(`/${newSpace.slug}/${routeAfterSpace || 'dashboard'}`);
-    } else {
-      navigate(`/${newSpace.slug}/dashboard`);
+      
+      toast.success('Space created', {
+        description: `Created "${newSpace.name}"`
+      });
+    } catch (error) {
+      toast.error('Failed to create space', {
+        description: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
-    
-    toast.success('Space created', {
-      description: `Created "${newSpace.name}"`
-    });
-  }, [navigate, location.pathname]);
+  }, [navigate, location.pathname, createSpaceMutation]);
 
   return (
     <>

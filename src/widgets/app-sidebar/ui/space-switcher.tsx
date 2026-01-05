@@ -21,14 +21,8 @@ import {
 } from '@/shared/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { Input } from '@/shared/ui/input';
-
-interface SpaceSwitcherSpace {
-  id: string;
-  slug: string;
-  name: string;
-  avatar?: string;
-  description?: string;
-}
+import type { Space } from '@/entities/space';
+import { useCurrentSpace } from '@/entities/space';
 
 export function SpaceSwitcher(
   {
@@ -36,7 +30,7 @@ export function SpaceSwitcher(
     isLoading = false,
     onOpenCreateDialog
   }: {
-    spaces: SpaceSwitcherSpace[];
+    spaces: Space[];
     isLoading?: boolean;
     onOpenCreateDialog?: () => void;
   }
@@ -45,24 +39,23 @@ export function SpaceSwitcher(
   const params = useParams();
   const location = useLocation();
   const { isMobile } = useSidebar();
-  const [activeSpace, setActiveSpace] = React.useState<SpaceSwitcherSpace | undefined>(
-    spaces.find((s) => s.slug === params.spaceSlug) || spaces[0]
-  );
+  const { space: currentSpaceFromQuery } = useCurrentSpace();
   const [searchQuery, setSearchQuery] = React.useState('');
 
+  const activeSpace = React.useMemo(() => {
+    if (currentSpaceFromQuery) {
+      return currentSpaceFromQuery;
+    }
+    if (params.spaceSlug) {
+      return spaces.find((s) => s.slug === params.spaceSlug);
+    }
+    return spaces[0];
+  }, [currentSpaceFromQuery, params.spaceSlug, spaces]);
+
   React.useEffect(() => {
-    const spaceSlug = params.spaceSlug;
-    if (spaceSlug) {
-      const space = spaces.find((s) => s.slug === spaceSlug);
-      if (space) {
-        setActiveSpace(space);
-      }
-    } else if (spaces.length > 0) {
-      // Redirect to first space if no spaceSlug in URL
+    if (!params.spaceSlug && spaces.length > 0) {
       const firstSpace = spaces[0];
-      setActiveSpace(firstSpace);
       const currentPath = window.location.pathname;
-      // Only redirect if we're not already on a space route
       if (!currentPath.startsWith(`/${firstSpace.slug}`)) {
         navigate(`/${firstSpace.slug}${currentPath === '/' ? '/dashboard' : currentPath}`);
       }
@@ -91,7 +84,6 @@ export function SpaceSwitcher(
       const spaceIndex = digit - 1;
       if (spaceIndex < spaces.length) {
         const space = spaces[spaceIndex];
-        setActiveSpace(space);
         // Preserve current path when switching spaces
         const currentPath = location.pathname;
         const pathParts = currentPath.split('/').filter(Boolean);
@@ -133,8 +125,7 @@ export function SpaceSwitcher(
       .slice(0, 2);
   };
 
-  const handleSpaceClick = (space: SpaceSwitcherSpace) => {
-    setActiveSpace(space);
+  const handleSpaceClick = (space: Space) => {
     // Preserve current path when switching spaces
     const currentPath = location.pathname;
     const pathParts = currentPath.split('/').filter(Boolean);
@@ -146,13 +137,13 @@ export function SpaceSwitcher(
       if (firstPart !== 'sign-in' && firstPart !== 'sign-up') {
         // We're on a space route, extract everything after spaceSlug
         const routeAfterSpace = pathParts.slice(1).join('/');
-        navigate(`/${space.slug}/${routeAfterSpace || 'dashboard'}`);
+        navigate(`/${space.slug}/${routeAfterSpace}`);
       } else {
         // We're on auth pages, go to dashboard
-        navigate(`/${space.slug}/dashboard`);
+        navigate(`/${space.slug}`);
       }
     } else {
-      navigate(`/${space.slug}/dashboard`);
+      navigate(`/${space.slug}`);
     }
   };
 
