@@ -4,6 +4,7 @@ import SignUpPage from '@/pages/auth/sign-up-page';
 import NotFoundPage from '@/pages/not-found-page';
 import { DashboardPage } from '@/pages/dashboard/dashboard-page';
 import { CreateProjectPage } from '@/pages/projects/create-project-page';
+import { ProjectsPage } from '@/pages/projects/projects-page';
 import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
 
@@ -32,8 +33,17 @@ export const router = createBrowserRouter([
         path: '/:spaceSlug',
         children: [
           {
-            path: 'projects/create',
-            element: <CreateProjectPage />
+            path: 'projects',
+            children: [
+              {
+                index: true,
+                element: <ProjectsPage />
+              },
+              {
+                path: 'create',
+                element: <CreateProjectPage />
+              }
+            ]
           },
           {
             index: true,
