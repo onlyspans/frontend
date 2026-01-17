@@ -24,6 +24,49 @@ FROM nginx:alpine
 # Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Create nginx cache directories with proper permissions
+RUN mkdir -p /tmp/nginx/client_temp \
+    /tmp/nginx/proxy_temp \
+    /tmp/nginx/fastcgi_temp \
+    /tmp/nginx/uwsgi_temp \
+    /tmp/nginx/scgi_temp \
+    && chmod -R 777 /tmp/nginx
+
+# Override nginx.conf to use /tmp for cache directories
+RUN cat > /etc/nginx/nginx.conf << 'EOF'
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    client_body_temp_path /tmp/nginx/client_temp;
+    proxy_temp_path /tmp/nginx/proxy_temp;
+    fastcgi_temp_path /tmp/nginx/fastcgi_temp;
+    uwsgi_temp_path /tmp/nginx/uwsgi_temp;
+    scgi_temp_path /tmp/nginx/scgi_temp;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+EOF
+
 # Copy nginx configuration for SPA routing and metrics
 RUN echo 'server { \
     listen 80; \
