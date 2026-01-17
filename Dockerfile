@@ -42,6 +42,7 @@ RUN echo 'server { \
         stub_status on; \
         access_log off; \
         allow 127.0.0.1; \
+        allow ::1; \
         deny all; \
     } \
 }' > /etc/nginx/conf.d/default.conf
