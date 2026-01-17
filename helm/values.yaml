@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: onlyspans-private.registry.twcstorage.ru/frontend
@@ -46,8 +46,8 @@ ingress:
 
 resources:
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 128m
+    memory: 128Mi
   requests:
     cpu: 100m
     memory: 128Mi
