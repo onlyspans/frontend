@@ -47,48 +47,6 @@ spec:
           {{- toYaml .Values.readinessProbe | nindent 12 }}
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.nginxMetrics.enabled }}
-      - name: nginx-exporter
-        image: "{{ .Values.nginxMetrics.image.repository }}:{{ .Values.nginxMetrics.image.tag }}"
-        imagePullPolicy: {{ .Values.nginxMetrics.image.pullPolicy }}
-        ports:
-        - name: metrics
-          containerPort: {{ .Values.nginxMetrics.port }}
-          protocol: TCP
-        args:
-        - -nginx.scrape-uri={{ .Values.nginxMetrics.scrapeUri }}
-        startupProbe:
-          httpGet:
-            path: /metrics
-            port: metrics
-          initialDelaySeconds: 5
-          periodSeconds: 2
-          timeoutSeconds: 2
-          failureThreshold: 30
-        readinessProbe:
-          httpGet:
-            path: /metrics
-            port: metrics
-          initialDelaySeconds: 0
-          periodSeconds: 5
-          timeoutSeconds: 3
-          failureThreshold: 3
-        livenessProbe:
-          httpGet:
-            path: /metrics
-            port: metrics
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 3
-          failureThreshold: 3
-        resources:
-          limits:
-            cpu: 50m
-            memory: 64Mi
-          requests:
-            cpu: 10m
-            memory: 32Mi
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

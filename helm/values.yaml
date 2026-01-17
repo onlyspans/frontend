@@ -87,7 +87,7 @@ env: {}
 
 # Nginx metrics exporter configuration
 nginxMetrics:
-  enabled: true
+  enabled: false
   image:
     repository: nginx/nginx-prometheus-exporter
     tag: "0.11.0"
@@ -96,7 +96,7 @@ nginxMetrics:
   scrapeUri: "http://127.0.0.1:80/stub_status"
 
 vmServiceScrape:
-  enabled: true
+  enabled: false
   interval: 15s
   path: /metrics
   port: metrics
