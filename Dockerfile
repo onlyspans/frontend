@@ -24,7 +24,7 @@ FROM nginx:alpine
 # Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration for SPA routing
+# Copy nginx configuration for SPA routing and metrics
 RUN echo 'server { \
     listen 80; \
     server_name _; \
@@ -37,6 +37,12 @@ RUN echo 'server { \
         access_log off; \
         return 200 "healthy\n"; \
         add_header Content-Type text/plain; \
+    } \
+    location /stub_status { \
+        stub_status on; \
+        access_log off; \
+        allow 127.0.0.1; \
+        deny all; \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
