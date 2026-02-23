@@ -6,14 +6,12 @@ import {
   TableHeader,
   TableRow
 } from '@/shared/ui/table';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { Avatar, AvatarFallback } from '@/shared/ui/avatar';
 import type { Project } from '@/entities/project';
-import type { Lifecycle } from '@/entities/lifecycle';
 
 interface ProjectsTableProps {
   projects: Project[];
   isLoading: boolean;
-  lifecycleMap: Map<string, Lifecycle>;
   onProjectClick?: (projectId: string) => void;
 }
 
@@ -30,7 +28,6 @@ export function ProjectsTable(
   {
     projects,
     isLoading,
-    lifecycleMap,
     onProjectClick
   }: ProjectsTableProps
 ) {
@@ -43,7 +40,7 @@ export function ProjectsTable(
               <TableHead className="w-[60px]">Icon</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead>Lifecycle</TableHead>
+              <TableHead>Stages</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -67,7 +64,7 @@ export function ProjectsTable(
               <TableHead className="w-[60px]">Icon</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead>Lifecycle</TableHead>
+              <TableHead>Stages</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -90,44 +87,38 @@ export function ProjectsTable(
             <TableHead className="w-[50px]"></TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Lifecycle</TableHead>
+            <TableHead>Stages</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {projects.map((project) => {
-            const lifecycle = lifecycleMap.get(project.lifecycleId);
-            return (
-              <TableRow
-                key={project.id}
-                className={onProjectClick ? 'cursor-pointer' : ''}
-                onClick={() => onProjectClick?.(project.id)}
-              >
-                <TableCell className='w-[50px] flex items-center justify-center'>
-                  <Avatar className="size-8">
-                    {project.avatar && (
-                      <AvatarImage src={project.avatar} alt={project.name} />
-                    )}
-                    <AvatarFallback className="text-xs">
-                      {getInitials(project.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="font-medium">{project.name}</TableCell>
-                <TableCell className="text-muted-foreground">
-                  {project.description}
-                </TableCell>
-                <TableCell>
-                  {lifecycle ? (
-                    <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium">
-                      {lifecycle.name}
-                    </span>
-                  ) : (
-                    <span className="text-muted-foreground text-xs">Unknown</span>
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {projects.map((project) => (
+            <TableRow
+              key={project.id}
+              className={onProjectClick ? 'cursor-pointer' : ''}
+              onClick={() => onProjectClick?.(project.id)}
+            >
+              <TableCell className="w-[50px] flex items-center justify-center">
+                <Avatar className="size-8">
+                  <AvatarFallback className="text-xs">
+                    {getInitials(project.name)}
+                  </AvatarFallback>
+                </Avatar>
+              </TableCell>
+              <TableCell className="font-medium">{project.name}</TableCell>
+              <TableCell className="text-muted-foreground">
+                {project.description ?? '—'}
+              </TableCell>
+              <TableCell>
+                {project.lifecycleStages?.length ? (
+                  <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium">
+                    {project.lifecycleStages.join(', ')}
+                  </span>
+                ) : (
+                  <span className="text-muted-foreground text-xs">—</span>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

@@ -28,21 +28,37 @@ export const API_ENDPOINTS = {
     ME: '/me',
     VERIFY_EMAIL: '/verify-email',
     FORGOT_PASSWORD: '/forgot-password',
-    RESET_PASSWORD: '/reset-password',
+    RESET_PASSWORD: '/reset-password'
   }),
 
   USERS: createEndpoints('/users', {
     BASE: '',
     BY_ID: (id: string) => `/${id}`,
     PROFILE: '/profile',
-    UPDATE_PROFILE: '/profile',
+    UPDATE_PROFILE: '/profile'
   }),
 
   SPACES: createEndpoints('/spaces', {
     BASE: '',
     BY_ID: (id: string) => `/${id}`,
-    BY_SLUG: (slug: string) => `/slug/${slug}`,
+    BY_SLUG: (slug: string) => `/slug/${slug}`
   }),
+
+  PROJECTS: createEndpoints('/projects', {
+    BASE: '',
+    BY_ID: (id: string) => `/${id}`
+  }),
+
+  TAGS: createEndpoints('/tags', {
+    BASE: '',
+    BY_ID: (id: string) => `/${id}`
+  }),
+
+  RELEASES: (projectId: string) =>
+    createEndpoints(`/projects/${projectId}/releases`, {
+      BASE: '',
+      BY_ID: (id: string) => `/${id}`
+    })
 } as const;
 
 export const getApiBaseUrl = (): string => {

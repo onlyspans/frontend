@@ -13,16 +13,13 @@ export function ProjectsPage() {
   const { getSpaceUrl } = useSpaceUrl();
   const {
     projects,
-    filteredProjects,
     isLoading,
-    lifecycleMap,
     searchQuery,
     currentPage,
     totalPages,
-    startIndex,
-    endIndex,
+    total,
     handleSearchChange,
-    setCurrentPage
+    setCurrentPage,
   } = useProjectsList();
 
   const handleProjectClick = (projectId: string) => {
@@ -48,16 +45,13 @@ export function ProjectsPage() {
       <ProjectsTable
         projects={projects}
         isLoading={isLoading}
-        lifecycleMap={lifecycleMap}
         onProjectClick={handleProjectClick}
       />
 
       <ProjectsPagination
         currentPage={currentPage}
         totalPages={totalPages}
-        startIndex={startIndex}
-        endIndex={endIndex}
-        totalItems={filteredProjects.length}
+        totalItems={total}
         onPageChange={setCurrentPage}
       />
     </div>

@@ -1,37 +1,20 @@
-import { useState, useMemo } from 'react';
-import { useProjects } from '@/entities/project';
-import { useLifecycles } from '@/entities/lifecycle';
+import { useState } from 'react';
+import { useProjectsList as useProjectsListQuery } from '@/entities/project';
 
 const ITEMS_PER_PAGE = 10;
 
 export function useProjectsList() {
-  const { data: projects = [], isLoading } = useProjects();
-  const { data: lifecycles = [] } = useLifecycles();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const lifecycleMap = useMemo(() => {
-    return new Map(lifecycles.map((lc) => [lc.id, lc]));
-  }, [lifecycles]);
+  const { data, isLoading } = useProjectsListQuery({
+    page: currentPage,
+    pageSize: ITEMS_PER_PAGE,
+    search: searchQuery || undefined
+  });
 
-  const filteredProjects = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return projects;
-    }
-
-    const query = searchQuery.toLowerCase();
-    return projects.filter(
-      (project) =>
-        project.name.toLowerCase().includes(query) ||
-        project.description.toLowerCase().includes(query) ||
-        lifecycleMap.get(project.lifecycleId)?.name.toLowerCase().includes(query)
-    );
-  }, [projects, searchQuery, lifecycleMap]);
-
-  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedProjects = filteredProjects.slice(startIndex, endIndex);
+  const projects = data?.items ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
@@ -39,15 +22,12 @@ export function useProjectsList() {
   };
 
   return {
-    projects: paginatedProjects,
-    filteredProjects,
+    projects,
     isLoading,
-    lifecycleMap,
     searchQuery,
     currentPage,
     totalPages,
-    startIndex,
-    endIndex,
+    total: data?.total ?? 0,
     handleSearchChange,
     setCurrentPage
   };

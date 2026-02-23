@@ -47,7 +47,16 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
 
   const onSubmit = async (data: CreateProjectFormData) => {
     try {
-      await createProjectMutation.mutateAsync(data);
+      const slug = data.name
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '');
+      await createProjectMutation.mutateAsync({
+        name: data.name,
+        slug: slug || 'project',
+        description: data.description,
+        status: 'active',
+      });
       toast.success('Project created successfully!');
       navigate(getSpaceUrl('/'));
     } catch (error) {

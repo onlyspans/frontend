@@ -1,15 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createProject } from '../api/project-api';
-import type { CreateProjectRequest } from '../model/project';
+import { deleteProject } from '../api/project-api';
 import { projectQueryKeys } from './query-keys';
 
-export function useCreateProject() {
+export function useDeleteProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateProjectRequest) => createProject(data),
+    mutationFn: (id: string) => deleteProject(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectQueryKeys.list() });
-    }
+    },
   });
 }

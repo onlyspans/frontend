@@ -11,9 +11,8 @@ import {
 interface ProjectsPaginationProps {
   currentPage: number;
   totalPages: number;
-  startIndex: number;
-  endIndex: number;
   totalItems: number;
+  pageSize?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -21,12 +20,14 @@ export function ProjectsPagination(
   {
     currentPage,
     totalPages,
-    startIndex,
-    endIndex,
     totalItems,
+    pageSize = 10,
     onPageChange
   }: ProjectsPaginationProps
 ) {
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+
   if (totalPages <= 1) {
     return null;
   }

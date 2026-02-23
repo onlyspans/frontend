@@ -1,21 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { projectApi } from '../api/project-api';
+import { getProjects } from '../api/project-api';
 import type { Project } from '../model/project';
 import { projectQueryKeys } from './query-keys';
-import { useCurrentSpace } from '@/entities/space';
 
+/** Список проектов (первая страница, 100 элементов). Для пагинации используйте useProjectsList. */
 export function useProjects() {
-  const { space } = useCurrentSpace();
-
-  return useQuery<Project[]>({
-    queryKey: projectQueryKeys.all(space?.id || ''),
-    queryFn: () => {
-      if (!space?.id) {
-        throw new Error('Space ID is required');
-      }
-      return projectApi.getProjects(space.id);
-    },
-    enabled: !!space?.id,
+  return useQuery({
+    queryKey: projectQueryKeys.list({ page: 1, pageSize: 100 }),
+    queryFn: () => getProjects({ page: 1, pageSize: 100 }),
+    select: (data): Project[] => data.items,
     staleTime: 5 * 60 * 1000
   });
 }
