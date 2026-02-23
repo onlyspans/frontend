@@ -1,31 +1,33 @@
 import { apiClient } from '@/shared/api';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import type { PaginatedListResponse } from '@/shared/api/types';
-import type { Tag, CreateTagRequest, UpdateTagRequest, TagsListParams } from '../model/tag';
+import type {
+  Tag,
+  CreateTagRequest,
+  UpdateTagRequest,
+  TagsListParams
+} from '../model/tag';
 
-export async function getTags(params?: TagsListParams): Promise<PaginatedListResponse<Tag>> {
-  const { data } = await apiClient.get<PaginatedListResponse<Tag>>(
-    API_ENDPOINTS.TAGS.BASE,
-    { params }
-  );
-  return data;
-}
+const BASE = '/tags';
 
-export async function getTagById(id: string): Promise<Tag> {
-  const { data } = await apiClient.get<Tag>(API_ENDPOINTS.TAGS.BY_ID(id));
-  return data;
-}
+const tagEndpoints = {
+  list: BASE,
+  byId: (id: string) => `${BASE}/${id}`
+} as const;
 
-export async function createTag(body: CreateTagRequest): Promise<Tag> {
-  const { data } = await apiClient.post<Tag>(API_ENDPOINTS.TAGS.BASE, body);
-  return data;
-}
+export const tagApi = {
+  getList: (params?: TagsListParams) =>
+    apiClient
+      .get<PaginatedListResponse<Tag>>(tagEndpoints.list, { params })
+      .then((r) => r.data),
 
-export async function updateTag(id: string, body: UpdateTagRequest): Promise<Tag> {
-  const { data } = await apiClient.put<Tag>(API_ENDPOINTS.TAGS.BY_ID(id), body);
-  return data;
-}
+  getById: (id: string) =>
+    apiClient.get<Tag>(tagEndpoints.byId(id)).then((r) => r.data),
 
-export async function deleteTag(id: string): Promise<void> {
-  await apiClient.delete(API_ENDPOINTS.TAGS.BY_ID(id));
-}
+  create: (body: CreateTagRequest) =>
+    apiClient.post<Tag>(tagEndpoints.list, body).then((r) => r.data),
+
+  update: (id: string, body: UpdateTagRequest) =>
+    apiClient.put<Tag>(tagEndpoints.byId(id), body).then((r) => r.data),
+
+  delete: (id: string) => apiClient.delete(tagEndpoints.byId(id))
+};

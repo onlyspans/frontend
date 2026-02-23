@@ -33,7 +33,9 @@ export const createProjectSchema = z
         'File must be an image'
       ),
     deployTo: z.enum(deployToOptions),
-    lifecycleId: z.string().min(1, 'Please select a project lifecycle')
+    lifecycleStages: z.array(
+      z.enum(['development', 'testing', 'staging', 'production'])
+    )
   });
 
 export type CreateProjectFormData = z.infer<typeof createProjectSchema>;

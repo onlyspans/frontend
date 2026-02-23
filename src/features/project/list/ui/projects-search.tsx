@@ -12,7 +12,7 @@ export function ProjectsSearch({ value, onChange }: ProjectsSearchProps) {
       <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="text"
-        placeholder="Search projects by name, description, or lifecycle..."
+        placeholder="Search projects by name or description..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="pl-9"

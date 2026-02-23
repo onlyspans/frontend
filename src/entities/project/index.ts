@@ -8,13 +8,7 @@ export type {
   UpdateProjectRequest,
   ProjectsListParams
 } from './model/project';
-export {
-  getProjects,
-  getProjectById,
-  createProject,
-  updateProject,
-  deleteProject
-} from './api/project-api';
+export { projectApi } from './api/project-api';
 export {
   useProjects,
   useProjectsList,

@@ -6,13 +6,7 @@ export type {
   UpdateReleaseRequest,
   ReleasesListParams
 } from './model/release';
-export {
-  getReleases,
-  getReleaseById,
-  createRelease,
-  updateRelease,
-  deleteRelease
-} from './api/release-api';
+export { releaseApi } from './api/release-api';
 export {
   useReleases,
   useRelease,

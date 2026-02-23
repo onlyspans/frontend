@@ -6,54 +6,53 @@ import {
   FormMessage
 } from '@/shared/ui/form';
 import { Field, FieldDescription } from '@/shared/ui/field';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/shared/ui/select';
-import { useLifecycles } from '@/entities/lifecycle';
+import { Checkbox } from '@/shared/ui/checkbox';
 import type { UseFormReturn } from 'react-hook-form';
-import type { CreateProjectFormData } from '@/entities/project';
+import type { CreateProjectFormData, LifecycleStage } from '@/entities/project';
+
+const LIFECYCLE_STAGES: { value: LifecycleStage; label: string }[] = [
+  { value: 'development', label: 'Development' },
+  { value: 'testing', label: 'Testing' },
+  { value: 'staging', label: 'Staging' },
+  { value: 'production', label: 'Production' }
+];
 
 interface ProjectLifecycleFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
 }
 
 export function ProjectLifecycleField({ form }: ProjectLifecycleFieldProps) {
-  const { data: lifecycles = [], isLoading } = useLifecycles();
-
   return (
     <FormField
       control={form.control}
-      name="lifecycleId"
+      name="lifecycleStages"
       render={({ field }) => (
         <FormItem>
           <Field>
-            <FormLabel>Project Lifecycle</FormLabel>
+            <FormLabel>Lifecycle stages</FormLabel>
             <FormControl>
-              <Select value={field.value} onValueChange={field.onChange} disabled={isLoading}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={isLoading ? 'Loading...' : 'Select a lifecycle'} />
-                </SelectTrigger>
-                <SelectContent>
-                  {lifecycles.map((lifecycle) => (
-                    <SelectItem key={lifecycle.id} value={lifecycle.id}>
-                      <div className="flex flex-row gap-2 items-center">
-                        <span>{lifecycle.name}</span>
-                        <span className="text-xs text-muted-foreground">
-                          {lifecycle.description}
-                        </span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="flex flex-wrap gap-4 pt-2">
+                {LIFECYCLE_STAGES.map(({ value, label }) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <Checkbox
+                      checked={field.value.includes(value)}
+                      onCheckedChange={(checked) => {
+                        const next = checked
+                          ? [...field.value, value]
+                          : field.value.filter((v) => v !== value);
+                        field.onChange(next);
+                      }}
+                    />
+                    <span className="text-sm">{label}</span>
+                  </label>
+                ))}
+              </div>
             </FormControl>
             <FieldDescription>
-              The lifecycle defines how releases can be promoted between
-              environments. Create or modify lifecycles.
+              Stages through which releases can be promoted (e.g. dev → staging → production).
             </FieldDescription>
             <FormMessage />
           </Field>

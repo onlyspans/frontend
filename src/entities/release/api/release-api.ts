@@ -1,5 +1,4 @@
 import { apiClient } from '@/shared/api';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import type { PaginatedListResponse } from '@/shared/api/types';
 import type {
   Release,
@@ -8,53 +7,45 @@ import type {
   ReleasesListParams
 } from '../model/release';
 
-export async function getReleases(
-  projectId: string,
-  params?: ReleasesListParams
-): Promise<PaginatedListResponse<Release>> {
-  const endpoints = API_ENDPOINTS.RELEASES(projectId);
-  const { data } = await apiClient.get<PaginatedListResponse<Release>>(
-    endpoints.BASE,
-    { params }
-  );
-  return data;
-}
+const releaseEndpoints = (projectId: string) => {
+  const BASE = `/projects/${projectId}/releases`;
+  return {
+    list: BASE,
+    byId: (id: string) => `${BASE}/${id}`
+  } as const;
+};
 
-export async function getReleaseById(
-  projectId: string,
-  releaseId: string
-): Promise<Release> {
-  const endpoints = API_ENDPOINTS.RELEASES(projectId);
-  const { data } = await apiClient.get<Release>(endpoints.BY_ID(releaseId));
-  return data;
-}
+export const releaseApi = {
+  getList: (projectId: string, params?: ReleasesListParams) =>
+    apiClient
+      .get<PaginatedListResponse<Release>>(
+        releaseEndpoints(projectId).list,
+        { params }
+      )
+      .then((r) => r.data),
 
-export async function createRelease(
-  projectId: string,
-  body: CreateReleaseRequest
-): Promise<Release> {
-  const endpoints = API_ENDPOINTS.RELEASES(projectId);
-  const { data } = await apiClient.post<Release>(endpoints.BASE, body);
-  return data;
-}
+  getById: (projectId: string, releaseId: string) =>
+    apiClient
+      .get<Release>(releaseEndpoints(projectId).byId(releaseId))
+      .then((r) => r.data),
 
-export async function updateRelease(
-  projectId: string,
-  releaseId: string,
-  body: UpdateReleaseRequest
-): Promise<Release> {
-  const endpoints = API_ENDPOINTS.RELEASES(projectId);
-  const { data } = await apiClient.put<Release>(
-    endpoints.BY_ID(releaseId),
-    body
-  );
-  return data;
-}
+  create: (projectId: string, body: CreateReleaseRequest) =>
+    apiClient
+      .post<Release>(releaseEndpoints(projectId).list, body)
+      .then((r) => r.data),
 
-export async function deleteRelease(
-  projectId: string,
-  releaseId: string
-): Promise<void> {
-  const endpoints = API_ENDPOINTS.RELEASES(projectId);
-  await apiClient.delete(endpoints.BY_ID(releaseId));
-}
+  update: (
+    projectId: string,
+    releaseId: string,
+    body: UpdateReleaseRequest
+  ) =>
+    apiClient
+      .put<Release>(
+        releaseEndpoints(projectId).byId(releaseId),
+        body
+      )
+      .then((r) => r.data),
+
+  delete: (projectId: string, releaseId: string) =>
+    apiClient.delete(releaseEndpoints(projectId).byId(releaseId))
+};

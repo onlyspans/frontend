@@ -42,23 +42,7 @@ export const API_ENDPOINTS = {
     BASE: '',
     BY_ID: (id: string) => `/${id}`,
     BY_SLUG: (slug: string) => `/slug/${slug}`
-  }),
-
-  PROJECTS: createEndpoints('/projects', {
-    BASE: '',
-    BY_ID: (id: string) => `/${id}`
-  }),
-
-  TAGS: createEndpoints('/tags', {
-    BASE: '',
-    BY_ID: (id: string) => `/${id}`
-  }),
-
-  RELEASES: (projectId: string) =>
-    createEndpoints(`/projects/${projectId}/releases`, {
-      BASE: '',
-      BY_ID: (id: string) => `/${id}`
-    })
+  })
 } as const;
 
 export const getApiBaseUrl = (): string => {

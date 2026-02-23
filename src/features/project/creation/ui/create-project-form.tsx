@@ -41,7 +41,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
       avatar: '',
       avatarFile: undefined,
       deployTo: 'aws',
-      lifecycleId: ''
+      lifecycleStages: []
     }
   });
 
@@ -56,6 +56,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         slug: slug || 'project',
         description: data.description,
         status: 'active',
+        lifecycleStages: data.lifecycleStages?.length ? data.lifecycleStages : undefined
       });
       toast.success('Project created successfully!');
       navigate(getSpaceUrl('/'));

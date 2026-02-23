@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createRelease } from '../api/release-api';
+import { releaseApi } from '../api/release-api';
 import type { CreateReleaseRequest } from '../model/release';
 import { releaseQueryKeys } from './query-keys';
 
@@ -8,7 +8,7 @@ export function useCreateRelease(projectId: string) {
 
   return useMutation({
     mutationFn: (data: CreateReleaseRequest) =>
-      createRelease(projectId, data),
+      releaseApi.create(projectId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: releaseQueryKeys.lists(projectId),

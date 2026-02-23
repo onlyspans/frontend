@@ -1,11 +1,5 @@
 export type { Tag, CreateTagRequest, UpdateTagRequest, TagsListParams } from './model/tag';
-export {
-  getTags,
-  getTagById,
-  createTag,
-  updateTag,
-  deleteTag
-} from './api/tag-api';
+export { tagApi } from './api/tag-api';
 export {
   useTags,
   useTag,
