@@ -10,6 +10,7 @@ import { Field } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface ProjectSlugFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
@@ -25,6 +26,7 @@ function normalizeSlugInput(value: string): string {
 }
 
 export function ProjectSlugField({ form }: ProjectSlugFieldProps) {
+  const { t } = useTranslation();
   return (
     <FormField
       control={form.control}
@@ -32,11 +34,11 @@ export function ProjectSlugField({ form }: ProjectSlugFieldProps) {
       render={({ field }) => (
         <FormItem>
           <Field>
-            <FormLabel>URL slug</FormLabel>
+            <FormLabel>{t('project.creation.urlSlug')}</FormLabel>
             <FormControl>
               <Input
                 type="text"
-                placeholder="my-project"
+                placeholder={t('project.creation.urlSlugPlaceholder')}
                 {...field}
                 onChange={(e) => {
                   field.onChange(normalizeSlugInput(e.target.value));
@@ -44,7 +46,7 @@ export function ProjectSlugField({ form }: ProjectSlugFieldProps) {
               />
             </FormControl>
             <FormDescription>
-              Generated from the project name. You can edit it.
+              {t('project.creation.slugHint')}
             </FormDescription>
             <FormMessage />
           </Field>

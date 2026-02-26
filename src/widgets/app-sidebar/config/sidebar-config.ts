@@ -93,131 +93,71 @@ export const sidebarConfig: SidebarConfig = {
   ],
   navMain: [
     {
-      title: 'Dashboard',
+      title: 'sidebar.navbar.dashboard',
       url: '/',
       icon: SquareTerminal,
       isActive: true,
       items: [
-        {
-          title: 'Overview',
-          url: '/'
-        },
-        {
-          title: 'Analytics',
-          url: '/analytics'
-        },
-        {
-          title: 'Activity',
-          url: '/activity'
-        }
+        { title: 'sidebar.navbar.overview', url: '/' },
+        { title: 'sidebar.navbar.analytics', url: '/analytics' },
+        { title: 'sidebar.navbar.activity', url: '/activity' }
       ]
     },
     {
-      title: 'Projects',
+      title: 'sidebar.navbar.projects',
       url: '/projects',
       icon: Bot
     },
     {
-      title: 'Deployments',
+      title: 'sidebar.navbar.deployments',
       url: '/deployments',
       icon: Rocket,
       items: [
-        {
-          title: 'Recent',
-          url: '/deployments'
-        },
-        {
-          title: 'History',
-          url: '/deployments/history'
-        },
-        {
-          title: 'Scheduled',
-          url: '/deployments/scheduled'
-        }
+        { title: 'sidebar.navbar.recent', url: '/deployments' },
+        { title: 'sidebar.navbar.history', url: '/deployments/history' },
+        { title: 'sidebar.navbar.scheduled', url: '/deployments/scheduled' }
       ]
     },
     {
-      title: 'Environments',
+      title: 'sidebar.navbar.environments',
       url: '/environments',
       icon: Layers,
       items: [
-        {
-          title: 'All Environments',
-          url: '/environments'
-        },
-        {
-          title: 'Kubernetes',
-          url: '/environments/kubernetes'
-        },
-        {
-          title: 'Virtual Machines',
-          url: '/environments/vms'
-        }
+        { title: 'sidebar.navbar.allEnvironments', url: '/environments' },
+        { title: 'sidebar.navbar.kubernetes', url: '/environments/kubernetes' },
+        { title: 'sidebar.navbar.virtualMachines', url: '/environments/vms' }
       ]
     },
     {
-      title: 'Infrastructure',
+      title: 'sidebar.navbar.infrastructure',
       url: '/infrastructure',
       icon: Server,
       items: [
-        {
-          title: 'Clusters',
-          url: '/infrastructure/clusters'
-        },
-        {
-          title: 'Nodes',
-          url: '/infrastructure/nodes'
-        },
-        {
-          title: 'Resources',
-          url: '/infrastructure/resources'
-        }
+        { title: 'sidebar.navbar.clusters', url: '/infrastructure/clusters' },
+        { title: 'sidebar.navbar.nodes', url: '/infrastructure/nodes' },
+        { title: 'sidebar.navbar.resources', url: '/infrastructure/resources' }
       ]
     },
     {
-      title: 'Documentation',
+      title: 'sidebar.navbar.documentation',
       url: '/docs',
       icon: BookOpen,
       items: [
-        {
-          title: 'Getting Started',
-          url: '/docs/getting-started'
-        },
-        {
-          title: 'API Reference',
-          url: '/docs/api'
-        },
-        {
-          title: 'Guides',
-          url: '/docs/guides'
-        },
-        {
-          title: 'Changelog',
-          url: '/docs/changelog'
-        }
+        { title: 'sidebar.navbar.gettingStarted', url: '/docs/getting-started' },
+        { title: 'sidebar.navbar.apiReference', url: '/docs/api' },
+        { title: 'sidebar.navbar.guides', url: '/docs/guides' },
+        { title: 'sidebar.navbar.changelog', url: '/docs/changelog' }
       ]
     },
     {
-      title: 'Settings',
+      title: 'sidebar.navbar.settings',
       url: '/settings',
       icon: Settings2,
       items: [
-        {
-          title: 'General',
-          url: '/settings/general'
-        },
-        {
-          title: 'Team',
-          url: '/settings/team'
-        },
-        {
-          title: 'Billing',
-          url: '/settings/billing'
-        },
-        {
-          title: 'Security',
-          url: '/settings/security'
-        }
+        { title: 'sidebar.navbar.general', url: '/settings/general' },
+        { title: 'sidebar.navbar.team', url: '/settings/team' },
+        { title: 'sidebar.navbar.billing', url: '/settings/billing' },
+        { title: 'sidebar.navbar.security', url: '/settings/security' }
       ]
     }
   ],
@@ -226,21 +166,21 @@ export const sidebarConfig: SidebarConfig = {
       title: 'Deployment successful',
       url: '/deployments',
       icon: CheckCircle2,
-      time: '2 min ago',
+      time: 'sidebar.recentActivity.time2MinAgo',
       type: 'deployment'
     },
     {
       title: 'Build completed',
       url: '/projects',
       icon: Code,
-      time: '15 min ago',
+      time: 'sidebar.recentActivity.time15MinAgo',
       type: 'build'
     },
     {
       title: 'Project updated',
       url: '/projects',
       icon: GitBranch,
-      time: '1 hour ago',
+      time: 'sidebar.recentActivity.time1HourAgo',
       type: 'update'
     }
   ]

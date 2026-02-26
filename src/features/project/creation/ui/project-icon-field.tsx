@@ -12,6 +12,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@/shared/lib/utils';
 import { ProjectIcon, type CreateProjectFormData } from '@/entities/project';
+import { useTranslation } from '@/shared/lib/i18n';
 
 const EMOJI_LIST = [
   '🚀', '💻', '⚡', '🔧', '🛠️', '📦',
@@ -74,6 +75,7 @@ interface ProjectIconFieldProps {
 }
 
 export function ProjectIconField({ form }: ProjectIconFieldProps) {
+  const { t } = useTranslation();
   const [urlError, setUrlError] = useState<string | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -120,14 +122,14 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
   const handleFileChange = (file: File | undefined) => {
     if (file) {
       if (!ALLOWED_TYPES.includes(file.type)) {
-        toast.error('Invalid file type', {
-          description: 'Allowed: PNG, JPEG, GIF, WebP'
+        toast.error(t('project.creation.invalidFileType'), {
+          description: t('project.creation.allowedTypes')
         });
         return;
       }
       if (file.size > MAX_FILE_SIZE) {
-        toast.error('File too large', {
-          description: 'Maximum size is 2 MB'
+        toast.error(t('project.creation.fileTooLarge'), {
+          description: t('project.creation.maxSize')
         });
         return;
       }
@@ -162,7 +164,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
       return;
     }
     if (!isValidImageUrl(value)) {
-      setUrlError('Enter a valid image URL (PNG, JPEG, GIF, WebP).');
+      setUrlError(t('project.creation.invalidUrl'));
       return;
     }
     form.setValue('imageUrl', value.trim());
@@ -173,7 +175,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
   const handleImageError = () => {
     setImageErrored(true);
     setImageLoaded(false);
-    setUrlError('Failed to load image. Check the URL or use a file/emoji.');
+    setUrlError(t('project.creation.failedToLoadImage'));
   };
 
   const handleImageLoad = () => {
@@ -196,7 +198,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
 
   return (
     <Field>
-      <FieldTitle>Project icon</FieldTitle>
+      <FieldTitle>{t('project.creation.projectIcon')}</FieldTitle>
       <div className="flex items-start gap-6">
         <div className="relative shrink-0">
           <ProjectIcon
@@ -217,7 +219,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
         <div className="min-w-0 flex-1 space-y-4">
           <div className="grid gap-4 sm:grid-cols-12">
             <div className="space-y-2 sm:col-span-4">
-              <Label>Upload file</Label>
+              <Label>{t('project.creation.uploadFile')}</Label>
               <Input
                 key={iconFile ? 'has-file' : 'no-file'}
                 type="file"
@@ -226,17 +228,17 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
               />
             </div>
             <div className="space-y-2 sm:col-span-4">
-              <Label>Image URL</Label>
+              <Label>{t('project.creation.imageUrl')}</Label>
               <Input
                 type="url"
-                placeholder="https://example.com/logo.png"
+                placeholder={t('project.creation.imageUrlPlaceholder')}
                 value={mode === 'url' ? imageUrl : ''}
                 onChange={(e) => handleUrlChange(e.target.value)}
                 className={urlError ? 'border-destructive' : ''}
               />
             </div>
             <div className="space-y-2 sm:col-span-4">
-              <Label>Emoji</Label>
+              <Label>{t('project.creation.emoji')}</Label>
               <DropdownMenu open={emojiOpen} onOpenChange={setEmojiOpen}>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -245,7 +247,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
                     className="w-full justify-start font-normal"
                   >
                     <span className={emoji ? '' : 'text-muted-foreground'}>
-                      {emoji || 'Select'}
+                      {emoji || t('project.creation.selectEmoji')}
                     </span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -264,7 +266,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
                           className="w-full"
                           onClick={handleEmojiClear}
                         >
-                          Clear emoji
+                          {t('project.creation.clearEmoji')}
                         </Button>
                       </div>
                     )}
@@ -277,7 +279,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
             <p className="text-sm text-destructive">{urlError}</p>
           )}
           <FieldDescription className="text-xs">
-            Upload an image (PNG, JPEG, GIF, WebP, max 2 MB), enter a URL, or pick an emoji.
+            {t('project.creation.iconHint')}
           </FieldDescription>
         </div>
       </div>

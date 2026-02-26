@@ -5,6 +5,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Tabs, TabsList } from '@/shared/ui/tabs';
 import { useSpaceUrl } from '@/shared/hooks/use-space-url';
 import { cn } from '@/shared/lib/utils';
+import { useTranslation } from '@/shared/lib/i18n';
 
 function formatDate(iso: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -25,6 +26,7 @@ export function ProjectDetailLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { getSpaceUrl } = useSpaceUrl();
+  const { t } = useTranslation();
   const { data: project, isLoading, isError, error } = useProjectBySlug(slug ?? '');
 
   const tabValue =
@@ -37,9 +39,9 @@ export function ProjectDetailLayout() {
   if (!slug) {
     return (
       <div className="text-muted-foreground py-8">
-        <p>Project slug is missing.</p>
+        <p>{t('pages.projectDetail.slugMissing')}</p>
         <Button variant="link" onClick={() => navigate(-1)}>
-          Go back
+          {t('pages.projectDetail.goBack')}
         </Button>
       </div>
     );
@@ -65,10 +67,10 @@ export function ProjectDetailLayout() {
     return (
       <div className="space-y-4 py-8">
         <p className="text-destructive">
-          {error instanceof Error ? error.message : 'Failed to load project'}
+          {error instanceof Error ? error.message : t('pages.projectDetail.failedToLoad')}
         </p>
         <Button variant="outline" onClick={() => navigate(getSpaceUrl('/projects'))}>
-          Back to projects
+          {t('pages.projectDetail.backToProjects')}
         </Button>
       </div>
     );
@@ -77,9 +79,9 @@ export function ProjectDetailLayout() {
   if (!project) {
     return (
       <div className="space-y-4 py-8">
-        <p className="text-muted-foreground">Project not found.</p>
+        <p className="text-muted-foreground">{t('pages.projectDetail.projectNotFound')}</p>
         <Button variant="outline" onClick={() => navigate(getSpaceUrl('/projects'))}>
-          Back to projects
+          {t('pages.projectDetail.backToProjects')}
         </Button>
       </div>
     );
@@ -109,7 +111,7 @@ export function ProjectDetailLayout() {
                 {project.status}
               </Badge>
               <span className="text-muted-foreground text-sm">
-                Created {formatDate(project.createdAt)}
+                {t('pages.projectDetail.created')} {formatDate(project.createdAt)}
               </span>
             </div>
           </div>
@@ -119,13 +121,13 @@ export function ProjectDetailLayout() {
       <Tabs value={tabValue} className="w-fit">
         <TabsList className="w-fit">
           <NavLink to="." end className={({ isActive }) => tabLinkClass(isActive)}>
-            Overview
+            {t('pages.projectDetail.overview')}
           </NavLink>
           <NavLink to="releases" className={({ isActive }) => tabLinkClass(isActive)}>
-            Releases
+            {t('pages.projectDetail.releases')}
           </NavLink>
           <NavLink to="settings" className={({ isActive }) => tabLinkClass(isActive)}>
-            Settings
+            {t('pages.projectDetail.settings')}
           </NavLink>
         </TabsList>
       </Tabs>

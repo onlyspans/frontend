@@ -15,6 +15,7 @@ import { Checkbox } from '@/shared/ui/checkbox';
 import { useTags } from '@/entities/tag';
 import type { ProjectStatus } from '@/entities/project';
 import { FilterIcon, TagIcon } from 'lucide-react';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface ProjectsFiltersProps {
   statusFilter: ProjectStatus | '';
@@ -29,6 +30,7 @@ export function ProjectsFilters({
   tagIdsFilter,
   onTagIdsChange
 }: ProjectsFiltersProps) {
+  const { t } = useTranslation();
   const { data: tagsData } = useTags({ pageSize: 100 });
   const tags = tagsData?.items ?? [];
 
@@ -51,13 +53,13 @@ export function ProjectsFilters({
           }
         >
           <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder={t('project.status')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="archived">Archived</SelectItem>
-            <SelectItem value="suspended">Suspended</SelectItem>
+            <SelectItem value="all">{t('project.allStatuses')}</SelectItem>
+            <SelectItem value="active">{t('project.active')}</SelectItem>
+            <SelectItem value="archived">{t('project.archived')}</SelectItem>
+            <SelectItem value="suspended">{t('project.suspended')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -65,7 +67,7 @@ export function ProjectsFilters({
         <DropdownMenuTrigger asChild>
           <Button variant="outline">
             <TagIcon className="size-4 mr-1" />
-            Tags
+            {t('project.tags')}
             {tagIdsFilter.length > 0 && (
               <span className="ml-1 rounded bg-primary/20 px-1.5 text-xs">
                 {tagIdsFilter.length}
@@ -76,7 +78,7 @@ export function ProjectsFilters({
         <DropdownMenuContent align="start" className="max-h-64 overflow-y-auto w-56">
           {tags.length === 0 ? (
             <div className="py-4 text-center text-sm text-muted-foreground">
-              No tags yet
+              {t('project.filters.noTagsYet')}
             </div>
           ) : (
             tags.map((tag) => (

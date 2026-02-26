@@ -2,7 +2,8 @@
 
 import { Clock, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import { useTranslation } from '@/shared/lib/i18n';
+import type { TranslationKey } from '@/shared/lib/i18n';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -24,7 +25,8 @@ export function NavActivity(
     }[]
   }
 ) {
-  const { getSpaceUrl } = useSpaceUrl()
+  const { getSpaceUrl } = useSpaceUrl();
+  const { t } = useTranslation();
 
   const getTypeColor = (type?: string) => {
     switch (type) {
@@ -39,9 +41,15 @@ export function NavActivity(
     }
   };
 
+  const getTypeLabelKey = (type?: string): TranslationKey | null => {
+    if (!type) return null;
+    const key = type.charAt(0).toUpperCase() + type.slice(1);
+    return `sidebar.recentActivity.type${key}` as TranslationKey;
+  };
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Recent Activity</SidebarGroupLabel>
+      <SidebarGroupLabel>{t('sidebar.recentActivity.title')}</SidebarGroupLabel>
       <SidebarMenu>
         {activities.map((activity, index) => (
           <SidebarMenuItem key={`${activity.title}-${index}`}>
@@ -53,20 +61,20 @@ export function NavActivity(
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="truncate text-sm">{activity.title}</span>
-                      {activity.type && (
+                      <span className="truncate text-sm">{t(activity.title as TranslationKey)}</span>
+                      {activity.type && getTypeLabelKey(activity.type) && (
                         <Badge
                           variant="outline"
                           className={`text-xs shrink-0 ${getTypeColor(activity.type)}`}
                         >
-                          {activity.type}
+                          {t(getTypeLabelKey(activity.type)!)}
                         </Badge>
                       )}
                     </div>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <Clock className="size-3 text-muted-foreground" />
                       <span className="text-xs text-muted-foreground">
-                        {activity.time}
+                        {t(activity.time as TranslationKey)}
                       </span>
                     </div>
                   </div>

@@ -18,6 +18,7 @@ import {
 } from '@/entities/project';
 import type { Project } from '@/entities/project';
 import { toast } from 'sonner';
+import { useTranslation } from '@/shared/lib/i18n';
 import { ProjectNameField } from '@/features/project/creation/ui/project-name-field';
 import { ProjectSlugField } from '@/features/project/creation/ui/project-slug-field';
 import { ProjectDescriptionField } from '@/features/project/creation/ui/project-description-field';
@@ -47,6 +48,7 @@ function projectToDefaultValues(project: Project): CreateProjectFormData {
 }
 
 export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFormProps) {
+  const { t } = useTranslation();
   const updateMutation = useUpdateProject();
   const uploadIconMutation = useUploadProjectIcon();
 
@@ -79,10 +81,10 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
           file: data.iconFile
         });
       }
-      toast.success('Project updated successfully');
+      toast.success(t('project.settings.success'));
     } catch (error) {
-      toast.error('Failed to update project', {
-        description: error instanceof Error ? error.message : 'Unknown error'
+      toast.error(t('project.settings.failed'), {
+        description: error instanceof Error ? error.message : t('project.creation.unknownError')
       });
     }
   };
@@ -90,7 +92,7 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
   return (
     <Card>
       <CardHeader>
-        <CardTitle>General</CardTitle>
+        <CardTitle>{t('project.settings.general')}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -116,8 +118,8 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
                   {form.formState.isSubmitting ||
                   updateMutation.isPending ||
                   uploadIconMutation.isPending
-                    ? 'Saving...'
-                    : 'Save changes'}
+                    ? t('project.settings.saving')
+                    : t('project.settings.saveChanges')}
                 </Button>
               </div>
             </FieldGroup>

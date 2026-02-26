@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui/button';
 import { useSpaceUrl } from '@/shared/hooks/use-space-url';
+import { useTranslation } from '@/shared/lib/i18n';
 import {
   useProjectsList,
   ProjectsSearch,
@@ -12,6 +13,7 @@ import {
 export function ProjectsPage() {
   const navigate = useNavigate();
   const { getSpaceUrl } = useSpaceUrl();
+  const { t } = useTranslation();
   const {
     projects,
     isLoading,
@@ -38,13 +40,13 @@ export function ProjectsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Projects</h1>
+          <h1 className="text-3xl font-bold">{t('pages.projects.title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Manage and view all your projects
+            {t('pages.projects.subtitle')}
           </p>
         </div>
         <Button onClick={() => navigate(getSpaceUrl('/projects/create'))}>
-          Create Project
+          {t('pages.projects.createProject')}
         </Button>
       </div>
 

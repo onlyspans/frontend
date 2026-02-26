@@ -12,11 +12,14 @@ const resources = {
   },
 };
 
+const savedLng = typeof localStorage !== 'undefined' ? localStorage.getItem('language') : null;
+const initialLng = (savedLng === 'en' || savedLng === 'ru') ? savedLng : 'en';
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en',
+    lng: initialLng,
     fallbackLng: 'en',
     interpolation: {
       escapeValue: true

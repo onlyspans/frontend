@@ -21,6 +21,7 @@ import { SpaceSlugField } from './space-slug-field';
 import { SpaceDescriptionField } from './space-description-field';
 import { useNavigate } from 'react-router-dom';
 import { AvatarUploadField } from '@/shared/ui/avatar-upload-field.tsx';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface CreateSpaceFormProps {
   className?: string;
@@ -28,6 +29,7 @@ interface CreateSpaceFormProps {
 
 export function CreateSpaceForm({ className }: CreateSpaceFormProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const createSpaceMutation = useCreateSpace();
 
   const form = useForm<CreateSpaceFormData>({
@@ -44,11 +46,11 @@ export function CreateSpaceForm({ className }: CreateSpaceFormProps) {
   const onSubmit = async (data: CreateSpaceFormData) => {
     try {
       const newSpace = await createSpaceMutation.mutateAsync(data);
-      toast.success('Space created successfully!');
+      toast.success(t('space.creation.success'));
       navigate(`/${newSpace.slug}`);
     } catch (error) {
-      toast.error('Failed to create space', {
-        description: error instanceof Error ? error.message : 'Unknown error'
+      toast.error(t('space.creation.failed'), {
+        description: error instanceof Error ? error.message : t('project.creation.unknownError')
       });
     }
   };
@@ -56,9 +58,9 @@ export function CreateSpaceForm({ className }: CreateSpaceFormProps) {
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>Create New Space</CardTitle>
+        <CardTitle>{t('space.creation.title')}</CardTitle>
         <CardDescription>
-          Create a new workspace to organize your projects and resources
+          {t('space.creation.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -67,8 +69,8 @@ export function CreateSpaceForm({ className }: CreateSpaceFormProps) {
             <FieldGroup>
               <AvatarUploadField
                 form={form}
-                title="Space Avatar"
-                defaultInitials="SP"
+                title={t('space.creation.avatar')}
+                defaultInitials={t('space.creation.defaultInitials')}
               />
               <SpaceNameField form={form} />
               <SpaceSlugField form={form} />
@@ -76,15 +78,15 @@ export function CreateSpaceForm({ className }: CreateSpaceFormProps) {
 
               <div className="flex justify-end gap-4 pt-4">
                 <Button type="button" variant="outline" onClick={() => navigate(-1)}>
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting || createSpaceMutation.isPending}
                 >
                   {form.formState.isSubmitting || createSpaceMutation.isPending
-                    ? 'Creating...'
-                    : 'Create Space'}
+                    ? t('space.creation.creating')
+                    : t('space.creation.createSpace')}
                 </Button>
               </div>
             </FieldGroup>

@@ -15,7 +15,7 @@ interface LanguageToggleProps {
 }
 
 export function LanguageToggle({ variant = 'outline' }: LanguageToggleProps) {
-  const { changeLanguage, currentLanguage } = useTranslation();
+  const { t, changeLanguage, currentLanguage } = useTranslation();
 
   const toggleLanguage = () => {
     const currentIndex = languageOrder.indexOf(currentLanguage as SupportedLanguage);
@@ -36,7 +36,7 @@ export function LanguageToggle({ variant = 'outline' }: LanguageToggleProps) {
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom">
-        <p>Language Toggle</p>
+        <p>{t('common.languageToggle')}</p>
       </TooltipContent>
     </Tooltip>
   );

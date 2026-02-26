@@ -9,12 +9,14 @@ import { Field } from '@/shared/ui/field';
 import { Textarea } from '@/shared/ui/textarea';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface ProjectDescriptionFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
 }
 
 export function ProjectDescriptionField({ form }: ProjectDescriptionFieldProps) {
+  const { t } = useTranslation();
   return (
     <FormField
       control={form.control}
@@ -22,10 +24,10 @@ export function ProjectDescriptionField({ form }: ProjectDescriptionFieldProps) 
       render={({ field }) => (
         <FormItem>
           <Field>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>{t('project.creation.descriptionLabel')}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="Describe your project..."
+                placeholder={t('project.creation.descriptionPlaceholder')}
                 rows={4}
                 className="max-h-40"
                 {...field}

@@ -8,6 +8,7 @@ import {
 } from '@/shared/ui/table';
 import { Badge } from '@/shared/ui/badge';
 import { ProjectIcon, type Project, type ProjectSortField, type SortOrder, type LifecycleStage } from '@/entities/project';
+import { useTranslation } from '@/shared/lib/i18n';
 
 const STAGE_LABELS: Record<LifecycleStage, string> = {
   development: 'dev',
@@ -42,6 +43,7 @@ function SortHeader({
   sortOrder?: SortOrder;
   onSort?: (field: ProjectSortField) => void;
 }) {
+  const { t } = useTranslation();
   const isActive = currentSortBy === field;
   if (!onSort) return <TableHead>{label}</TableHead>;
   return (
@@ -50,11 +52,11 @@ function SortHeader({
         type="button"
         onClick={() => onSort(field)}
         className="flex items-center gap-1 hover:underline font-medium"
-        title={isActive ? 'Click to reverse order' : `Sort by ${label}`}
+        title={isActive ? undefined : `${t('project.sortBy')} ${label}`}
       >
         {label}
         {isActive && (
-          <span className="text-muted-foreground text-xs" aria-label={sortOrder === 'asc' ? 'Ascending' : 'Descending'}>
+          <span className="text-muted-foreground text-xs" aria-label={sortOrder === 'asc' ? t('project.ascending') : t('project.descending')}>
             {sortOrder === 'asc' ? '↑' : '↓'}
           </span>
         )}
@@ -73,24 +75,26 @@ export function ProjectsTable(
     onSort
   }: ProjectsTableProps
 ) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[60px]">Icon</TableHead>
-              <SortHeader label="Name" field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
-              <TableHead>Description</TableHead>
-              <TableHead>Stages</TableHead>
-              <TableHead>Tags</TableHead>
-              <SortHeader label="Status" field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
+              <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
+              <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
+              <TableHead>{t('project.table.description')}</TableHead>
+              <TableHead>{t('project.table.stages')}</TableHead>
+              <TableHead>{t('project.table.tags')}</TableHead>
+              <SortHeader label={t('project.table.status')} field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
               <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                Loading projects...
+                {t('project.table.loading')}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -105,18 +109,18 @@ export function ProjectsTable(
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[60px]">Icon</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Stages</TableHead>
-              <TableHead>Tags</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
+              <TableHead>{t('project.table.name')}</TableHead>
+              <TableHead>{t('project.table.description')}</TableHead>
+              <TableHead>{t('project.table.stages')}</TableHead>
+              <TableHead>{t('project.table.tags')}</TableHead>
+              <TableHead>{t('project.table.status')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
               <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                No projects yet
+                {t('project.table.noProjects')}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -131,11 +135,11 @@ export function ProjectsTable(
         <TableHeader>
           <TableRow>
             <TableHead className="w-[50px]"></TableHead>
-            <SortHeader label="Name" field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
-            <TableHead>Description</TableHead>
-            <TableHead>Stages</TableHead>
-            <TableHead>Tags</TableHead>
-            <SortHeader label="Status" field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
+            <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
+            <TableHead>{t('project.table.description')}</TableHead>
+            <TableHead>{t('project.table.stages')}</TableHead>
+            <TableHead>{t('project.table.tags')}</TableHead>
+            <SortHeader label={t('project.table.status')} field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -206,7 +210,7 @@ export function ProjectsTable(
                   }
                   className="capitalize font-normal"
                 >
-                  {project.status}
+                  {t(`project.${project.status}` as 'project.active' | 'project.archived' | 'project.suspended')}
                 </Badge>
               </TableCell>
             </TableRow>

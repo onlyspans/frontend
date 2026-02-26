@@ -12,9 +12,12 @@ import {
   getProjectSlugFromPathname
 } from '@/shared/lib/breadcrumb-segments';
 import { useProjectBySlug } from '@/entities/project';
+import { useTranslation } from '@/shared/lib/i18n';
+import type { TranslationKey } from '@/shared/lib/i18n';
 
 function AppBreadcrumbContent() {
   const location = useLocation();
+  const { t } = useTranslation();
   const segments = getAppBreadcrumbSegments(location.pathname);
   const projectSlug = getProjectSlugFromPathname(location.pathname);
   const { data: project } = useProjectBySlug(projectSlug ?? '');
@@ -26,12 +29,15 @@ function AppBreadcrumbContent() {
     return seg;
   });
 
+  const segmentLabel = (seg: (typeof resolvedSegments)[0]) =>
+    seg.label != null ? seg.label : (seg.labelKey ? t(seg.labelKey as TranslationKey) : '');
+
   if (resolvedSegments.length === 1) {
     return (
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbPage>{resolvedSegments[0].label}</BreadcrumbPage>
+            <BreadcrumbPage>{segmentLabel(resolvedSegments[0])}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -42,16 +48,17 @@ function AppBreadcrumbContent() {
     <Breadcrumb>
       <BreadcrumbList>
         {resolvedSegments.flatMap((seg, index) => {
+          const label = segmentLabel(seg);
           const item = (
             <BreadcrumbItem key={index}>
               {seg.isCurrent ? (
-                <BreadcrumbPage>{seg.label}</BreadcrumbPage>
+                <BreadcrumbPage>{label}</BreadcrumbPage>
               ) : seg.href ? (
                 <BreadcrumbLink asChild>
-                  <Link to={seg.href}>{seg.label}</Link>
+                  <Link to={seg.href}>{label}</Link>
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbPage>{seg.label}</BreadcrumbPage>
+                <BreadcrumbPage>{label}</BreadcrumbPage>
               )}
             </BreadcrumbItem>
           );

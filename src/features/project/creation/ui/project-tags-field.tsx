@@ -31,6 +31,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
 import { PlusIcon, PencilIcon, XIcon } from 'lucide-react';
 import { Separator } from '@/shared/ui/separator';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface ProjectTagsFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
@@ -59,6 +60,7 @@ function getColorError(value: string): string | null {
 }
 
 export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
+  const { t } = useTranslation();
   const [addOpen, setAddOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [editTag, setEditTag] = useState<Tag | null>(null);
@@ -143,7 +145,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
         render={() => (
           <FormItem>
             <Field>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>{t('project.tags')}</FormLabel>
               <FormControl>
                 <div className="flex flex-wrap items-center gap-2 min-h-10">
                   {selectedTags.map((tag) => (
@@ -224,7 +226,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                               e.stopPropagation();
                               openEdit(tag);
                             }}
-                            aria-label="Edit tag"
+                            aria-label={t('project.creation.editTagAria')}
                           >
                             <PencilIcon className="size-4" />
                           </button>
@@ -239,14 +241,14 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                         }}
                       >
                         <PlusIcon className="size-4 mr-2" />
-                        Create new tag
+                        {t('project.creation.createNewTag')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
               </FormControl>
               <FieldDescription>
-                Add or remove tags from the project. Create and edit tags via the list.
+                {t('project.creation.tagsFieldDescription')}
               </FieldDescription>
               <FormMessage />
             </Field>
@@ -257,30 +259,30 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create tag</DialogTitle>
+            <DialogTitle>{t('project.creation.createTag')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Name</label>
+              <label className="text-sm font-medium">{t('project.creation.tagName')}</label>
               <Input
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
-                placeholder="Tag name"
+                placeholder={t('project.creation.tagNamePlaceholder')}
                 onKeyDown={(e) => e.key === 'Enter' && handleCreateTag()}
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description (optional)</label>
+              <label className="text-sm font-medium">{t('project.creation.tagDescriptionOptional')}</label>
               <Textarea
                 value={createDescription}
                 onChange={(e) => setCreateDescription(e.target.value)}
-                placeholder="Tag description"
+                placeholder={t('project.creation.tagDescriptionPlaceholder')}
                 rows={2}
                 className="resize-none"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Color (optional)</label>
+              <label className="text-sm font-medium">{t('project.creation.colorOptional')}</label>
               <div className="flex flex-col gap-2">
                 <div className="min-h-[120px] w-full">
                   <HexColorPicker
@@ -292,7 +294,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                 <Input
                   value={createColor}
                   onChange={(e) => setCreateColor(e.target.value)}
-                  placeholder="#000000"
+                  placeholder={t('project.creation.colorPlaceholder')}
                   className="font-mono w-24"
                   aria-invalid={!!createColorError}
                   aria-describedby={createColorError ? 'create-color-error' : undefined}
@@ -311,14 +313,14 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
               variant="outline"
               onClick={() => setCreateOpen(false)}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               type="button"
               onClick={handleCreateTag}
               disabled={!createName.trim() || !!createColorError || createTagMutation.isPending}
             >
-              {createTagMutation.isPending ? 'Creating...' : 'Create'}
+              {createTagMutation.isPending ? t('project.creation.creatingTag') : t('project.creation.createTagButton')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -327,30 +329,30 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
       <Dialog open={!!editTag} onOpenChange={(open) => !open && setEditTag(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit tag</DialogTitle>
+            <DialogTitle>{t('project.creation.editTag')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Name</label>
+              <label className="text-sm font-medium">{t('project.creation.tagName')}</label>
               <Input
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                placeholder="Tag name"
+                placeholder={t('project.creation.tagNamePlaceholder')}
                 onKeyDown={(e) => e.key === 'Enter' && handleSaveEditTag()}
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description (optional)</label>
+              <label className="text-sm font-medium">{t('project.creation.tagDescriptionOptional')}</label>
               <Textarea
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
-                placeholder="Tag description"
+                placeholder={t('project.creation.tagDescriptionPlaceholder')}
                 rows={2}
                 className="resize-none"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Color (optional)</label>
+              <label className="text-sm font-medium">{t('project.creation.colorOptional')}</label>
               <div className="flex flex-col gap-2">
                 <div className="min-h-[120px] w-full">
                   <HexColorPicker
@@ -362,7 +364,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                 <Input
                   value={editColor}
                   onChange={(e) => setEditColor(e.target.value)}
-                  placeholder="#000000"
+                  placeholder={t('project.creation.colorPlaceholder')}
                   className="font-mono w-24"
                   aria-invalid={!!editColorError}
                   aria-describedby={editColorError ? 'edit-color-error' : undefined}

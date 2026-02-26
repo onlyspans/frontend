@@ -8,7 +8,10 @@
  */
 
 export interface BreadcrumbSegment {
-  label: string;
+  /** Translation key for static labels (e.g. breadcrumb.home). Use in component with t(labelKey). */
+  labelKey?: string;
+  /** Dynamic label (e.g. project name). When set, display as-is without translation. */
+  label?: string;
   href: string | null;
   isCurrent: boolean;
 }
@@ -36,19 +39,19 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
   const parts = pathname.split('/').filter(Boolean);
 
   if (parts.length === 0) {
-    return [{ label: 'Home', href: '/', isCurrent: true }];
+    return [{ labelKey: 'breadcrumb.home', href: '/', isCurrent: true }];
   }
 
   const spaceSlug = parts[0];
   const baseUrl = `/${spaceSlug}`;
   const segments: BreadcrumbSegment[] = [
-    { label: 'Home', href: baseUrl, isCurrent: parts.length === 1 }
+    { labelKey: 'breadcrumb.home', href: baseUrl, isCurrent: parts.length === 1 }
   ];
 
   if (parts.length >= 2 && parts[1] === 'projects') {
     const projectsUrl = `${baseUrl}/projects`;
     segments.push({
-      label: 'Projects',
+      labelKey: 'breadcrumb.projects',
       href: projectsUrl,
       isCurrent: parts.length === 2
     });
@@ -56,7 +59,7 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
     if (parts.length >= 3) {
       const slug = parts[2];
       if (slug === 'create') {
-        segments.push({ label: 'New Project', href: null, isCurrent: true });
+        segments.push({ labelKey: 'breadcrumb.newProject', href: null, isCurrent: true });
       } else {
         segments.push({
           label: humanizeSlug(slug),
