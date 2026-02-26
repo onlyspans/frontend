@@ -218,33 +218,14 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
         </div>
         <div className="min-w-0 flex-1 space-y-4">
           <div className="grid gap-4 sm:grid-cols-12">
-            <div className="space-y-2 sm:col-span-4">
-              <Label>{t('project.creation.uploadFile')}</Label>
-              <Input
-                key={iconFile ? 'has-file' : 'no-file'}
-                type="file"
-                accept="image/png,image/jpeg,image/gif,image/webp"
-                onChange={(e) => handleFileChange(e.target.files?.[0])}
-              />
-            </div>
-            <div className="space-y-2 sm:col-span-4">
-              <Label>{t('project.creation.imageUrl')}</Label>
-              <Input
-                type="url"
-                placeholder={t('project.creation.imageUrlPlaceholder')}
-                value={mode === 'url' ? imageUrl : ''}
-                onChange={(e) => handleUrlChange(e.target.value)}
-                className={urlError ? 'border-destructive' : ''}
-              />
-            </div>
-            <div className="space-y-2 sm:col-span-4">
+            <div className="space-y-2 sm:col-span-1">
               <Label>{t('project.creation.emoji')}</Label>
               <DropdownMenu open={emojiOpen} onOpenChange={setEmojiOpen}>
                 <DropdownMenuTrigger asChild>
                   <Button
                     type="button"
                     variant="outline"
-                    className="w-full justify-start font-normal"
+                    className="w-full justify-center font-normal"
                   >
                     <span className={emoji ? '' : 'text-muted-foreground'}>
                       {emoji || t('project.creation.selectEmoji')}
@@ -273,6 +254,25 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
+            </div>
+            <div className="space-y-2 sm:col-span-4">
+              <Label>{t('project.creation.uploadFile')}</Label>
+              <Input
+                key={iconFile ? 'has-file' : 'no-file'}
+                type="file"
+                accept="image/png,image/jpeg,image/gif,image/webp"
+                onChange={(e) => handleFileChange(e.target.files?.[0])}
+              />
+            </div>
+            <div className="space-y-2 sm:col-span-7">
+              <Label>{t('project.creation.imageUrl')}</Label>
+              <Input
+                type="url"
+                placeholder={t('project.creation.imageUrlPlaceholder')}
+                value={mode === 'url' ? imageUrl : ''}
+                onChange={(e) => handleUrlChange(e.target.value)}
+                className={cn(urlError && 'border-destructive')}
+              />
             </div>
           </div>
           {urlError && (
