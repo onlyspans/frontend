@@ -24,11 +24,11 @@ interface ProjectsFiltersProps {
 }
 
 export function ProjectsFilters({
-                                  statusFilter,
-                                  onStatusChange,
-                                  tagIdsFilter,
-                                  onTagIdsChange
-                                }: ProjectsFiltersProps) {
+  statusFilter,
+  onStatusChange,
+  tagIdsFilter,
+  onTagIdsChange
+}: ProjectsFiltersProps) {
   const { data: tagsData } = useTags({ pageSize: 100 });
   const tags = tagsData?.items ?? [];
 
@@ -41,8 +41,8 @@ export function ProjectsFilters({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="flex items-center gap-3">
         <FilterIcon className="size-4 text-muted-foreground" />
         <Select
           value={statusFilter || 'all'}
@@ -63,7 +63,7 @@ export function ProjectsFilters({
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button variant="outline">
             <TagIcon className="size-4 mr-1" />
             Tags
             {tagIdsFilter.length > 0 && (

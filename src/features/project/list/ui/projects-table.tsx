@@ -8,7 +8,18 @@ import {
 } from '@/shared/ui/table';
 import { Avatar, AvatarFallback } from '@/shared/ui/avatar';
 import { Badge } from '@/shared/ui/badge';
-import type { Project, ProjectSortField, SortOrder } from '@/entities/project';
+import type { Project, ProjectSortField, SortOrder, LifecycleStage } from '@/entities/project';
+
+const STAGE_LABELS: Record<LifecycleStage, string> = {
+  development: 'dev',
+  testing: 'test',
+  staging: 'stage',
+  production: 'prod'
+};
+
+function getStageLabel(stage: LifecycleStage): string {
+  return STAGE_LABELS[stage] ?? stage;
+}
 
 interface ProjectsTableProps {
   projects: Project[];
@@ -49,10 +60,11 @@ function SortHeader({
         type="button"
         onClick={() => onSort(field)}
         className="flex items-center gap-1 hover:underline font-medium"
+        title={isActive ? 'Click to reverse order' : `Sort by ${label}`}
       >
         {label}
         {isActive && (
-          <span className="text-muted-foreground text-xs">
+          <span className="text-muted-foreground text-xs" aria-label={sortOrder === 'asc' ? 'Ascending' : 'Descending'}>
             {sortOrder === 'asc' ? '↑' : '↓'}
           </span>
         )}
@@ -83,12 +95,11 @@ export function ProjectsTable(
               <TableHead>Stages</TableHead>
               <TableHead>Tags</TableHead>
               <SortHeader label="Status" field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
-              <SortHeader label="Created" field="createdAt" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                 Loading projects...
               </TableCell>
             </TableRow>
@@ -110,12 +121,11 @@ export function ProjectsTable(
               <TableHead>Stages</TableHead>
               <TableHead>Tags</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                 No projects yet
               </TableCell>
             </TableRow>
@@ -136,7 +146,6 @@ export function ProjectsTable(
             <TableHead>Stages</TableHead>
             <TableHead>Tags</TableHead>
             <SortHeader label="Status" field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
-            <SortHeader label="Created" field="createdAt" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -154,20 +163,28 @@ export function ProjectsTable(
                 </Avatar>
               </TableCell>
               <TableCell className="font-medium">{project.name}</TableCell>
-              <TableCell className="text-muted-foreground max-w-[200px] truncate">
+              <TableCell className="text-muted-foreground max-w-[250px] truncate">
                 {project.description ?? '—'}
               </TableCell>
               <TableCell>
-                {project.lifecycleStages?.length ? (
-                  <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium">
-                    {project.lifecycleStages.join(', ')}
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground text-xs">—</span>
-                )}
+                <div className="flex flex-wrap gap-1 max-w-[200px]">
+                  {project.lifecycleStages?.length ? (
+                    project.lifecycleStages.map((stage) => (
+                      <Badge
+                        key={stage}
+                        variant="secondary"
+                        className="text-xs font-normal"
+                      >
+                        {getStageLabel(stage)}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-muted-foreground text-xs">—</span>
+                  )}
+                </div>
               </TableCell>
               <TableCell>
-                <div className="flex flex-wrap gap-1 max-w-[180px]">
+                <div className="flex flex-wrap gap-1 max-w-[250px]">
                   {project.tags?.length
                     ? project.tags.map((tag) => (
                         <Badge
@@ -193,12 +210,18 @@ export function ProjectsTable(
                 </div>
               </TableCell>
               <TableCell>
-                <span className="capitalize text-sm">{project.status}</span>
-              </TableCell>
-              <TableCell className="text-muted-foreground text-sm">
-                {project.createdAt
-                  ? new Date(project.createdAt).toLocaleDateString()
-                  : '—'}
+                <Badge
+                  variant={
+                    project.status === 'active'
+                      ? 'default'
+                      : project.status === 'archived'
+                        ? 'secondary'
+                        : 'outline'
+                  }
+                  className="capitalize font-normal"
+                >
+                  {project.status}
+                </Badge>
               </TableCell>
             </TableRow>
           ))}

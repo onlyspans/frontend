@@ -43,14 +43,12 @@ export function useProjectsList() {
   };
 
   const handleSort = (field: ProjectSortField) => {
-    setSortBy((prev) => {
-      if (prev === field) {
-        setSortOrder((o) => (o === 'asc' ? 'desc' : 'asc'));
-        return prev;
-      }
+    if (sortBy === field) {
+      setSortOrder((o) => (o === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortBy(field);
       setSortOrder('asc');
-      return field;
-    });
+    }
   };
 
   return {
