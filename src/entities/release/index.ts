@@ -1,6 +1,5 @@
 export type {
   Release,
-  ReleaseStatus,
   ReleaseStructure,
   CreateReleaseRequest,
   UpdateReleaseRequest,

@@ -1,14 +1,3 @@
-export type ReleaseStatus =
-  | 'draft'
-  | 'created'
-  | 'scheduled'
-  | 'delivering'
-  | 'delivered'
-  | 'deployed'
-  | 'failed'
-  | 'rolled_back'
-  | 'cancelled';
-
 export interface ReleaseStructure {
   projectId: string;
   projectName: string;
@@ -28,7 +17,6 @@ export interface Release {
   project?: { id: string; name: string; slug: string };
   version: string;
   snapshotId: string | null;
-  status: ReleaseStatus;
   changelog: string | null;
   notes: string | null;
   structure: Record<string, unknown>;
@@ -47,7 +35,6 @@ export interface CreateReleaseRequest {
 }
 
 export interface UpdateReleaseRequest {
-  status?: ReleaseStatus;
   snapshotId?: string;
   changelog?: string;
   notes?: string;
@@ -58,6 +45,5 @@ export interface UpdateReleaseRequest {
 export interface ReleasesListParams {
   page?: number;
   pageSize?: number;
-  status?: string;
   version?: string;
 }
