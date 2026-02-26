@@ -217,7 +217,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
           )}
         </div>
         <div className="min-w-0 flex-1 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-12">
+          <div className="grid gap-4 sm:grid-cols-9">
             <div className="space-y-2 sm:col-span-1">
               <Label>{t('project.creation.emoji')}</Label>
               <DropdownMenu open={emojiOpen} onOpenChange={setEmojiOpen}>
@@ -255,7 +255,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="space-y-2 sm:col-span-4">
+            <div className="space-y-2 sm:col-span-3">
               <Label>{t('project.creation.uploadFile')}</Label>
               <Input
                 key={iconFile ? 'has-file' : 'no-file'}
@@ -264,7 +264,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
                 onChange={(e) => handleFileChange(e.target.files?.[0])}
               />
             </div>
-            <div className="space-y-2 sm:col-span-7">
+            <div className="space-y-2 sm:col-span-5">
               <Label>{t('project.creation.imageUrl')}</Label>
               <Input
                 type="url"
