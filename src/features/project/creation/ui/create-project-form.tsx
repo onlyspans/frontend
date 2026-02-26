@@ -20,6 +20,7 @@ import { ProjectNameField } from './project-name-field';
 import { ProjectDescriptionField } from './project-description-field';
 import { DeployToField } from './deploy-to-field';
 import { ProjectLifecycleField } from './project-lifecycle-field';
+import { ProjectTagsField } from './project-tags-field';
 import { useNavigate } from 'react-router-dom';
 import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
 import { AvatarUploadField } from '@/shared/ui/avatar-upload-field.tsx';
@@ -41,7 +42,8 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
       avatar: '',
       avatarFile: undefined,
       deployTo: 'aws',
-      lifecycleStages: []
+      lifecycleStages: ['development'],
+      tagIds: []
     }
   });
 
@@ -56,7 +58,8 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         slug: slug || 'project',
         description: data.description,
         status: 'active',
-        lifecycleStages: data.lifecycleStages?.length ? data.lifecycleStages : undefined
+        lifecycleStages: data.lifecycleStages,
+        tagIds: data.tagIds?.length ? data.tagIds : undefined
       });
       toast.success('Project created successfully!');
       navigate(getSpaceUrl('/'));
@@ -88,6 +91,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
               <ProjectDescriptionField form={form} />
               <DeployToField form={form} />
               <ProjectLifecycleField form={form} />
+              <ProjectTagsField form={form} />
 
               <div className="flex justify-end gap-4 pt-4">
                 <Button type="button" variant="outline" onClick={() => navigate(-1)}>

@@ -4,7 +4,7 @@ import type {
   Project,
   CreateProjectRequest,
   UpdateProjectRequest,
-  ProjectsListParams
+  QueryProjectsParams
 } from '../model/project';
 
 const BASE = '/projects';
@@ -14,11 +14,30 @@ const projectEndpoints = {
   byId: (id: string) => `${BASE}/${id}`
 } as const;
 
+function buildListParams(params?: QueryProjectsParams): URLSearchParams {
+  const search = new URLSearchParams();
+  if (params?.page != null) search.set('page', String(params.page));
+  if (params?.pageSize != null) search.set('pageSize', String(params.pageSize));
+  if (params?.ownerId) search.set('ownerId', params.ownerId);
+  if (params?.status) search.set('status', params.status);
+  if (params?.search) search.set('search', params.search);
+  if (params?.sortBy) search.set('sortBy', params.sortBy);
+  if (params?.sortOrder) search.set('sortOrder', params.sortOrder);
+  if (params?.tagIds?.length) {
+    for (const id of params.tagIds) search.append('tagIds', id);
+  }
+  return search;
+}
+
 export const projectApi = {
-  getList: (params?: ProjectsListParams) =>
-    apiClient
-      .get<PaginatedListResponse<Project>>(projectEndpoints.list, { params })
-      .then((r) => r.data),
+  getList: (params?: QueryProjectsParams) => {
+    const search = buildListParams(params);
+    const query = search.toString();
+    const url = query ? `${projectEndpoints.list}?${query}` : projectEndpoints.list;
+    return apiClient
+      .get<PaginatedListResponse<Project>>(url)
+      .then((r) => r.data);
+  },
 
   getById: (id: string) =>
     apiClient.get<Project>(projectEndpoints.byId(id)).then((r) => r.data),

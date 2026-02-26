@@ -4,6 +4,7 @@ import { useSpaceUrl } from '@/shared/hooks/use-space-url';
 import {
   useProjectsList,
   ProjectsSearch,
+  ProjectsFilters,
   ProjectsTable,
   ProjectsPagination
 } from '@/features/project/list';
@@ -20,6 +21,13 @@ export function ProjectsPage() {
     total,
     handleSearchChange,
     setCurrentPage,
+    statusFilter,
+    setStatusFilter,
+    tagIdsFilter,
+    setTagIdsFilter,
+    sortBy,
+    sortOrder,
+    onSort
   } = useProjectsList();
 
   const handleProjectClick = (projectId: string) => {
@@ -40,12 +48,23 @@ export function ProjectsPage() {
         </Button>
       </div>
 
-      <ProjectsSearch value={searchQuery} onChange={handleSearchChange} />
+      <div className="flex flex-col sm:flex-row gap-4 justify-between">
+        <ProjectsSearch className='w-full sm:w-1/3' value={searchQuery} onChange={handleSearchChange} />
+        <ProjectsFilters
+          statusFilter={statusFilter}
+          onStatusChange={setStatusFilter}
+          tagIdsFilter={tagIdsFilter}
+          onTagIdsChange={setTagIdsFilter}
+        />
+      </div>
 
       <ProjectsTable
         projects={projects}
         isLoading={isLoading}
         onProjectClick={handleProjectClick}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        onSort={onSort}
       />
 
       <ProjectsPagination
