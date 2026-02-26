@@ -14,13 +14,26 @@ function getInitials(name: string): string {
 interface ProjectIconProps {
   project: Pick<Project, 'name' | 'imageUrl' | 'emoji'>;
   className?: string;
+  onImageLoad?: () => void;
+  onImageError?: () => void;
 }
 
-export function ProjectIcon({ project, className }: ProjectIconProps) {
+export function ProjectIcon({
+  project,
+  className,
+  onImageLoad,
+  onImageError
+}: ProjectIconProps) {
   return (
     <Avatar className={cn('size-8', className)}>
       {project.imageUrl ? (
-        <AvatarImage src={project.imageUrl} alt="" className="object-cover" />
+        <AvatarImage
+          src={project.imageUrl}
+          alt=""
+          className="object-cover"
+          onLoad={onImageLoad}
+          onError={onImageError}
+        />
       ) : null}
       <AvatarFallback
         className={cn('font-medium', project.emoji ? 'text-xl' : 'text-xs')}

@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { Field, FieldDescription, FieldTitle } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { Button } from '@/shared/ui/button';
 import {
   DropdownMenu,
@@ -12,7 +11,7 @@ import {
 import type { UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@/shared/lib/utils';
-import type { CreateProjectFormData } from '@/entities/project';
+import { ProjectIcon, type CreateProjectFormData } from '@/entities/project';
 
 const EMOJI_LIST = [
   '🚀', '💻', '⚡', '🔧', '🛠️', '📦',
@@ -25,15 +24,6 @@ const EMOJI_LIST = [
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
-
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-}
 
 function isEmoji(str: string): boolean {
   if (!str?.trim()) return false;
@@ -192,42 +182,38 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
     setUrlError(null);
   };
 
-  const initials = getInitials(name || 'Project');
+  const iconProject = useMemo(
+    () => ({
+      name: name || 'Project',
+      imageUrl:
+        (mode === 'file' || mode === 'url') && previewUrl && !imageErrored
+          ? previewUrl
+          : null,
+      emoji: mode === 'emoji' && emoji ? emoji : null
+    }),
+    [mode, name, previewUrl, imageErrored, emoji]
+  );
 
   return (
     <Field>
       <FieldTitle>Project icon</FieldTitle>
       <div className="flex items-start gap-6">
-        <Avatar
-          className="size-20 shrink-0"
-          key={`${mode}-${previewUrl ?? 'none'}-${emoji || 'e'}`}
-        >
-          {mode === 'emoji' && emoji ? (
-            <AvatarFallback className="bg-muted text-4xl">
-              {emoji}
-            </AvatarFallback>
-          ) : mode === 'initials' ? (
-            <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
-          ) : (mode === 'file' || mode === 'url') && previewUrl ? (
-            <>
-              <AvatarImage
-                src={previewUrl}
-                onError={handleImageError}
-                onLoad={handleImageLoad}
-              />
-              {isImageLoading && (
-                <AvatarFallback className="text-2xl">
-                  <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                </AvatarFallback>
-              )}
-              {imageErrored && (
-                <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
-              )}
-            </>
-          ) : (
-            <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
+        <div className="relative shrink-0">
+          <ProjectIcon
+            project={iconProject}
+            className="size-20"
+            onImageLoad={handleImageLoad}
+            onImageError={handleImageError}
+          />
+          {isImageLoading && (
+            <div
+              className="absolute inset-0 flex items-center justify-center rounded-full bg-muted"
+              aria-hidden
+            >
+              <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            </div>
           )}
-        </Avatar>
+        </div>
         <div className="min-w-0 flex-1 space-y-4">
           <div className="grid gap-4 sm:grid-cols-12">
             <div className="space-y-2 sm:col-span-4">
