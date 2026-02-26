@@ -7,12 +7,6 @@ import { useSpaceUrl } from '@/shared/hooks/use-space-url';
 import { cn } from '@/shared/lib/utils';
 import { useTranslation } from '@/shared/lib/i18n';
 
-function formatDate(iso: string): string {
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'medium'
-  }).format(new Date(iso));
-}
-
 const tabLinkClass = (isActive: boolean) =>
   cn(
     'inline-flex items-center justify-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-color',
@@ -93,11 +87,8 @@ export function ProjectDetailLayout() {
         <div className="flex items-start gap-4">
           <ProjectIcon project={project} className="size-12" />
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>
-            {project.description ? (
-              <p className="text-muted-foreground max-w-2xl">{project.description}</p>
-            ) : null}
-            <div className="flex flex-wrap items-center gap-2 pt-1">
+            <div className='inline-flex items-center justify-start gap-2'>
+              <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>
               <Badge
                 variant={
                   project.status === 'active'
@@ -110,10 +101,10 @@ export function ProjectDetailLayout() {
               >
                 {project.status}
               </Badge>
-              <span className="text-muted-foreground text-sm">
-                {t('pages.projectDetail.created')} {formatDate(project.createdAt)}
-              </span>
             </div>
+            {project.description ? (
+              <p className="text-muted-foreground max-w-2xl">{project.description}</p>
+            ) : null}
           </div>
         </div>
       </div>
