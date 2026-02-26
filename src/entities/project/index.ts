@@ -17,6 +17,7 @@ export {
   useProjects,
   useProjectsList,
   useProject,
+  useProjectBySlug,
   useCreateProject,
   useUpdateProject,
   useDeleteProject,

@@ -30,8 +30,8 @@ export function ProjectsPage() {
     onSort
   } = useProjectsList();
 
-  const handleProjectClick = (projectId: string) => {
-    navigate(getSpaceUrl(`/projects/${projectId}`));
+  const handleProjectClick = (projectSlug: string) => {
+    navigate(getSpaceUrl(`/projects/${projectSlug}`));
   };
 
   return (

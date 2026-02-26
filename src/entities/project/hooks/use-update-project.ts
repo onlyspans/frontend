@@ -13,6 +13,9 @@ export function useUpdateProject() {
       queryClient.invalidateQueries({
         queryKey: projectQueryKeys.detail(updated.id)
       });
+      queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.detailBySlug(updated.slug)
+      });
       queryClient.invalidateQueries({ queryKey: projectQueryKeys.list() });
     }
   });

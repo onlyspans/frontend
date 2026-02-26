@@ -11,6 +11,13 @@ export function useUploadProjectIcon() {
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: projectQueryKeys.list() });
       queryClient.invalidateQueries({ queryKey: projectQueryKeys.detail(updated.id) });
+      if (updated.slug) {
+        queryClient.invalidateQueries({
+          queryKey: projectQueryKeys.detailBySlug(updated.slug)
+        });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['projects', 'detailBySlug'] });
+      }
     }
   });
 }

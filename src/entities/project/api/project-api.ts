@@ -15,6 +15,7 @@ const ALLOWED_ICON_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'
 const projectEndpoints = {
   list: BASE,
   byId: (id: string) => `${BASE}/${id}`,
+  bySlug: (slug: string) => `${BASE}/by-slug/${slug}`,
   icon: (id: string) => `${BASE}/${id}/icon`
 } as const;
 
@@ -45,6 +46,9 @@ export const projectApi = {
 
   getById: (id: string) =>
     apiClient.get<Project>(projectEndpoints.byId(id)).then((r) => r.data),
+
+  getBySlug: (slug: string) =>
+    apiClient.get<Project>(projectEndpoints.bySlug(slug)).then((r) => r.data),
 
   create: (body: CreateProjectRequest) =>
     apiClient.post<Project>(projectEndpoints.list, body).then((r) => r.data),

@@ -23,7 +23,7 @@ function getStageLabel(stage: LifecycleStage): string {
 interface ProjectsTableProps {
   projects: Project[];
   isLoading: boolean;
-  onProjectClick?: (projectId: string) => void;
+  onProjectClick?: (projectSlug: string) => void;
   sortBy?: ProjectSortField;
   sortOrder?: SortOrder;
   onSort?: (field: ProjectSortField) => void;
@@ -143,7 +143,7 @@ export function ProjectsTable(
             <TableRow
               key={project.id}
               className={onProjectClick ? 'cursor-pointer' : ''}
-              onClick={() => onProjectClick?.(project.id)}
+              onClick={() => onProjectClick?.(project.slug)}
             >
               <TableCell className="w-[50px] flex items-center justify-center">
                 <ProjectIcon project={project} />

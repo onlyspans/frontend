@@ -5,6 +5,10 @@ import NotFoundPage from '@/pages/not-found-page';
 import { DashboardPage } from '@/pages/dashboard/dashboard-page';
 import { CreateProjectPage } from '@/pages/projects/create-project-page';
 import { ProjectsPage } from '@/pages/projects/projects-page';
+import { ProjectPageLayout } from '@/pages/projects/project-page-layout';
+import { ProjectOverviewTab } from '@/pages/projects/project-overview-tab';
+import { ProjectReleasesTab } from '@/pages/projects/project-releases-tab';
+import { ProjectSettingsTab } from '@/pages/projects/project-settings-tab';
 import { CreateSpacePage } from '@/pages/spaces/create-space-page';
 import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
@@ -48,6 +52,24 @@ export const router = createBrowserRouter([
               {
                 path: 'create',
                 element: <CreateProjectPage />
+              },
+              {
+                path: ':slug',
+                element: <ProjectPageLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <ProjectOverviewTab />
+                  },
+                  {
+                    path: 'releases',
+                    element: <ProjectReleasesTab />
+                  },
+                  {
+                    path: 'settings',
+                    element: <ProjectSettingsTab />
+                  }
+                ]
               }
             ]
           },
