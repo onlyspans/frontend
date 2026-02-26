@@ -10,6 +10,7 @@ import {
 } from '@/shared/ui/sidebar';
 import { ThemeToggle } from '@/shared/ui/theme-toggle.tsx';
 import { ColorSchemeToggle } from '@/shared/ui/color-scheme-toggle.tsx';
+import { LanguageToggle } from '@/shared/ui/language-toggle.tsx';
 
 export function MainLayout() {
   return (
@@ -21,7 +22,8 @@ export function MainLayout() {
             <SidebarTrigger className="-ml-1" />
             <AppBreadcrumb />
           </div>
-          <div>
+          <div className="flex items-center">
+            <LanguageToggle variant="ghost" />
             <ThemeToggle variant="ghost" />
             <ColorSchemeToggle variant="ghost" />
           </div>
