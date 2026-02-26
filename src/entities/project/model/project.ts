@@ -70,6 +70,3 @@ export interface QueryProjectsParams {
   sortBy?: ProjectSortField;
   sortOrder?: SortOrder;
 }
-
-/** @deprecated Use QueryProjectsParams */
-export type ProjectsListParams = QueryProjectsParams;

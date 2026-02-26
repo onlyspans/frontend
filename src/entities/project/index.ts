@@ -8,8 +8,7 @@ export type {
   LifecycleStage,
   CreateProjectRequest,
   UpdateProjectRequest,
-  QueryProjectsParams,
-  ProjectsListParams
+  QueryProjectsParams
 } from './model/project';
 export { projectApi } from './api/project-api';
 export { ProjectIcon } from './ui/project-icon';

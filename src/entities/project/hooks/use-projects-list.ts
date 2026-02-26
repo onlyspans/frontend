@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { projectApi } from '../api/project-api';
-import type { ProjectsListParams } from '../model/project';
+import type { QueryProjectsParams } from '../model/project';
 import { projectQueryKeys } from './query-keys';
 
-export function useProjectsList(params?: ProjectsListParams) {
+export function useProjectsList(params?: QueryProjectsParams) {
   return useQuery({
     queryKey: projectQueryKeys.list(params),
     queryFn: () => projectApi.getList(params),
