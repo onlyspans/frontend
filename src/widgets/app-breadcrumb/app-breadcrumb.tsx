@@ -7,66 +7,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/shared/ui/breadcrumb';
+import {
+  getAppBreadcrumbSegments,
+  getProjectSlugFromPathname
+} from '@/shared/lib/breadcrumb-segments';
 import { useProjectBySlug } from '@/entities/project';
-
-function humanizeSlug(slug: string): string {
-  return slug
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-}
-
-type Segment = { label: string; href: string | null; isCurrent: boolean };
-
-function useBreadcrumbSegments(): Segment[] {
-  const location = useLocation();
-  const pathname = location.pathname;
-  const parts = pathname.split('/').filter(Boolean);
-
-  if (parts.length === 0) {
-    return [{ label: 'Home', href: '/', isCurrent: true }];
-  }
-
-  const spaceSlug = parts[0];
-  const baseUrl = `/${spaceSlug}`;
-  const segments: Segment[] = [{ label: 'Home', href: baseUrl, isCurrent: parts.length === 1 }];
-
-  if (parts.length >= 2 && parts[1] === 'projects') {
-    const projectsUrl = `${baseUrl}/projects`;
-    segments.push({
-      label: 'Projects',
-      href: projectsUrl,
-      isCurrent: parts.length === 2
-    });
-
-    if (parts.length >= 3) {
-      const slug = parts[2];
-      if (slug === 'create') {
-        segments.push({ label: 'New Project', href: null, isCurrent: true });
-      } else {
-        segments.push({
-          label: humanizeSlug(slug),
-          href: `${projectsUrl}/${slug}`,
-          isCurrent: true
-        });
-      }
-    }
-  }
-
-  return segments;
-}
-
-function getProjectSlugFromPathname(pathname: string): string | null {
-  const parts = pathname.split('/').filter(Boolean);
-  if (parts.length >= 3 && parts[1] === 'projects' && parts[2] !== 'create') {
-    return parts[2];
-  }
-  return null;
-}
 
 function AppBreadcrumbContent() {
   const location = useLocation();
-  const segments = useBreadcrumbSegments();
+  const segments = getAppBreadcrumbSegments(location.pathname);
   const projectSlug = getProjectSlugFromPathname(location.pathname);
   const { data: project } = useProjectBySlug(projectSlug ?? '');
 
