@@ -30,6 +30,7 @@ import type { Tag } from '@/entities/tag';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
 import { PlusIcon, PencilIcon, XIcon } from 'lucide-react';
+import { Separator } from '@/shared/ui/separator';
 
 interface ProjectTagsFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
@@ -38,6 +39,16 @@ interface ProjectTagsFieldProps {
 const DEFAULT_COLOR = '#6366f1';
 
 const HEX_COLOR_REGEX = /^#[0-9A-Fa-f]{6}$/;
+
+/** Returns dark (#000) or light (#fff) text color for contrast on the given hex background. */
+function getContrastTextColor(hex: string | null): string {
+  if (!hex || !HEX_COLOR_REGEX.test(hex)) return '#fff';
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.45 ? '#000' : '#fff';
+}
 
 function getColorError(value: string): string | null {
   if (!value.trim()) return null;
@@ -139,26 +150,43 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     <Badge
                       key={tag.id}
                       variant="secondary"
-                      className="cursor-pointer gap-1 pr-1"
+                      className="flex cursor-pointer items-center gap-1 pr-1"
                       style={
                         tag.color
                           ? {
                               backgroundColor: tag.color,
-                              color: '#fff',
+                              color: getContrastTextColor(tag.color),
                               borderColor: 'transparent'
                             }
                           : undefined
                       }
                     >
-                      {tag.name}
-                      <XIcon
-                        className="size-3 opacity-70"
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        className="min-w-0 flex-1 cursor-pointer truncate"
+                        onClick={() => openEdit(tag)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openEdit(tag);
+                          }
+                        }}
+                      >
+                        {tag.name}
+                      </span>
+                      <Button
+                        variant='ghost'
+                        size='icon-sm'
+                        className='size-4'
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           removeTagId(tag.id);
                         }}
-                      />
+                      >
+                        <XIcon className="size-3" />
+                      </Button>
                     </Badge>
                   ))}
                   <DropdownMenu open={addOpen} onOpenChange={setAddOpen}>
@@ -202,13 +230,13 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                           </button>
                         </div>
                       ))}
+                      <Separator/>
                       <DropdownMenuItem
                         onSelect={(e) => {
                           e.preventDefault();
                           setAddOpen(false);
                           setCreateOpen(true);
                         }}
-                        className="border-t mt-1"
                       >
                         <PlusIcon className="size-4 mr-2" />
                         Create new tag
