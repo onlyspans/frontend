@@ -164,6 +164,26 @@
     "pagination": {
       "range": "Showing {{from}} to {{to}} of {{total}} projects"
     },
+    "releases": {
+      "title": "Releases",
+      "table": {
+        "version": "Version",
+        "createdAt": "Created at",
+        "deploy": "Deploy",
+        "deployDisabledHint": "Deploy the previous stage first",
+        "deployedSuccess": "Deployed (success)",
+        "deployedFailed": "Deployed (failed)",
+        "loading": "Loading releases...",
+        "noReleases": "No releases",
+        "dev": "dev",
+        "test": "test",
+        "stage": "stage",
+        "prod": "prod"
+      },
+      "pagination": {
+        "range": "Showing {{from}} to {{to}} of {{total}} releases"
+      }
+    },
     "creation": {
       "title": "Create New Project",
       "description": "Create a new project to deploy and manage your application",

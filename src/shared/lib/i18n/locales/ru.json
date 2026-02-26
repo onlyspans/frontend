@@ -161,6 +161,26 @@
     "pagination": {
       "range": "Показано {{from}}–{{to}} из {{total}} проектов"
     },
+    "releases": {
+      "title": "Релизы",
+      "table": {
+        "version": "Версия",
+        "createdAt": "Создан",
+        "deploy": "Деплой",
+        "deployDisabledHint": "Сначала задеплойте предыдущий этап",
+        "deployedSuccess": "Задеплоено (успех)",
+        "deployedFailed": "Задеплоено (ошибка)",
+        "loading": "Загрузка релизов...",
+        "noReleases": "Нет релизов",
+        "dev": "dev",
+        "test": "test",
+        "stage": "stage",
+        "prod": "prod"
+      },
+      "pagination": {
+        "range": "Показано {{from}}–{{to}} из {{total}} релизов"
+      }
+    },
     "creation": {
       "title": "Создать проект",
       "description": "Создайте новый проект для деплоя и управления приложением",
