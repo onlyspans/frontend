@@ -9,7 +9,7 @@ export function useUploadProjectIcon() {
     mutationFn: ({ projectId, file }: { projectId: string; file: File }) =>
       projectApi.uploadIcon(projectId, file),
     onSuccess: (updated) => {
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.list() });
+      queryClient.invalidateQueries({ queryKey: projectQueryKeys.listPrefix() });
       queryClient.invalidateQueries({ queryKey: projectQueryKeys.detail(updated.id) });
       if (updated.slug) {
         queryClient.invalidateQueries({

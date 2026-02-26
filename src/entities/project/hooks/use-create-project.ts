@@ -10,7 +10,7 @@ export function useCreateProject() {
     mutationFn: (data: CreateProjectRequest) =>
       projectApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.list() });
+      queryClient.invalidateQueries({ queryKey: projectQueryKeys.listPrefix() });
     }
   });
 }
