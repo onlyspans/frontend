@@ -37,7 +37,7 @@ function AppBreadcrumbContent() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbPage>{segmentLabel(resolvedSegments[0])}</BreadcrumbPage>
+            <BreadcrumbPage className="font-semibold">{segmentLabel(resolvedSegments[0])}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -52,13 +52,13 @@ function AppBreadcrumbContent() {
           const item = (
             <BreadcrumbItem key={index}>
               {seg.isCurrent ? (
-                <BreadcrumbPage>{label}</BreadcrumbPage>
+                <BreadcrumbPage className="font-semibold">{label}</BreadcrumbPage>
               ) : seg.href ? (
                 <BreadcrumbLink asChild>
-                  <Link to={seg.href}>{label}</Link>
+                  <Link to={seg.href} className="font-semibold">{label}</Link>
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbPage>{label}</BreadcrumbPage>
+                <BreadcrumbPage className="font-semibold">{label}</BreadcrumbPage>
               )}
             </BreadcrumbItem>
           );
