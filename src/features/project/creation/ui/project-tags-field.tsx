@@ -145,7 +145,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
             <Field>
               <FormLabel>Tags</FormLabel>
               <FormControl>
-                <div className="flex flex-wrap items-center gap-2 rounded-md border p-2 min-h-10">
+                <div className="flex flex-wrap items-center gap-2 min-h-10">
                   {selectedTags.map((tag) => (
                     <Badge
                       key={tag.id}
@@ -191,7 +191,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                   ))}
                   <DropdownMenu open={addOpen} onOpenChange={setAddOpen}>
                     <DropdownMenuTrigger asChild>
-                      <Button type="button" variant="outline" size="sm">
+                      <Button type="button" variant='secondary' size="sm">
                         <PlusIcon className="size-4 mr-1" />
                         Add tag
                       </Button>
