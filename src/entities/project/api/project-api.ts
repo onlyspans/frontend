@@ -9,9 +9,13 @@ import type {
 
 const BASE = '/projects';
 
+const MAX_ICON_SIZE = 2 * 1024 * 1024; // 2 MB
+const ALLOWED_ICON_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
 const projectEndpoints = {
   list: BASE,
-  byId: (id: string) => `${BASE}/${id}`
+  byId: (id: string) => `${BASE}/${id}`,
+  icon: (id: string) => `${BASE}/${id}/icon`
 } as const;
 
 function buildListParams(params?: QueryProjectsParams): URLSearchParams {
@@ -48,5 +52,23 @@ export const projectApi = {
   update: (id: string, body: UpdateProjectRequest) =>
     apiClient.put<Project>(projectEndpoints.byId(id), body).then((r) => r.data),
 
-  delete: (id: string) => apiClient.delete(projectEndpoints.byId(id))
+  delete: (id: string) => apiClient.delete(projectEndpoints.byId(id)),
+
+  uploadIcon: async (id: string, file: File): Promise<Project> => {
+    if (file.size > MAX_ICON_SIZE) {
+      return Promise.reject(new Error('File size must be at most 2 MB'));
+    }
+    if (!ALLOWED_ICON_TYPES.includes(file.type)) {
+      return Promise.reject(new Error('Allowed formats: PNG, JPEG, GIF, WebP'));
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    const r = await apiClient
+      .post<Project>(projectEndpoints.icon(id), formData, {
+        headers: {
+          'Content-Type': undefined
+        } as Record<string, string | undefined>
+      });
+    return r.data;
+  }
 };

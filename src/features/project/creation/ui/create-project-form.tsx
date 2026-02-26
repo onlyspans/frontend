@@ -13,17 +13,18 @@ import { Form } from '@/shared/ui/form';
 import {
   createProjectSchema,
   type CreateProjectFormData,
-  useCreateProject
+  useCreateProject,
+  useUploadProjectIcon
 } from '@/entities/project';
 import { toast } from 'sonner';
 import { ProjectNameField } from './project-name-field';
 import { ProjectDescriptionField } from './project-description-field';
+import { ProjectIconField } from './project-icon-field';
 import { DeployToField } from './deploy-to-field';
 import { ProjectLifecycleField } from './project-lifecycle-field';
 import { ProjectTagsField } from './project-tags-field';
 import { useNavigate } from 'react-router-dom';
 import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
-import { AvatarUploadField } from '@/shared/ui/avatar-upload-field.tsx';
 
 interface CreateProjectFormProps {
   className?: string;
@@ -33,14 +34,16 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
   const navigate = useNavigate();
   const { getSpaceUrl } = useSpaceUrl();
   const createProjectMutation = useCreateProject();
+  const uploadIconMutation = useUploadProjectIcon();
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       name: '',
       description: '',
-      avatar: '',
-      avatarFile: undefined,
+      imageUrl: '',
+      emoji: '',
+      iconFile: undefined,
       deployTo: 'aws',
       lifecycleStages: ['development'],
       tagIds: []
@@ -53,14 +56,22 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         .toLowerCase()
         .replace(/\s+/g, '-')
         .replace(/[^a-z0-9-]/g, '');
-      await createProjectMutation.mutateAsync({
+      const project = await createProjectMutation.mutateAsync({
         name: data.name,
         slug: slug || 'project',
         description: data.description,
+        ...(!data.iconFile && data.imageUrl?.trim() && { imageUrl: data.imageUrl.trim() }),
+        ...(!data.iconFile && data.emoji?.trim() && { emoji: data.emoji.trim() }),
         status: 'active',
         lifecycleStages: data.lifecycleStages,
         tagIds: data.tagIds?.length ? data.tagIds : undefined
       });
+      if (data.iconFile) {
+        await uploadIconMutation.mutateAsync({
+          projectId: project.id,
+          file: data.iconFile
+        });
+      }
       toast.success('Project created successfully!');
       navigate(getSpaceUrl('/'));
     } catch (error) {
@@ -82,11 +93,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <AvatarUploadField
-                form={form}
-                title="Project Avatar"
-                defaultInitials="PR"
-              />
+              <ProjectIconField form={form} />
               <ProjectNameField form={form} />
               <ProjectDescriptionField form={form} />
               <DeployToField form={form} />
@@ -99,9 +106,9 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={form.formState.isSubmitting || createProjectMutation.isPending}
+                  disabled={form.formState.isSubmitting || createProjectMutation.isPending || uploadIconMutation.isPending}
                 >
-                  {form.formState.isSubmitting || createProjectMutation.isPending
+                  {form.formState.isSubmitting || createProjectMutation.isPending || uploadIconMutation.isPending
                     ? 'Creating...'
                     : 'Create Project'}
                 </Button>

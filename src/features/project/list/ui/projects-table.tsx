@@ -6,9 +6,8 @@ import {
   TableHeader,
   TableRow
 } from '@/shared/ui/table';
-import { Avatar, AvatarFallback } from '@/shared/ui/avatar';
 import { Badge } from '@/shared/ui/badge';
-import type { Project, ProjectSortField, SortOrder, LifecycleStage } from '@/entities/project';
+import { ProjectIcon, type Project, type ProjectSortField, type SortOrder, type LifecycleStage } from '@/entities/project';
 
 const STAGE_LABELS: Record<LifecycleStage, string> = {
   development: 'dev',
@@ -28,15 +27,6 @@ interface ProjectsTableProps {
   sortBy?: ProjectSortField;
   sortOrder?: SortOrder;
   onSort?: (field: ProjectSortField) => void;
-}
-
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
 }
 
 function SortHeader({
@@ -156,11 +146,7 @@ export function ProjectsTable(
               onClick={() => onProjectClick?.(project.id)}
             >
               <TableCell className="w-[50px] flex items-center justify-center">
-                <Avatar className="size-8">
-                  <AvatarFallback className="text-xs">
-                    {getInitials(project.name)}
-                  </AvatarFallback>
-                </Avatar>
+                <ProjectIcon project={project} />
               </TableCell>
               <TableCell className="font-medium">{project.name}</TableCell>
               <TableCell className="text-muted-foreground max-w-[250px] truncate">

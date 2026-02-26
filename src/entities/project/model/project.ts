@@ -13,6 +13,8 @@ export interface Project {
   name: string;
   slug: string;
   description: string | null;
+  imageUrl: string | null;
+  emoji: string | null;
   status: ProjectStatus;
   ownerId: string | null;
   tags: Tag[];
@@ -35,6 +37,8 @@ export interface CreateProjectRequest {
   name: string; // 1–255
   slug: string; // 1–255, URL-friendly
   description?: string;
+  imageUrl?: string; // URL, max 2048
+  emoji?: string; // max 20 (1 emoji)
   status?: ProjectStatus;
   ownerId?: string;
   lifecycleStages?: LifecycleStage[];
@@ -46,6 +50,8 @@ export interface UpdateProjectRequest {
   name?: string;
   slug?: string;
   description?: string;
+  imageUrl?: string | null;
+  emoji?: string | null;
   status?: ProjectStatus;
   ownerId?: string;
   lifecycleStages?: LifecycleStage[];

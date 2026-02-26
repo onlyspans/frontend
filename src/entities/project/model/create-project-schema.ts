@@ -14,23 +14,27 @@ export const createProjectSchema = z
       .min(1, 'Description is required')
       .min(10, 'Description must be at least 10 characters')
       .max(300, 'Description must be less than 300 characters'),
-    avatar: z
+    imageUrl: z
       .string()
+      .max(2048, 'URL must be at most 2048 characters')
       .optional()
       .refine(
-        (val) => !val || val === '' || val.startsWith('http://') || val.startsWith('https://') || /^[\p{Emoji}\p{Emoji_Presentation}\p{Emoji_Modifier_Base}]$/u.test(val),
-        'Avatar must be a valid URL or a single emoji'
+        (val) => !val || val.trim() === '' || /^https?:\/\/.+/.test(val),
+        'Image URL must be a valid HTTP(S) URL'
       ),
-    avatarFile: z
-      .instanceof(File, { message: 'File must be a valid image file' })
+    emoji: z
+      .string()
+      .max(20, 'Emoji must be at most 20 characters')
+      .optional(),
+    iconFile: z
+      .instanceof(File, { message: 'Must be a valid file' })
       .optional()
+      .refine((file) => !file || file.size <= 2 * 1024 * 1024, 'File size must be at most 2 MB')
       .refine(
-        (file) => !file || file.size <= 5 * 1024 * 1024,
-        'File size must be less than 5MB'
-      )
-      .refine(
-        (file) => !file || file.type.startsWith('image/'),
-        'File must be an image'
+        (file) =>
+          !file ||
+          ['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(file.type),
+        'Allowed formats: PNG, JPEG, GIF, WebP'
       ),
     deployTo: z.enum(deployToOptions),
     lifecycleStages: z

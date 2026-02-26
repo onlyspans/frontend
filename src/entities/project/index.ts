@@ -12,6 +12,7 @@ export type {
   ProjectsListParams
 } from './model/project';
 export { projectApi } from './api/project-api';
+export { ProjectIcon } from './ui/project-icon';
 export {
   useProjects,
   useProjectsList,
@@ -19,5 +20,6 @@ export {
   useCreateProject,
   useUpdateProject,
   useDeleteProject,
+  useUploadProjectIcon,
   projectQueryKeys
 } from './hooks';
