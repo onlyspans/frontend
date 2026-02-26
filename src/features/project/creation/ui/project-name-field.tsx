@@ -20,7 +20,7 @@ export function ProjectNameField({ form }: ProjectNameFieldProps) {
             <FormControl>
               <Input
                 type="text"
-                placeholder="My Awesome Project"
+                placeholder="My Project"
                 {...field}
               />
             </FormControl>

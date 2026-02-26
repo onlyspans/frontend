@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/shared/ui/button';
@@ -16,8 +17,10 @@ import {
   useCreateProject,
   useUploadProjectIcon
 } from '@/entities/project';
+import { nameToSlug } from '@/shared/lib';
 import { toast } from 'sonner';
 import { ProjectNameField } from './project-name-field';
+import { ProjectSlugField } from './project-slug-field';
 import { ProjectDescriptionField } from './project-description-field';
 import { ProjectIconField } from './project-icon-field';
 import { DeployToField } from './deploy-to-field';
@@ -40,6 +43,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       name: '',
+      slug: '',
       description: '',
       imageUrl: '',
       emoji: '',
@@ -50,15 +54,18 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
     }
   });
 
+  const name = form.watch('name');
+  useEffect(() => {
+    form.setValue('slug', nameToSlug(name));
+  }, [name, form]);
+
   const onSubmit = async (data: CreateProjectFormData) => {
     try {
-      const slug = data.name
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '');
+      const slug =
+        data.slug?.trim() || nameToSlug(data.name) || 'project';
       const project = await createProjectMutation.mutateAsync({
         name: data.name,
-        slug: slug || 'project',
+        slug,
         description: data.description,
         ...(!data.iconFile && data.imageUrl?.trim() && { imageUrl: data.imageUrl.trim() }),
         ...(!data.iconFile && data.emoji?.trim() && { emoji: data.emoji.trim() }),
@@ -95,6 +102,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
             <FieldGroup>
               <ProjectIconField form={form} />
               <ProjectNameField form={form} />
+              <ProjectSlugField form={form} />
               <ProjectDescriptionField form={form} />
               <DeployToField form={form} />
               <ProjectLifecycleField form={form} />
