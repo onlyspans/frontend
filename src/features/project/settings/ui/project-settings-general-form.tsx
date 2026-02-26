@@ -5,7 +5,6 @@ import { Button } from '@/shared/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle
 } from '@/shared/ui/card';
@@ -92,9 +91,6 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
     <Card>
       <CardHeader>
         <CardTitle>General</CardTitle>
-        <CardDescription>
-          Project name, slug, description, icon, and tags
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
