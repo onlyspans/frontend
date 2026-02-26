@@ -221,7 +221,21 @@
         "deleteProject": {
           "title": "Delete Project",
           "description": "Once you delete a project, there is no going back."
+        },
+        "changeStatus": {
+          "title": "Project status",
+          "description": "Change the project status. Archived or suspended projects may be hidden from lists or have limited functionality."
         }
+      },
+      "changeStatus": {
+        "button": "Change status",
+        "dialogTitle": "Change project status?",
+        "dialogDescription": "The project status will be set to \"{{status}}\". You can change it again later.",
+        "confirm": "Change status",
+        "cancel": "Cancel",
+        "updating": "Updating...",
+        "success": "Project status updated",
+        "failed": "Failed to update project status"
       },
       "delete": {
         "button": "Delete project",
