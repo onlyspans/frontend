@@ -86,7 +86,8 @@
       "created": "Created"
     },
     "projectSettings": {
-      "general": "General"
+      "general": "General",
+      "dangerZone": "Danger Zone"
     },
     "projectOverview": {
       "title": "Overview",
@@ -148,7 +149,7 @@
       "icon": "Icon",
       "name": "Name",
       "description": "Description",
-      "stages": "Stages",
+      "stages": "Lifecycle",
       "tags": "Tags",
       "status": "Status",
       "noProjects": "No projects found",
@@ -214,7 +215,25 @@
       "saveChanges": "Save changes",
       "saving": "Saving...",
       "success": "Project updated successfully",
-      "failed": "Failed to update project"
+      "failed": "Failed to update project",
+      "dangerZone": {
+        "title": "Danger Zone",
+        "deleteProject": {
+          "title": "Delete Project",
+          "description": "Once you delete a project, there is no going back."
+        }
+      },
+      "delete": {
+        "button": "Delete project",
+        "dialogTitle": "Delete this project?",
+        "dialogDescription": "This action cannot be undone. All data associated with this project will be permanently removed.",
+        "confirmLabel": "Type {{name}} to confirm",
+        "confirm": "Delete project",
+        "cancel": "Cancel",
+        "deleting": "Deleting...",
+        "success": "Project deleted successfully",
+        "failed": "Failed to delete project"
+      }
     }
   },
   "space": {
