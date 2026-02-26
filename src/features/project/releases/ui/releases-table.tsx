@@ -60,12 +60,12 @@ function canDeployStage(
 }
 
 export function ReleasesTable({
-                                releases,
-                                isLoading,
-                                lifecycleStages,
-                                stubDeployments,
-                                onDeploy
-                              }: ReleasesTableProps) {
+  releases,
+  isLoading,
+  lifecycleStages,
+  stubDeployments,
+  onDeploy
+}: ReleasesTableProps) {
   const { t } = useTranslation();
 
   if (isLoading) {

@@ -172,10 +172,10 @@
         "deployedFailed": "Задеплоено (ошибка)",
         "loading": "Загрузка релизов...",
         "noReleases": "Нет релизов",
-        "dev": "dev",
-        "test": "test",
-        "stage": "stage",
-        "prod": "prod"
+        "dev": "development",
+        "test": "testing",
+        "stage": "staging",
+        "prod": "production"
       },
       "pagination": {
         "range": "Показано {{from}}–{{to}} из {{total}} релизов"

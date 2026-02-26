@@ -175,10 +175,10 @@
         "deployedFailed": "Deployed (failed)",
         "loading": "Loading releases...",
         "noReleases": "No releases",
-        "dev": "dev",
-        "test": "test",
-        "stage": "stage",
-        "prod": "prod"
+        "dev": "development",
+        "test": "testing",
+        "stage": "staging",
+        "prod": "production"
       },
       "pagination": {
         "range": "Showing {{from}} to {{to}} of {{total}} releases"
