@@ -9,7 +9,7 @@ on:
 
 env:
   IMAGE_NAME: frontend
-  HELM_RELEASE: frontend
+  HELM_RELEASE: frontend-staging
   KUBE_NAMESPACE: frontend
 
 jobs:
