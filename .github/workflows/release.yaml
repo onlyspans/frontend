@@ -8,11 +8,9 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: onlyspans-private.registry.twcstorage.ru
   IMAGE_NAME: frontend
-  OCTOPUS_PROJECT: frontend
-  OCTOPUS_SPACE: Default
-  OCTOPUS_SERVER_URL: http://octopus.onlyspans.ru
+  HELM_RELEASE: frontend
+  KUBE_NAMESPACE: frontend
 
 jobs:
   release:
@@ -43,7 +41,7 @@ jobs:
       - name: Log in to Docker Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ vars.REGISTRY }}
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 
@@ -53,24 +51,30 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+            ${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+            ${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: type=registry,ref=${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
 
-      - name: Create Octopus release
-        uses: docker://octopusdeploy/octo:latest
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Configure kubectl
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > /tmp/kubeconfig.yaml
+          echo "KUBECONFIG=/tmp/kubeconfig.yaml" >> $GITHUB_ENV
+
+      - name: Deploy with Helm
         env:
-          OCTOPUS_CLI_SERVER: ${{ env.OCTOPUS_SERVER_URL }}
-          OCTOPUS_CLI_API_KEY: ${{ secrets.OCTOPUS_API_KEY }}
-        with:
-          args: >-
-            create-release
-            --project ${{ env.OCTOPUS_PROJECT }}
-            --version ${{ steps.version.outputs.version }}
-            --packageVersion ${{ steps.version.outputs.version }}
-            --space ${{ env.OCTOPUS_SPACE }}
-            --releaseNotes "Release ${{ steps.version.outputs.version }} - Commit: ${{ github.sha }}"
+          IMAGE_TAG: ${{ steps.version.outputs.version }}
+          IMAGE_PULL_SECRET: ${{ vars.IMAGE_PULL_SECRET }}
+        run: |
+          envsubst < ./helm/ci-values.yaml | helm upgrade --install ${{ env.HELM_RELEASE }} ./helm \
+            --namespace ${{ env.KUBE_NAMESPACE }} \
+            --create-namespace \
+            -f - \
+            --wait \
+            --timeout 5m
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -81,7 +85,7 @@ jobs:
             ## Release ${{ steps.version.outputs.version }}
 
             ### Docker Image
-            `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}`
+            `${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}`
 
             ### Commit
             ${{ github.sha }}
