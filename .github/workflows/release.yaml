@@ -10,6 +10,8 @@ on:
 jobs:
   release:
     uses: onlyspans/gh-workflows/.github/workflows/release.yml@main
+    permissions:
+      contents: write
     with:
       image_name: frontend
       helm_release: frontend-staging
