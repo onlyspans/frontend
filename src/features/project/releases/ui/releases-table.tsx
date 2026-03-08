@@ -152,6 +152,11 @@ export function ReleasesTable({
                         <Button
                           variant={stub.status === 'success' ? 'default' : 'destructive'}
                           size="icon"
+                          aria-label={
+                            stub.status === 'success'
+                              ? t('project.releases.table.deployedSuccess')
+                              : t('project.releases.table.deployedFailed')
+                          }
                         >
                           {stub.status === 'success' ? (
                             <Check className="h-4 w-4" aria-hidden />
