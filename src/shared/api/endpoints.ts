@@ -1,3 +1,5 @@
+import { appConfig } from '@/shared/config/app';
+
 function createEndpoints<T extends Record<string, string | ((...args: any[]) => string)>>(
   base: string,
   endpoints: T
@@ -45,6 +47,4 @@ export const API_ENDPOINTS = {
   })
 } as const;
 
-export const getApiBaseUrl = (): string => {
-  return import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
-};
+export const getApiBaseUrl = (): string => appConfig.apiBaseUrl;
