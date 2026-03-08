@@ -8,4 +8,3 @@ export const tagQueryKeys = {
   list: (params?: TagsListParams) => [...TAGS_ROOT, 'list', params] as const,
   detail: (id: string) => [...TAGS_ROOT, 'detail', id] as const
 } as const;
-} as const;

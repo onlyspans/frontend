@@ -228,7 +228,12 @@
       "tagsFieldDescription": "Add or remove tags from the project. Create and edit tags via the list.",
       "createNewTag": "Create new tag",
       "createTagButton": "Create",
-      "creatingTag": "Creating..."
+      "creatingTag": "Creating...",
+      "addTag": "Add tag",
+      "saveButton": "Save",
+      "colorErrorStartWithHash": "Color must start with #",
+      "colorErrorSevenChars": "Color must be 7 characters (#RRGGBB)",
+      "colorErrorHexOnly": "Use only hex digits (0-9, A-F) after #"
     },
     "settings": {
       "general": "General",

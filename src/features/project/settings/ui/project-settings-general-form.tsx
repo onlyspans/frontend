@@ -32,11 +32,10 @@ interface ProjectSettingsGeneralFormProps {
 }
 
 function projectToDefaultValues(project: Project): CreateProjectFormData {
-  const desc = project.description ?? '';
   return {
     name: project.name,
     slug: project.slug,
-    description: desc.trim().length >= 10 ? desc : 'No description.',
+    description: project.description ?? '',
     imageUrl: project.imageUrl ?? '',
     emoji: project.emoji ?? '',
     iconFile: undefined,
@@ -70,9 +69,11 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
           slug: data.slug?.trim() || data.slug,
           description: data.description,
           lifecycleStages: data.lifecycleStages,
-          tagIds: data.tagIds?.length ? data.tagIds : undefined,
-          ...(!data.iconFile && data.imageUrl?.trim() && { imageUrl: data.imageUrl.trim() }),
-          ...(!data.iconFile && data.emoji?.trim() && { emoji: data.emoji.trim() })
+          tagIds: data.tagIds ?? [],
+          ...(!data.iconFile && {
+            imageUrl: data.imageUrl?.trim() ?? '',
+            emoji: data.emoji?.trim() ?? ''
+          })
         }
       });
       if (data.iconFile) {

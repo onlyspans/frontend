@@ -51,11 +51,16 @@ function getContrastTextColor(hex: string | null): string {
   return luminance > 0.45 ? '#000' : '#fff';
 }
 
-function getColorError(value: string): string | null {
+type ColorErrorKey =
+  | 'project.creation.colorErrorStartWithHash'
+  | 'project.creation.colorErrorSevenChars'
+  | 'project.creation.colorErrorHexOnly';
+
+function getColorError(value: string): ColorErrorKey | null {
   if (!value.trim()) return null;
-  if (!value.startsWith('#')) return 'Color must start with #';
-  if (value.length !== 7) return 'Color must be 7 characters (#RRGGBB)';
-  if (!HEX_COLOR_REGEX.test(value)) return 'Use only hex digits (0-9, A-F) after #';
+  if (!value.startsWith('#')) return 'project.creation.colorErrorStartWithHash';
+  if (value.length !== 7) return 'project.creation.colorErrorSevenChars';
+  if (!HEX_COLOR_REGEX.test(value)) return 'project.creation.colorErrorHexOnly';
   return null;
 }
 
@@ -76,8 +81,10 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
   const createTagMutation = useCreateTag();
   const updateTagMutation = useUpdateTag();
 
-  const createColorError = getColorError(createColor);
-  const editColorError = getColorError(editColor);
+  const createColorErrorKey = getColorError(createColor);
+  const editColorErrorKey = getColorError(editColor);
+  const createColorError = createColorErrorKey ? t(createColorErrorKey) : null;
+  const editColorError = editColorErrorKey ? t(editColorErrorKey) : null;
 
   const tagIds = form.watch('tagIds') ?? [];
   const selectedTags = useMemo(() => {
@@ -94,7 +101,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
   };
 
   const handleCreateTag = async () => {
-    if (!createName.trim() || createColorError) return;
+    if (!createName.trim() || createColorErrorKey) return;
     try {
       const tag = await createTagMutation.mutateAsync({
         name: createName.trim(),
@@ -113,7 +120,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
   };
 
   const handleSaveEditTag = async () => {
-    if (!editTag || !editName.trim() || editColorError) return;
+    if (!editTag || !editName.trim() || editColorErrorKey) return;
     try {
       await updateTagMutation.mutateAsync({
         id: editTag.id,
@@ -195,7 +202,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     <DropdownMenuTrigger asChild>
                       <Button type="button" variant='secondary' size="sm">
                         <PlusIcon className="size-4 mr-1" />
-                        Add tag
+                        {t('project.creation.addTag')}
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="max-h-64 overflow-y-auto">
@@ -318,7 +325,7 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
             <Button
               type="button"
               onClick={handleCreateTag}
-              disabled={!createName.trim() || !!createColorError || createTagMutation.isPending}
+              disabled={!createName.trim() || !!createColorErrorKey || createTagMutation.isPending}
             >
               {createTagMutation.isPending ? t('project.creation.creatingTag') : t('project.creation.createTagButton')}
             </Button>
@@ -383,14 +390,14 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
               variant="outline"
               onClick={() => setEditTag(null)}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               type="button"
               onClick={handleSaveEditTag}
-              disabled={!editName.trim() || !!editColorError || updateTagMutation.isPending}
+              disabled={!editName.trim() || !!editColorErrorKey || updateTagMutation.isPending}
             >
-              {updateTagMutation.isPending ? 'Saving...' : 'Save'}
+              {updateTagMutation.isPending ? t('common.saving') : t('project.creation.saveButton')}
             </Button>
           </DialogFooter>
         </DialogContent>

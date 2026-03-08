@@ -1,5 +1,6 @@
 import { useTranslation as useI18nTranslation } from 'react-i18next';
 import type { TypedTFunction, TranslationKey, SupportedLanguage } from './types';
+import { mapLanguageCode } from './utils';
 
 export const useTranslation = () => {
   const { t: originalT, i18n } = useI18nTranslation();
@@ -19,6 +20,6 @@ export const useTranslation = () => {
   return {
     t,
     changeLanguage,
-    currentLanguage: (i18n.language || 'en') as SupportedLanguage
+    currentLanguage: mapLanguageCode(i18n.resolvedLanguage ?? i18n.language)
   };
 };

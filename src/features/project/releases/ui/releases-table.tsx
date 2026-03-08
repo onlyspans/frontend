@@ -56,7 +56,7 @@ function canDeployStage(
   if (stageIndex === 0) return true;
   const prevStage = lifecycleStages[stageIndex - 1];
   const prevKey = getStubKey(releaseId, prevStage);
-  return !!stubDeployments[prevKey];
+  return stubDeployments[prevKey]?.status === 'success';
 }
 
 export function ReleasesTable({

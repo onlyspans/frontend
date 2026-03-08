@@ -29,7 +29,8 @@ const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
 function isEmoji(str: string): boolean {
   if (!str?.trim()) return false;
   if (str.startsWith('http://') || str.startsWith('https://')) return false;
-  const emojiRegex = /^[\p{Emoji}\p{Emoji_Presentation}\p{Emoji_Modifier_Base}\p{Emoji_Modifier}]$/u;
+  const emojiRegex =
+    /^\p{Emoji}(?:\uFE0F|\u200D\p{Emoji}|\p{Emoji_Modifier})*$/u;
   return emojiRegex.test(str.trim());
 }
 
@@ -77,15 +78,23 @@ interface ProjectIconFieldProps {
 export function ProjectIconField({ form }: ProjectIconFieldProps) {
   const { t } = useTranslation();
   const [urlError, setUrlError] = useState<string | null>(null);
-  const [filePreview, setFilePreview] = useState<string | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageErrored, setImageErrored] = useState(false);
+  const [filePreviewState, setFilePreviewState] = useState<{
+    fileKey: string;
+    dataUrl: string;
+  } | null>(null);
+  const [lastLoadedPreviewUrl, setLastLoadedPreviewUrl] = useState<string | null>(null);
+  const [lastErroredPreviewUrl, setLastErroredPreviewUrl] = useState<string | null>(null);
   const [emojiOpen, setEmojiOpen] = useState(false);
 
   const name = form.watch('name') ?? '';
   const imageUrl = form.watch('imageUrl') ?? '';
   const emoji = form.watch('emoji') ?? '';
   const iconFile = form.watch('iconFile');
+
+  const filePreview =
+    iconFile && filePreviewState?.fileKey === `${iconFile.name}:${iconFile.size}:${iconFile.lastModified}`
+      ? filePreviewState.dataUrl
+      : null;
 
   const mode = useMemo<'file' | 'url' | 'emoji' | 'initials'>(() => {
     if (iconFile) return 'file';
@@ -101,23 +110,18 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
   }, [mode, imageUrl, filePreview]);
 
   useEffect(() => {
-    if (iconFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => setFilePreview(reader.result as string);
-      reader.readAsDataURL(iconFile);
-    } else {
-      setFilePreview(null);
-    }
+    if (!iconFile) return;
+    const fileKey = `${iconFile.name}:${iconFile.size}:${iconFile.lastModified}`;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFilePreviewState({ fileKey, dataUrl: reader.result as string });
+    };
+    reader.readAsDataURL(iconFile);
   }, [iconFile]);
 
-  useEffect(() => {
-    if (mode === 'url' && previewUrl) {
-      setImageLoaded(false);
-      setImageErrored(false);
-    }
-  }, [mode, previewUrl]);
-
-  const isImageLoading = mode === 'url' && previewUrl && !imageLoaded && !imageErrored;
+  const imageLoaded = mode === 'url' && !!previewUrl && lastLoadedPreviewUrl === previewUrl;
+  const imageErrored = mode === 'url' && !!previewUrl && lastErroredPreviewUrl === previewUrl;
+  const isImageLoading = mode === 'url' && !!previewUrl && !imageLoaded && !imageErrored;
 
   const handleFileChange = (file: File | undefined) => {
     if (file) {
@@ -157,30 +161,27 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
 
   const handleUrlChange = (value: string) => {
     setUrlError(null);
-    setImageLoaded(false);
-    setImageErrored(false);
-    if (!value.trim()) {
-      form.setValue('imageUrl', '');
-      return;
-    }
-    if (!isValidImageUrl(value)) {
+    setLastLoadedPreviewUrl(null);
+    setLastErroredPreviewUrl(null);
+    form.setValue('imageUrl', value);
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    if (!isValidImageUrl(trimmed)) {
       setUrlError(t('project.creation.invalidUrl'));
       return;
     }
-    form.setValue('imageUrl', value.trim());
+    form.setValue('imageUrl', trimmed);
     form.setValue('iconFile', undefined);
     form.setValue('emoji', '');
   };
 
   const handleImageError = () => {
-    setImageErrored(true);
-    setImageLoaded(false);
+    if (mode === 'url' && previewUrl) setLastErroredPreviewUrl(previewUrl);
     setUrlError(t('project.creation.failedToLoadImage'));
   };
 
   const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageErrored(false);
+    if (mode === 'url' && previewUrl) setLastLoadedPreviewUrl(previewUrl);
     setUrlError(null);
   };
 
@@ -188,12 +189,12 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
     () => ({
       name: name || 'Project',
       imageUrl:
-        (mode === 'file' || mode === 'url') && previewUrl && !imageErrored
+        (mode === 'file' || mode === 'url') && previewUrl && lastErroredPreviewUrl !== previewUrl
           ? previewUrl
           : null,
       emoji: mode === 'emoji' && emoji ? emoji : null
     }),
-    [mode, name, previewUrl, imageErrored, emoji]
+    [mode, name, previewUrl, lastErroredPreviewUrl, emoji]
   );
 
   return (
@@ -269,7 +270,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
               <Input
                 type="url"
                 placeholder={t('project.creation.imageUrlPlaceholder')}
-                value={mode === 'url' ? imageUrl : ''}
+                value={imageUrl}
                 onChange={(e) => handleUrlChange(e.target.value)}
                 className={cn(urlError && 'border-destructive')}
               />

@@ -225,7 +225,12 @@
       "tagsFieldDescription": "Добавляйте или удаляйте теги у проекта. Создавайте и редактируйте теги в списке.",
       "createNewTag": "Создать новый тег",
       "createTagButton": "Создать",
-      "creatingTag": "Создание..."
+      "creatingTag": "Создание...",
+      "addTag": "Добавить тег",
+      "saveButton": "Сохранить",
+      "colorErrorStartWithHash": "Цвет должен начинаться с #",
+      "colorErrorSevenChars": "Цвет — 7 символов (#RRGGBB)",
+      "colorErrorHexOnly": "После # только шестнадцатеричные цифры (0-9, A-F)"
     },
     "settings": {
       "general": "Основные",
