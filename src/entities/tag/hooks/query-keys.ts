@@ -1,8 +1,11 @@
 import type { TagsListParams } from '../model/tag';
 
+const TAGS_ROOT = ['tags'] as const;
+
 export const tagQueryKeys = {
-  all: (params?: TagsListParams) => ['tags', params] as const,
-  lists: () => ['tags', 'list'] as const,
-  list: (params?: TagsListParams) => ['tags', 'list', params] as const,
-  detail: (id: string) => ['tags', 'detail', id] as const
+  all: () => TAGS_ROOT,
+  lists: () => [...TAGS_ROOT, 'list'] as const,
+  list: (params?: TagsListParams) => [...TAGS_ROOT, 'list', params] as const,
+  detail: (id: string) => [...TAGS_ROOT, 'detail', id] as const
+} as const;
 } as const;
