@@ -28,6 +28,14 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
+export interface PaginatedListResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export interface SortParams {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';

@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronsUpDown, LogOut, Settings } from 'lucide-react';
+import { useTranslation } from '@/shared/lib/i18n';
 import {
   Avatar,
   AvatarFallback,
@@ -34,6 +35,7 @@ export function NavUser(
 ) {
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <SidebarMenu>
@@ -89,13 +91,13 @@ export function NavUser(
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Settings />
-                Settings
+                {t('sidebar.user.settings')}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate('/sign-in')}>
               <LogOut />
-              Log out
+              {t('sidebar.user.logOut')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

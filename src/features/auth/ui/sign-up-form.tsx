@@ -27,8 +27,10 @@ import { Input } from '@/shared/ui/input';
 import { signUpSchema, type SignupFormData, SocialAuthButtons } from '@/features/auth';
 import type { ComponentProps } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from '@/shared/lib/i18n';
 
 export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
+  const { t } = useTranslation();
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -41,15 +43,15 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
 
   const onSubmit = async (data: SignupFormData) => {
     // TODO: Implement signup API call
-    toast.success('Sign up', { description: JSON.stringify(data, null, 2) });
+    toast.success(t('pages.auth.signUp'), { description: JSON.stringify(data, null, 2) });
   };
 
   return (
     <Card className={className} {...props}>
       <CardHeader className="text-center">
-        <CardTitle className="text-xl">Create your account</CardTitle>
+        <CardTitle className="text-xl">{t('pages.auth.createAccountTitle')}</CardTitle>
         <CardDescription>
-          Enter your email below to create your account
+          {t('pages.auth.createAccountDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -62,11 +64,11 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                 render={({ field }) => (
                   <FormItem>
                     <Field>
-                      <FormLabel>Full Name</FormLabel>
+                      <FormLabel>{t('pages.auth.fullName')}</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="John Doe"
+                          placeholder={t('pages.auth.fullNamePlaceholder')}
                           {...field}
                         />
                       </FormControl>
@@ -81,11 +83,11 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                 render={({ field }) => (
                   <FormItem>
                     <Field>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('pages.auth.email')}</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="m@example.com"
+                          placeholder={t('pages.auth.emailPlaceholder')}
                           {...field}
                         />
                       </FormControl>
@@ -102,7 +104,7 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                     render={({ field }) => (
                       <FormItem>
                         <Field>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t('pages.auth.password')}</FormLabel>
                           <FormControl>
                             <Input type="password" {...field} />
                           </FormControl>
@@ -117,7 +119,7 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                     render={({ field }) => (
                       <FormItem>
                         <Field>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel>{t('pages.auth.confirmPassword')}</FormLabel>
                           <FormControl>
                             <Input type="password" {...field} />
                           </FormControl>
@@ -128,7 +130,7 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                   />
                 </div>
                 <FieldDescription>
-                  Must be at least 8 characters long
+                  {t('pages.auth.passwordHint')}
                 </FieldDescription>
               </Field>
               <Field>
@@ -138,22 +140,22 @@ export function SignUpForm({ className, ...props }: ComponentProps<'div'>) {
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting
-                    ? 'Creating account...'
-                    : 'Create Account'}
+                    ? t('pages.auth.creatingAccount')
+                    : t('pages.auth.createAccount')}
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
+                {t('pages.auth.orContinueWith')}
               </FieldSeparator>
               <SocialAuthButtons />
               <Field>
                 <FieldDescription className="text-center">
-                  Already have an account?{' '}
+                  {t('pages.auth.alreadyHaveAccount')}{' '}
                   <Link
                     to="/sign-in"
                     className="underline-offset-4 hover:underline"
                   >
-                    Sign in
+                    {t('pages.auth.signInLink')}
                   </Link>
                 </FieldDescription>
               </Field>

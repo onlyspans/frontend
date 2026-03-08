@@ -6,6 +6,7 @@ export type {
   ApiAxiosError,
   PaginationParams,
   PaginatedResponse,
+  PaginatedListResponse,
   SortParams,
-  FilterParams,
+  FilterParams
 } from './types';

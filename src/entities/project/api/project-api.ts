@@ -1,131 +1,78 @@
-// import { apiClient, extractData } from '@/shared/api';
-// import type { ApiResponse } from '@/shared/api/types';
-import type { CreateProjectFormData } from '@/entities/project';
-import type { Project } from '../model/project';
+import { apiClient } from '@/shared/api';
+import type { PaginatedListResponse } from '@/shared/api/types';
+import type {
+  Project,
+  CreateProjectRequest,
+  UpdateProjectRequest,
+  QueryProjectsParams
+} from '../model/project';
 
-// Mocked API calls - replace with real API endpoints when ready
+const BASE = '/projects';
+
+const MAX_ICON_SIZE = 2 * 1024 * 1024; // 2 MB
+const ALLOWED_ICON_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
+const projectEndpoints = {
+  list: BASE,
+  byId: (id: string) => `${BASE}/${id}`,
+  bySlug: (slug: string) => `${BASE}/by-slug/${slug}`,
+  icon: (id: string) => `${BASE}/${id}/icon`
+} as const;
+
+function buildListParams(params?: QueryProjectsParams): URLSearchParams {
+  const search = new URLSearchParams();
+  if (params?.page != null) search.set('page', String(params.page));
+  if (params?.pageSize != null) search.set('pageSize', String(params.pageSize));
+  if (params?.ownerId) search.set('ownerId', params.ownerId);
+  if (params?.status) search.set('status', params.status);
+  if (params?.search) search.set('search', params.search);
+  if (params?.sortBy) search.set('sortBy', params.sortBy);
+  if (params?.sortOrder) search.set('sortOrder', params.sortOrder);
+  if (params?.tagIds?.length) {
+    for (const id of params.tagIds) search.append('tagIds', id);
+  }
+  return search;
+}
+
 export const projectApi = {
-  createProject: async (data: CreateProjectFormData, spaceId: string): Promise<Project> => {
-    // Mock implementation
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          id: `project-${Date.now()}`,
-          spaceId,
-          name: data.name,
-          description: data.description,
-          avatar: data.avatar || undefined,
-          deployTo: data.deployTo,
-          lifecycleId: data.lifecycleId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        });
-      }, 1000);
-    });
-
-    // Real implementation (commented out):
-    // const formData = new FormData();
-    // formData.append('name', data.name);
-    // formData.append('description', data.description);
-    // formData.append('deployTo', data.deployTo);
-    // formData.append('lifecycleId', data.lifecycleId);
-    // if (data.avatar) {
-    //   formData.append('avatar', data.avatar);
-    // }
-    // if (data.avatarFile) {
-    //   formData.append('avatarFile', data.avatarFile);
-    // }
-    // const response = await apiClient.post<ApiResponse<Project>>(
-    //   '/projects',
-    //   formData,
-    //   {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   }
-    // );
-    // return extractData(response);
+  getList: (params?: QueryProjectsParams) => {
+    const search = buildListParams(params);
+    const query = search.toString();
+    const url = query ? `${projectEndpoints.list}?${query}` : projectEndpoints.list;
+    return apiClient
+      .get<PaginatedListResponse<Project>>(url)
+      .then((r) => r.data);
   },
 
-  getProjects: async (spaceId: string): Promise<Project[]> => {
-    // Mock implementation
+  getById: (id: string) =>
+    apiClient.get<Project>(projectEndpoints.byId(id)).then((r) => r.data),
 
-    const names: string[] = ['My Awesome Project', 'Backend Service', 'Frontend App'];
-    const descriptions: string[] = ['A sample project for demonstration purposes', 'Main backend service for handling API requests', 'React application for the user interface'];
+  getBySlug: (slug: string) =>
+    apiClient.get<Project>(projectEndpoints.bySlug(slug)).then((r) => r.data),
 
-    const projects = Array.from({ length: 83 }, (_id, _index) => ({
-      id: crypto.randomUUID(),
-      spaceId,
-      name: `${names[Math.floor(Math.random() * names.length)]} ${crypto.randomUUID().substring(0, 4)}`,
-      description: descriptions[Math.floor(Math.random() * descriptions.length)],
-      avatar: 'https://via.placeholder.com/150',
-      deployTo: 'aws' as 'aws' | 'yandex-cloud' | 'kubernetes',
-      lifecycleId: `lifecycle-${_index % 3 + 1}`,
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-      updatedAt: new Date(Date.now() - 86400000).toISOString()
-    }));
+  create: (body: CreateProjectRequest) =>
+    apiClient.post<Project>(projectEndpoints.list, body).then((r) => r.data),
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(projects);
-      }, 500);
-    });
+  update: (id: string, body: UpdateProjectRequest) =>
+    apiClient.put<Project>(projectEndpoints.byId(id), body).then((r) => r.data),
 
-    // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<Project[]>>(`/spaces/${spaceId}/projects`);
-    // return extractData(response);
-  },
+  delete: (id: string) => apiClient.delete(projectEndpoints.byId(id)),
 
-  getProjectById: async (id: string): Promise<Project> => {
-    // Mock implementation
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const mockProjects: Project[] = [
-          {
-            id: 'project-1',
-            spaceId: 'space-1',
-            name: 'My Awesome Project',
-            description: 'A sample project for demonstration purposes',
-            avatar: 'https://via.placeholder.com/150',
-            deployTo: 'aws',
-            lifecycleId: 'lifecycle-1',
-            createdAt: new Date(Date.now() - 86400000).toISOString(),
-            updatedAt: new Date(Date.now() - 86400000).toISOString()
-          },
-          {
-            id: 'project-2',
-            spaceId: 'space-1',
-            name: 'Backend Service',
-            description: 'Main backend service for handling API requests',
-            deployTo: 'kubernetes',
-            lifecycleId: 'lifecycle-2',
-            createdAt: new Date(Date.now() - 172800000).toISOString(),
-            updatedAt: new Date(Date.now() - 172800000).toISOString()
-          },
-          {
-            id: 'project-3',
-            spaceId: 'space-1',
-            name: 'Frontend App',
-            description: 'React application for the user interface',
-            deployTo: 'yandex-cloud',
-            lifecycleId: 'lifecycle-1',
-            createdAt: new Date(Date.now() - 259200000).toISOString(),
-            updatedAt: new Date(Date.now() - 259200000).toISOString()
-          }
-        ];
-
-        const project = mockProjects.find((p) => p.id === id);
-        if (project) {
-          resolve(project);
-        } else {
-          reject(new Error(`Project with id ${id} not found`));
-        }
-      }, 500);
-    });
-
-    // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<Project>>(`/projects/${id}`);
-    // return extractData(response);
+  uploadIcon: async (id: string, file: File): Promise<Project> => {
+    if (file.size > MAX_ICON_SIZE) {
+      return Promise.reject(new Error('File size must be at most 2 MB'));
+    }
+    if (!ALLOWED_ICON_TYPES.includes(file.type)) {
+      return Promise.reject(new Error('Allowed formats: PNG, JPEG, GIF, WebP'));
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    const r = await apiClient
+      .post<Project>(projectEndpoints.icon(id), formData, {
+        headers: {
+          'Content-Type': undefined
+        } as Record<string, string | undefined>
+      });
+    return r.data;
   }
 };
-

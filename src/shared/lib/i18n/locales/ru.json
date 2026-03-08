@@ -1,0 +1,297 @@
+{
+  "sidebar": {
+    "platform": "Платформа",
+    "navbar": {
+      "dashboard": "Дашборд",
+      "overview": "Обзор",
+      "analytics": "Аналитика",
+      "activity": "Активность",
+      "projects": "Проекты",
+      "deployments": "Деплои",
+      "recent": "Недавние",
+      "history": "История",
+      "scheduled": "По расписанию",
+      "environments": "Окружения",
+      "allEnvironments": "Все окружения",
+      "kubernetes": "Kubernetes",
+      "virtualMachines": "Виртуальные машины",
+      "infrastructure": "Инфраструктура",
+      "clusters": "Кластеры",
+      "nodes": "Узлы",
+      "resources": "Ресурсы",
+      "documentation": "Документация",
+      "gettingStarted": "Начало работы",
+      "apiReference": "API",
+      "guides": "Руководства",
+      "changelog": "История изменений",
+      "settings": "Настройки",
+      "general": "Основные",
+      "team": "Команда",
+      "billing": "Оплата",
+      "security": "Безопасность"
+    },
+    "recentActivity": {
+      "title": "Недавняя активность",
+      "time2MinAgo": "2 мин назад",
+      "time15MinAgo": "15 мин назад",
+      "time1HourAgo": "1 ч назад",
+      "typeDeployment": "деплой",
+      "typeBuild": "сборка",
+      "typeUpdate": "обновление"
+    },
+    "user": {
+      "settings": "Настройки",
+      "logOut": "Выйти"
+    },
+    "spaces": {
+      "title": "Пространства",
+      "searchPlaceholder": "Поиск пространств...",
+      "noSpacesFound": "Пространства не найдены",
+      "addSpace": "Добавить пространство",
+      "spaceNotSelected": "Пространство не выбрано"
+    }
+  },
+  "breadcrumb": {
+    "home": "Главная",
+    "projects": "Проекты",
+    "newProject": "Новый проект"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Дашборд"
+    },
+    "projects": {
+      "title": "Проекты",
+      "subtitle": "Управление и просмотр всех проектов",
+      "createProject": "Создать проект"
+    },
+    "projectsCreate": {
+      "title": "Создать проект",
+      "description": "Создайте новый проект для деплоя и управления приложением",
+      "aboutTitle": "О проектах",
+      "aboutDescription": "Проект — это компонент, сервис или база данных, которые вы хотите деплоить и управлять. У каждого проекта свой процесс развёртывания."
+    },
+    "projectDetail": {
+      "overview": "Обзор",
+      "releases": "Релизы",
+      "settings": "Настройки",
+      "goBack": "Назад",
+      "backToProjects": "К проектам",
+      "projectNotFound": "Проект не найден.",
+      "failedToLoad": "Не удалось загрузить проект",
+      "slugMissing": "Не указан slug проекта.",
+      "created": "Создан"
+    },
+    "projectSettings": {
+      "general": "Основные",
+      "dangerZone": "Опасная зона"
+    },
+    "projectOverview": {
+      "title": "Обзор",
+      "noDescription": "Описание не указано.",
+      "moreDetails": "Подробности и активность появятся здесь."
+    },
+    "notFound": {
+      "title": "Страница не найдена",
+      "description": "Запрашиваемая страница не существует или была перемещена.",
+      "goHome": "На главную",
+      "goBack": "Назад"
+    },
+    "spacesCreate": {
+      "aboutTitle": "О пространствах",
+      "aboutDescription": "Пространство — это рабочая область для организации проектов и ресурсов. У каждого пространства могут быть свои участники, настройки и конфигурации деплоя."
+    },
+    "auth": {
+      "welcomeBack": "С возвращением",
+      "enterEmail": "Введите email для входа в аккаунт",
+      "email": "Email",
+      "password": "Пароль",
+      "forgotPassword": "Забыли пароль?",
+      "confirmPassword": "Подтвердите пароль",
+      "signIn": "Войти",
+      "signUp": "Регистрация",
+      "emailPlaceholder": "m@example.com",
+      "signInLink": "Войти",
+      "login": "Войти",
+      "loggingIn": "Вход...",
+      "orContinueWith": "Или продолжить с",
+      "dontHaveAccount": "Нет аккаунта?",
+      "alreadyHaveAccount": "Уже есть аккаунт?",
+      "createAccountTitle": "Создайте аккаунт",
+      "createAccountDescription": "Введите email для создания аккаунта",
+      "fullName": "Имя",
+      "fullNamePlaceholder": "Иван Иванов",
+      "createAccount": "Создать аккаунт",
+      "creatingAccount": "Создание аккаунта...",
+      "passwordHint": "Не менее 8 символов"
+    }
+  },
+  "common": {
+    "cancel": "Отмена",
+    "saveChanges": "Сохранить",
+    "saving": "Сохранение...",
+    "createSpace": "Создать пространство",
+    "creating": "Создание...",
+    "languageToggle": "Переключить язык"
+  },
+  "project": {
+    "searchPlaceholder": "Поиск по названию или описанию...",
+    "status": "Статус",
+    "allStatuses": "Все статусы",
+    "active": "Активный",
+    "archived": "В архиве",
+    "suspended": "Приостановлен",
+    "tags": "Теги",
+    "table": {
+      "icon": "Иконка",
+      "name": "Название",
+      "description": "Описание",
+      "stages": "Жизненный цикл",
+      "tags": "Теги",
+      "status": "Статус",
+      "noProjects": "Проекты не найдены",
+      "loading": "Загрузка проектов..."
+    },
+    "filters": {
+      "noTagsYet": "Тегов пока нет"
+    },
+    "sortBy": "Сортировка по",
+    "ascending": "По возрастанию",
+    "descending": "По убыванию",
+    "pagination": {
+      "range": "Показано {{from}}–{{to}} из {{total}} проектов"
+    },
+    "releases": {
+      "title": "Релизы",
+      "table": {
+        "version": "Версия",
+        "createdAt": "Создан",
+        "deploy": "Деплой",
+        "deployDisabledHint": "Сначала задеплойте предыдущий этап",
+        "deployedSuccess": "Задеплоено (успех)",
+        "deployedFailed": "Задеплоено (ошибка)",
+        "loading": "Загрузка релизов...",
+        "noReleases": "Нет релизов",
+        "dev": "development",
+        "test": "testing",
+        "stage": "staging",
+        "prod": "production"
+      },
+      "pagination": {
+        "range": "Показано {{from}}–{{to}} из {{total}} релизов"
+      }
+    },
+    "creation": {
+      "title": "Создать проект",
+      "description": "Создайте новый проект для деплоя и управления приложением",
+      "cancel": "Отмена",
+      "create": "Создать проект",
+      "creating": "Создание...",
+      "success": "Проект успешно создан!",
+      "failed": "Не удалось создать проект",
+      "unknownError": "Неизвестная ошибка",
+      "projectIcon": "Иконка проекта",
+      "uploadFile": "Загрузить файл",
+      "imageUrl": "URL изображения",
+      "emoji": "Эмодзи",
+      "imageUrlPlaceholder": "https://example.com/logo.png",
+      "noDescription": "Без описания.",
+      "createTag": "Создать тег",
+      "editTag": "Редактировать тег",
+      "tagName": "Название",
+      "tagDescriptionOptional": "Описание (необязательно)",
+      "tagDescriptionPlaceholder": "Описание тега",
+      "colorOptional": "Цвет (необязательно)",
+      "colorPlaceholder": "#000000",
+      "tagNamePlaceholder": "Название тега",
+      "editTagAria": "Редактировать тег",
+      "projectName": "Название проекта",
+      "projectNamePlaceholder": "Мой проект",
+      "urlSlug": "URL slug",
+      "urlSlugPlaceholder": "moy-proekt",
+      "urlSlugDescription": "Используется в URL. Только буквы, цифры и дефисы.",
+      "slugHint": "Генерируется из названия. Можно изменить.",
+      "descriptionPlaceholder": "Опишите проект...",
+      "descriptionLabel": "Описание",
+      "invalidFileType": "Недопустимый тип файла",
+      "allowedTypes": "Допустимы: PNG, JPEG, GIF, WebP",
+      "fileTooLarge": "Файл слишком большой",
+      "maxSize": "Максимальный размер — 2 МБ",
+      "invalidUrl": "Введите корректный URL изображения (PNG, JPEG, GIF, WebP).",
+      "failedToLoadImage": "Не удалось загрузить изображение. Проверьте URL или используйте файл/эмодзи.",
+      "selectEmoji": "Выбрать",
+      "clearEmoji": "Очистить эмодзи",
+      "iconHint": "Загрузите изображение (PNG, JPEG, GIF, WebP, до 2 МБ), введите URL или выберите эмодзи.",
+      "tagsFieldDescription": "Добавляйте или удаляйте теги у проекта. Создавайте и редактируйте теги в списке.",
+      "createNewTag": "Создать новый тег",
+      "createTagButton": "Создать",
+      "creatingTag": "Создание...",
+      "addTag": "Добавить тег",
+      "saveButton": "Сохранить",
+      "colorErrorStartWithHash": "Цвет должен начинаться с #",
+      "colorErrorSevenChars": "Цвет — 7 символов (#RRGGBB)",
+      "colorErrorHexOnly": "После # только шестнадцатеричные цифры (0-9, A-F)",
+      "removeTag": "Удалить"
+    },
+    "settings": {
+      "general": "Основные",
+      "saveChanges": "Сохранить",
+      "saving": "Сохранение...",
+      "success": "Проект успешно обновлён",
+      "failed": "Не удалось обновить проект",
+      "dangerZone": {
+        "title": "Опасная зона",
+        "deleteProject": {
+          "title": "Удалить проект",
+          "description": "После удаления проекта восстановление невозможно."
+        },
+        "changeStatus": {
+          "title": "Статус проекта",
+          "description": "Измените статус проекта. Архивные и приостановленные проекты могут быть скрыты в списках или иметь ограниченный функционал."
+        }
+      },
+      "changeStatus": {
+        "button": "Изменить статус",
+        "dialogTitle": "Изменить статус проекта?",
+        "dialogDescription": "Статус проекта будет установлен в «{{status}}». Его можно будет изменить позже.",
+        "confirm": "Изменить статус",
+        "cancel": "Отмена",
+        "updating": "Сохранение...",
+        "success": "Статус проекта обновлён",
+        "failed": "Не удалось обновить статус проекта"
+      },
+      "delete": {
+        "button": "Удалить проект",
+        "dialogTitle": "Удалить этот проект?",
+        "dialogDescription": "Действие необратимо. Все данные проекта будут удалены безвозвратно.",
+        "confirmLabel": "Введите {{name}} для подтверждения",
+        "confirm": "Удалить проект",
+        "cancel": "Отмена",
+        "deleting": "Удаление...",
+        "success": "Проект успешно удалён",
+        "failed": "Не удалось удалить проект"
+      }
+    }
+  },
+  "space": {
+    "creation": {
+      "title": "Создать пространство",
+      "description": "Создайте рабочую область для организации проектов и ресурсов",
+      "cancel": "Отмена",
+      "createSpace": "Создать пространство",
+      "creating": "Создание...",
+      "success": "Пространство успешно создано!",
+      "failed": "Не удалось создать пространство",
+      "avatar": "Аватар пространства",
+      "defaultInitials": "ПР"
+    }
+  },
+  "auth": {
+    "validation": {
+      "emailRequired": "Введите email",
+      "passwordRequired": "Введите пароль",
+      "passwordMinLength": "Пароль должен быть не менее 8 символов",
+      "passwordsDoNotMatch": "Пароли не совпадают"
+    }
+  }
+}

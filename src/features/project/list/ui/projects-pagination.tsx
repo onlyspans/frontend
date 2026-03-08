@@ -7,13 +7,13 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@/shared/ui/pagination';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface ProjectsPaginationProps {
   currentPage: number;
   totalPages: number;
-  startIndex: number;
-  endIndex: number;
   totalItems: number;
+  pageSize?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -21,12 +21,15 @@ export function ProjectsPagination(
   {
     currentPage,
     totalPages,
-    startIndex,
-    endIndex,
     totalItems,
+    pageSize = 10,
     onPageChange
   }: ProjectsPaginationProps
 ) {
+  const { t } = useTranslation();
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+
   if (totalPages <= 1) {
     return null;
   }
@@ -70,7 +73,11 @@ export function ProjectsPagination(
   return (
     <div className="grid grid-cols-4 items-center">
       <div className="col-span-1 text-sm text-muted-foreground">
-        Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} projects
+        {t('project.pagination.range', {
+          from: startIndex + 1,
+          to: Math.min(endIndex, totalItems),
+          total: totalItems
+        })}
       </div>
       <Pagination className="col-span-3 justify-end">
         <PaginationContent>

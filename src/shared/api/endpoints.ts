@@ -1,3 +1,5 @@
+import { appConfig } from '@/shared/config/app';
+
 function createEndpoints<T extends Record<string, string | ((...args: any[]) => string)>>(
   base: string,
   endpoints: T
@@ -28,23 +30,21 @@ export const API_ENDPOINTS = {
     ME: '/me',
     VERIFY_EMAIL: '/verify-email',
     FORGOT_PASSWORD: '/forgot-password',
-    RESET_PASSWORD: '/reset-password',
+    RESET_PASSWORD: '/reset-password'
   }),
 
   USERS: createEndpoints('/users', {
     BASE: '',
     BY_ID: (id: string) => `/${id}`,
     PROFILE: '/profile',
-    UPDATE_PROFILE: '/profile',
+    UPDATE_PROFILE: '/profile'
   }),
 
   SPACES: createEndpoints('/spaces', {
     BASE: '',
     BY_ID: (id: string) => `/${id}`,
-    BY_SLUG: (slug: string) => `/slug/${slug}`,
-  }),
+    BY_SLUG: (slug: string) => `/slug/${slug}`
+  })
 } as const;
 
-export const getApiBaseUrl = (): string => {
-  return import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-};
+export const getApiBaseUrl = (): string => appConfig.apiBaseUrl;

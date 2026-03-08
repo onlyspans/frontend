@@ -1,0 +1,300 @@
+{
+  "sidebar": {
+    "platform": "Platform",
+    "navbar": {
+      "dashboard": "Dashboard",
+      "overview": "Overview",
+      "analytics": "Analytics",
+      "activity": "Activity",
+      "projects": "Projects",
+      "deployments": "Deployments",
+      "recent": "Recent",
+      "history": "History",
+      "scheduled": "Scheduled",
+      "environments": "Environments",
+      "allEnvironments": "All Environments",
+      "kubernetes": "Kubernetes",
+      "virtualMachines": "Virtual Machines",
+      "infrastructure": "Infrastructure",
+      "clusters": "Clusters",
+      "nodes": "Nodes",
+      "resources": "Resources",
+      "documentation": "Documentation",
+      "gettingStarted": "Getting Started",
+      "apiReference": "API Reference",
+      "guides": "Guides",
+      "changelog": "Changelog",
+      "settings": "Settings",
+      "general": "General",
+      "team": "Team",
+      "billing": "Billing",
+      "security": "Security"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "deploymentSuccessful": "Deployment successful",
+      "buildCompleted": "Build completed",
+      "projectUpdated": "Project updated",
+      "time2MinAgo": "2 min ago",
+      "time15MinAgo": "15 min ago",
+      "time1HourAgo": "1 hour ago",
+      "typeDeployment": "deployment",
+      "typeBuild": "build",
+      "typeUpdate": "update"
+    },
+    "user": {
+      "settings": "Settings",
+      "logOut": "Log out"
+    },
+    "spaces": {
+      "title": "Spaces",
+      "searchPlaceholder": "Search spaces...",
+      "noSpacesFound": "No spaces found",
+      "addSpace": "Add space",
+      "spaceNotSelected": "Space not selected"
+    }
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "projects": "Projects",
+    "newProject": "New Project"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Dashboard"
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Manage and view all your projects",
+      "createProject": "Create Project"
+    },
+    "projectsCreate": {
+      "title": "Create New Project",
+      "description": "Create a new project to deploy and manage your application",
+      "aboutTitle": "About Projects",
+      "aboutDescription": "A project represents a specific software component, service, or database that you want to deploy and manage. Each project has its own deployment process."
+    },
+    "projectDetail": {
+      "overview": "Overview",
+      "releases": "Releases",
+      "settings": "Settings",
+      "goBack": "Go back",
+      "backToProjects": "Back to projects",
+      "projectNotFound": "Project not found.",
+      "failedToLoad": "Failed to load project",
+      "slugMissing": "Project slug is missing.",
+      "created": "Created"
+    },
+    "projectSettings": {
+      "general": "General",
+      "dangerZone": "Danger Zone"
+    },
+    "projectOverview": {
+      "title": "Overview",
+      "noDescription": "No description provided.",
+      "moreDetails": "More details and activity will appear here soon."
+    },
+    "notFound": {
+      "title": "Page Not Found",
+      "description": "The page you're looking for doesn't exist or has been moved.",
+      "goHome": "Go Home",
+      "goBack": "Go Back"
+    },
+    "spacesCreate": {
+      "aboutTitle": "About Spaces",
+      "aboutDescription": "A space is a workspace that helps you organize your projects and resources. Each space can have its own team members, settings, and deployment configurations."
+    },
+    "auth": {
+      "welcomeBack": "Welcome back",
+      "enterEmail": "Enter your email below to login to your account",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot your password?",
+      "confirmPassword": "Confirm Password",
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "emailPlaceholder": "m@example.com",
+      "signInLink": "Sign in",
+      "login": "Login",
+      "loggingIn": "Logging in...",
+      "orContinueWith": "Or continue with",
+      "dontHaveAccount": "Don't have an account?",
+      "alreadyHaveAccount": "Already have an account?",
+      "createAccountTitle": "Create your account",
+      "createAccountDescription": "Enter your email below to create your account",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "createAccount": "Create Account",
+      "creatingAccount": "Creating account...",
+      "passwordHint": "Must be at least 8 characters long"
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "saveChanges": "Save changes",
+    "saving": "Saving...",
+    "createSpace": "Create Space",
+    "creating": "Creating...",
+    "languageToggle": "Language Toggle"
+  },
+  "project": {
+    "searchPlaceholder": "Search projects by name or description...",
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "active": "Active",
+    "archived": "Archived",
+    "suspended": "Suspended",
+    "tags": "Tags",
+    "table": {
+      "icon": "Icon",
+      "name": "Name",
+      "description": "Description",
+      "stages": "Lifecycle",
+      "tags": "Tags",
+      "status": "Status",
+      "noProjects": "No projects found",
+      "loading": "Loading projects..."
+    },
+    "filters": {
+      "noTagsYet": "No tags yet"
+    },
+    "sortBy": "Sort by",
+    "ascending": "Ascending",
+    "descending": "Descending",
+    "pagination": {
+      "range": "Showing {{from}} to {{to}} of {{total}} projects"
+    },
+    "releases": {
+      "title": "Releases",
+      "table": {
+        "version": "Version",
+        "createdAt": "Created at",
+        "deploy": "Deploy",
+        "deployDisabledHint": "Deploy the previous stage first",
+        "deployedSuccess": "Deployed (success)",
+        "deployedFailed": "Deployed (failed)",
+        "loading": "Loading releases...",
+        "noReleases": "No releases",
+        "dev": "development",
+        "test": "testing",
+        "stage": "staging",
+        "prod": "production"
+      },
+      "pagination": {
+        "range": "Showing {{from}} to {{to}} of {{total}} releases"
+      }
+    },
+    "creation": {
+      "title": "Create New Project",
+      "description": "Create a new project to deploy and manage your application",
+      "cancel": "Cancel",
+      "create": "Create Project",
+      "creating": "Creating...",
+      "success": "Project created successfully!",
+      "failed": "Failed to create project",
+      "unknownError": "Unknown error",
+      "projectIcon": "Project icon",
+      "uploadFile": "Upload file",
+      "imageUrl": "Image URL",
+      "emoji": "Emoji",
+      "imageUrlPlaceholder": "https://example.com/logo.png",
+      "noDescription": "No description.",
+      "createTag": "Create tag",
+      "editTag": "Edit tag",
+      "tagName": "Name",
+      "tagDescriptionOptional": "Description (optional)",
+      "tagDescriptionPlaceholder": "Tag description",
+      "colorOptional": "Color (optional)",
+      "colorPlaceholder": "#000000",
+      "tagNamePlaceholder": "Tag name",
+      "editTagAria": "Edit tag",
+      "projectName": "Project Name",
+      "projectNamePlaceholder": "My Project",
+      "urlSlug": "URL slug",
+      "urlSlugPlaceholder": "my-project",
+      "urlSlugDescription": "Used in URLs. Only letters, numbers, and hyphens.",
+      "slugHint": "Generated from the project name. You can edit it.",
+      "descriptionPlaceholder": "Describe your project...",
+      "descriptionLabel": "Description",
+      "invalidFileType": "Invalid file type",
+      "allowedTypes": "Allowed: PNG, JPEG, GIF, WebP",
+      "fileTooLarge": "File too large",
+      "maxSize": "Maximum size is 2 MB",
+      "invalidUrl": "Enter a valid image URL (PNG, JPEG, GIF, WebP).",
+      "failedToLoadImage": "Failed to load image. Check the URL or use a file/emoji.",
+      "selectEmoji": "Select",
+      "clearEmoji": "Clear emoji",
+      "iconHint": "Upload an image (PNG, JPEG, GIF, WebP, max 2 MB), enter a URL, or pick an emoji.",
+      "tagsFieldDescription": "Add or remove tags from the project. Create and edit tags via the list.",
+      "createNewTag": "Create new tag",
+      "createTagButton": "Create",
+      "creatingTag": "Creating...",
+      "addTag": "Add tag",
+      "saveButton": "Save",
+      "colorErrorStartWithHash": "Color must start with #",
+      "colorErrorSevenChars": "Color must be 7 characters (#RRGGBB)",
+      "colorErrorHexOnly": "Use only hex digits (0-9, A-F) after #",
+      "removeTag": "Remove"
+    },
+    "settings": {
+      "general": "General",
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
+      "success": "Project updated successfully",
+      "failed": "Failed to update project",
+      "dangerZone": {
+        "title": "Danger Zone",
+        "deleteProject": {
+          "title": "Delete Project",
+          "description": "Once you delete a project, there is no going back."
+        },
+        "changeStatus": {
+          "title": "Project status",
+          "description": "Change the project status. Archived or suspended projects may be hidden from lists or have limited functionality."
+        }
+      },
+      "changeStatus": {
+        "button": "Change status",
+        "dialogTitle": "Change project status?",
+        "dialogDescription": "The project status will be set to \"{{status}}\". You can change it again later.",
+        "confirm": "Change status",
+        "cancel": "Cancel",
+        "updating": "Updating...",
+        "success": "Project status updated",
+        "failed": "Failed to update project status"
+      },
+      "delete": {
+        "button": "Delete project",
+        "dialogTitle": "Delete this project?",
+        "dialogDescription": "This action cannot be undone. All data associated with this project will be permanently removed.",
+        "confirmLabel": "Type {{name}} to confirm",
+        "confirm": "Delete project",
+        "cancel": "Cancel",
+        "deleting": "Deleting...",
+        "success": "Project deleted successfully",
+        "failed": "Failed to delete project"
+      }
+    }
+  },
+  "space": {
+    "creation": {
+      "title": "Create New Space",
+      "description": "Create a new workspace to organize your projects and resources",
+      "cancel": "Cancel",
+      "createSpace": "Create Space",
+      "creating": "Creating...",
+      "success": "Space created successfully!",
+      "failed": "Failed to create space",
+      "avatar": "Space Avatar",
+      "defaultInitials": "SP"
+    }
+  },
+  "auth": {
+    "validation": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters long",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
+  }
+}

@@ -27,8 +27,10 @@ import { Input } from '@/shared/ui/input';
 import { signInSchema, type LoginFormData, SocialAuthButtons } from '@/features/auth';
 import type { ComponentProps } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from '@/shared/lib/i18n';
 
 export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
+  const { t } = useTranslation();
   const form = useForm<LoginFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -39,16 +41,15 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
 
   const onSubmit = async (data: LoginFormData) => {
     // TODO: Implement login API call
-    toast.success('Sign in', { description: JSON.stringify(data, null, 2) });
-
+    toast.success(t('pages.auth.signIn'), { description: JSON.stringify(data, null, 2) });
   };
 
   return (
     <Card className={className} {...props}>
       <CardHeader className="text-center">
-        <CardTitle className="text-xl">Welcome back</CardTitle>
+        <CardTitle className="text-xl">{t('pages.auth.welcomeBack')}</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          {t('pages.auth.enterEmail')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -61,11 +62,11 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
                 render={({ field }) => (
                   <FormItem>
                     <Field>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('pages.auth.email')}</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="m@example.com"
+                          placeholder={t('pages.auth.emailPlaceholder')}
                           {...field}
                         />
                       </FormControl>
@@ -81,12 +82,12 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
                   <FormItem>
                     <Field>
                       <div className="flex items-center">
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>{t('pages.auth.password')}</FormLabel>
                         <a
                           href="#"
                           className="ml-auto text-sm underline-offset-4 hover:underline"
                         >
-                          Forgot your password?
+                          {t('pages.auth.forgotPassword')}
                         </a>
                       </div>
                       <FormControl>
@@ -103,21 +104,21 @@ export function SignInForm({ className, ...props }: ComponentProps<'div'>) {
                   className="w-full"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
+                  {form.formState.isSubmitting ? t('pages.auth.loggingIn') : t('pages.auth.login')}
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
+                {t('pages.auth.orContinueWith')}
               </FieldSeparator>
               <SocialAuthButtons />
               <Field>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account?{' '}
+                  {t('pages.auth.dontHaveAccount')}{' '}
                   <Link
                     to="/sign-up"
                     className="underline-offset-4 hover:underline"
                   >
-                    Sign up
+                    {t('pages.auth.signUp')}
                   </Link>
                 </FieldDescription>
               </Field>

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ChevronsUpDown, Plus, Search, Loader2, PackageOpen } from 'lucide-react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useTranslation } from '@/shared/lib/i18n';
 
 import {
   DropdownMenu,
@@ -41,6 +42,7 @@ export function SpaceSwitcher(
   const { isMobile } = useSidebar();
   const { space: currentSpaceFromQuery } = useCurrentSpace();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const { t } = useTranslation();
 
   const activeSpace = React.useMemo(() => {
     if (currentSpaceFromQuery) {
@@ -169,7 +171,7 @@ export function SpaceSwitcher(
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span
-                  className="truncate font-medium">{activeSpace ? activeSpace.name : 'Space not selected'}</span>
+                  className="truncate font-medium">{activeSpace ? activeSpace.name : t('sidebar.spaces.spaceNotSelected')}</span>
                 {activeSpace && activeSpace.description && (
                   <span className="truncate text-xs text-muted-foreground">{activeSpace.description}</span>
                 )}
@@ -184,14 +186,14 @@ export function SpaceSwitcher(
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Spaces
+              {t('sidebar.spaces.title')}
             </DropdownMenuLabel>
             <div className="px-2 py-1.5">
               <div className="relative">
                 <Search className="text-muted-foreground absolute left-2 top-1/2 size-4 -translate-y-1/2" />
                 <Input
                   type="text"
-                  placeholder="Search spaces..."
+                  placeholder={t('sidebar.spaces.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="h-8 pl-8"
@@ -226,7 +228,7 @@ export function SpaceSwitcher(
                 ))
               ) : (
                 <div className="text-muted-foreground px-2 py-4 text-center text-sm">
-                  No spaces found
+                  {t('sidebar.spaces.noSpacesFound')}
                 </div>
               )}
             </div>
@@ -238,7 +240,7 @@ export function SpaceSwitcher(
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>
-              <div className="text-muted-foreground font-medium">Add space</div>
+              <div className="text-muted-foreground font-medium">{t('sidebar.spaces.addSpace')}</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

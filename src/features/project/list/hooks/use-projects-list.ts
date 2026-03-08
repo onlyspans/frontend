@@ -1,55 +1,71 @@
-import { useState, useMemo } from 'react';
-import { useProjects } from '@/entities/project';
-import { useLifecycles } from '@/entities/lifecycle';
+import { useState } from 'react';
+import { useProjectsList as useProjectsListQuery } from '@/entities/project';
+import type { ProjectStatus, ProjectSortField, SortOrder } from '@/entities/project';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 20;
+const DEFAULT_SORT: ProjectSortField = 'createdAt';
+const DEFAULT_ORDER: SortOrder = 'desc';
 
 export function useProjectsList() {
-  const { data: projects = [], isLoading } = useProjects();
-  const { data: lifecycles = [] } = useLifecycles();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<ProjectStatus | ''>('');
+  const [tagIdsFilter, setTagIdsFilter] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<ProjectSortField>(DEFAULT_SORT);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_ORDER);
 
-  const lifecycleMap = useMemo(() => {
-    return new Map(lifecycles.map((lc) => [lc.id, lc]));
-  }, [lifecycles]);
+  const { data, isLoading } = useProjectsListQuery({
+    page: currentPage,
+    pageSize: ITEMS_PER_PAGE,
+    search: searchQuery || undefined,
+    status: statusFilter || undefined,
+    tagIds: tagIdsFilter.length > 0 ? tagIdsFilter : undefined,
+    sortBy,
+    sortOrder
+  });
 
-  const filteredProjects = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return projects;
-    }
-
-    const query = searchQuery.toLowerCase();
-    return projects.filter(
-      (project) =>
-        project.name.toLowerCase().includes(query) ||
-        project.description.toLowerCase().includes(query) ||
-        lifecycleMap.get(project.lifecycleId)?.name.toLowerCase().includes(query)
-    );
-  }, [projects, searchQuery, lifecycleMap]);
-
-  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedProjects = filteredProjects.slice(startIndex, endIndex);
+  const projects = data?.items ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
     setCurrentPage(1);
   };
 
+  const setStatusFilterAndResetPage = (value: ProjectStatus | '') => {
+    setStatusFilter(value);
+    setCurrentPage(1);
+  };
+
+  const setTagIdsFilterAndResetPage = (ids: string[]) => {
+    setTagIdsFilter(ids);
+    setCurrentPage(1);
+  };
+
+  const handleSort = (field: ProjectSortField) => {
+    if (sortBy === field) {
+      setSortOrder((o) => (o === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortBy(field);
+      setSortOrder('asc');
+    }
+  };
+
   return {
-    projects: paginatedProjects,
-    filteredProjects,
+    projects,
     isLoading,
-    lifecycleMap,
     searchQuery,
     currentPage,
     totalPages,
-    startIndex,
-    endIndex,
+    total: data?.total ?? 0,
     handleSearchChange,
-    setCurrentPage
+    setCurrentPage,
+    statusFilter,
+    setStatusFilter: setStatusFilterAndResetPage,
+    tagIdsFilter,
+    setTagIdsFilter: setTagIdsFilterAndResetPage,
+    sortBy,
+    sortOrder,
+    onSort: handleSort
   };
 }
-
