@@ -230,7 +230,8 @@
       "saveButton": "Сохранить",
       "colorErrorStartWithHash": "Цвет должен начинаться с #",
       "colorErrorSevenChars": "Цвет — 7 символов (#RRGGBB)",
-      "colorErrorHexOnly": "После # только шестнадцатеричные цифры (0-9, A-F)"
+      "colorErrorHexOnly": "После # только шестнадцатеричные цифры (0-9, A-F)",
+      "removeTag": "Удалить"
     },
     "settings": {
       "general": "Основные",

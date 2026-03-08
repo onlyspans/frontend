@@ -7,7 +7,10 @@ export function useDeleteRelease(projectId: string) {
 
   return useMutation({
     mutationFn: (releaseId: string) => releaseApi.delete(projectId, releaseId),
-    onSuccess: () => {
+    onSuccess: (_data, releaseId) => {
+      queryClient.removeQueries({
+        queryKey: releaseQueryKeys.detail(projectId, releaseId),
+      });
       queryClient.invalidateQueries({
         queryKey: releaseQueryKeys.lists(projectId),
       });

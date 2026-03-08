@@ -233,7 +233,8 @@
       "saveButton": "Save",
       "colorErrorStartWithHash": "Color must start with #",
       "colorErrorSevenChars": "Color must be 7 characters (#RRGGBB)",
-      "colorErrorHexOnly": "Use only hex digits (0-9, A-F) after #"
+      "colorErrorHexOnly": "Use only hex digits (0-9, A-F) after #",
+      "removeTag": "Remove"
     },
     "settings": {
       "general": "General",

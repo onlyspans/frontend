@@ -57,9 +57,11 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
   });
 
   const name = form.watch('name');
+  const slugDirty = form.formState.dirtyFields.slug;
   useEffect(() => {
+    if (slugDirty) return;
     form.setValue('slug', nameToSlug(name));
-  }, [name, form]);
+  }, [name, slugDirty, form]);
 
   const onSubmit = async (data: CreateProjectFormData) => {
     try {
@@ -76,10 +78,16 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         tagIds: data.tagIds?.length ? data.tagIds : undefined
       });
       if (data.iconFile) {
-        await uploadIconMutation.mutateAsync({
-          projectId: project.id,
-          file: data.iconFile
-        });
+        try {
+          await uploadIconMutation.mutateAsync({
+            projectId: project.id,
+            file: data.iconFile
+          });
+        } catch (iconError) {
+          toast.error(t('project.creation.failedToLoadImage'), {
+            description: iconError instanceof Error ? iconError.message : undefined
+          });
+        }
       }
       toast.success(t('project.creation.success'));
       navigate(getSpaceUrl('/'));

@@ -7,8 +7,9 @@ export function useDeleteTag() {
 
   return useMutation({
     mutationFn: (id: string) => tagApi.delete(id),
-    onSuccess: () => {
+    onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: tagQueryKeys.lists() });
+      queryClient.removeQueries({ queryKey: tagQueryKeys.detail(id) });
     },
   });
 }

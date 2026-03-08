@@ -150,6 +150,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
     form.setValue('emoji', value);
     form.setValue('iconFile', undefined);
     form.setValue('imageUrl', '');
+    setFilePreviewState(null);
     setUrlError(null);
     setEmojiOpen(false);
   };
@@ -203,6 +204,7 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
       <div className="flex items-start gap-6">
         <div className="relative shrink-0">
           <ProjectIcon
+            key={mode === 'emoji' ? `emoji-${emoji}` : mode === 'file' ? 'file' : mode === 'url' ? `url-${previewUrl}` : 'initials'}
             project={iconProject}
             className="size-20"
             onImageLoad={handleImageLoad}

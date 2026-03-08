@@ -1,3 +1,4 @@
+import type { TranslationKey } from '@/shared/lib/i18n';
 import {
   BookOpen,
   Bot,
@@ -25,12 +26,12 @@ export interface SidebarProject {
 }
 
 export interface SidebarNavItem {
-  title: string;
+  title: TranslationKey;
   url: string;
   icon?: LucideIcon;
   isActive?: boolean;
   items?: {
-    title: string;
+    title: TranslationKey;
     url: string;
   }[];
 }

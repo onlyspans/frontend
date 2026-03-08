@@ -9,9 +9,9 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem
 } from '@/shared/ui/dropdown-menu';
-import { Checkbox } from '@/shared/ui/checkbox';
 import { useTags } from '@/entities/tag';
 import type { ProjectStatus } from '@/entities/project';
 import { FilterIcon, TagIcon } from 'lucide-react';
@@ -82,14 +82,12 @@ export function ProjectsFilters({
             </div>
           ) : (
             tags.map((tag) => (
-              <label
+              <DropdownMenuCheckboxItem
                 key={tag.id}
-                className="flex items-center gap-2 px-2 py-1.5 cursor-pointer hover:bg-accent rounded-sm"
+                checked={tagIdsFilter.includes(tag.id)}
+                onCheckedChange={() => toggleTag(tag.id)}
+                className="flex items-center gap-2"
               >
-                <Checkbox
-                  checked={tagIdsFilter.includes(tag.id)}
-                  onCheckedChange={() => toggleTag(tag.id)}
-                />
                 <span
                   className="size-2.5 rounded-full shrink-0"
                   style={{
@@ -97,7 +95,7 @@ export function ProjectsFilters({
                   }}
                 />
                 <span className="text-sm truncate">{tag.name}</span>
-              </label>
+              </DropdownMenuCheckboxItem>
             ))
           )}
         </DropdownMenuContent>

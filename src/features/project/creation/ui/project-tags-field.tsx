@@ -185,9 +185,11 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                         {tag.name}
                       </span>
                       <Button
+                        type="button"
                         variant='ghost'
                         size='icon-sm'
                         className='size-4'
+                        aria-label={t('project.creation.removeTag')}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -207,37 +209,36 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="max-h-64 overflow-y-auto">
                       {allTags.map((tag) => (
-                        <div
+                        <DropdownMenuItem
                           key={tag.id}
-                          className="group flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent"
+                          onSelect={(e) => {
+                            e.preventDefault();
+                            if (!tagIds.includes(tag.id)) addTagId(tag.id);
+                          }}
+                          className="group flex cursor-pointer items-center gap-2"
                         >
-                          <button
-                            type="button"
-                            className="flex flex-1 items-center gap-2 text-left"
-                            onClick={() => {
-                              if (!tagIds.includes(tag.id)) addTagId(tag.id);
+                          <span
+                            className="size-2 shrink-0 rounded-full"
+                            style={{
+                              backgroundColor: tag.color ?? 'var(--muted)'
                             }}
-                          >
-                            <span
-                              className="size-2 shrink-0 rounded-full"
-                              style={{
-                                backgroundColor: tag.color ?? 'var(--muted)'
-                              }}
-                            />
-                            {tag.name}
-                          </button>
-                          <button
+                          />
+                          <span className="min-w-0 flex-1 truncate">{tag.name}</span>
+                          <Button
                             type="button"
-                            className="rounded p-1 opacity-0 hover:bg-accent-foreground/10 group-hover:opacity-100"
+                            variant="ghost"
+                            size="icon"
+                            className="size-6 shrink-0 opacity-0 group-hover:opacity-100"
                             onClick={(e) => {
+                              e.preventDefault();
                               e.stopPropagation();
                               openEdit(tag);
                             }}
                             aria-label={t('project.creation.editTagAria')}
                           >
                             <PencilIcon className="size-4" />
-                          </button>
-                        </div>
+                          </Button>
+                        </DropdownMenuItem>
                       ))}
                       <Separator/>
                       <DropdownMenuItem
