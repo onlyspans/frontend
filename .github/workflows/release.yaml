@@ -16,4 +16,6 @@ jobs:
       image_name: frontend
       helm_release: frontend-staging
       kube_namespace: frontend
+      extra_build_args: |
+        VITE_API_URL=${{ vars.VITE_API_URL }}
     secrets: inherit
