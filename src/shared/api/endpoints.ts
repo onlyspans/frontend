@@ -1,4 +1,4 @@
-import { appConfig } from '@/shared/config/app';
+import { getAppConfig } from '@/shared/config/app';
 
 function createEndpoints<T extends Record<string, string | ((...args: any[]) => string)>>(
   base: string,
@@ -47,4 +47,4 @@ export const API_ENDPOINTS = {
   })
 } as const;
 
-export const getApiBaseUrl = (): string => appConfig.apiBaseUrl;
+export const getProjectsBaseUrl = (): string => getAppConfig().projectsBaseUrl;

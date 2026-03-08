@@ -1,12 +1,29 @@
-function getRequiredEnv(key: keyof ImportMetaEnv): string {
-  const value = import.meta.env[key as keyof ImportMeta['env']];
-  const trimmed = typeof value === 'string' ? value.trim() : '';
-  if (!trimmed) {
-    throw new Error(`${String(key)} is required.`);
-  }
-  return trimmed;
+interface AppConfig {
+  projectsBaseUrl: string;
 }
 
-export const appConfig = {
-  apiBaseUrl: getRequiredEnv('VITE_API_URL')
-} as const;
+let appConfig: AppConfig | null = null;
+
+export async function loadAppConfig(): Promise<void> {
+  const response = await fetch('/config.json');
+  if (!response.ok) {
+    throw new Error('Failed to load app config');
+  }
+
+  const config = await response.json();
+
+  if (!config.projectsBaseUrl) {
+    throw new Error('projectsBaseUrl is required in config.json');
+  }
+
+  appConfig = {
+    projectsBaseUrl: config.projectsBaseUrl,
+  };
+}
+
+export function getAppConfig(): AppConfig {
+  if (!appConfig) {
+    throw new Error('App config is not loaded. Call loadAppConfig() first.');
+  }
+  return appConfig;
+}

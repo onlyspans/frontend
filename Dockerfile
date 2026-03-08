@@ -15,10 +15,6 @@ RUN pnpm install --frozen-lockfile
 # Copy source code
 COPY . .
 
-# Build-time env for Vite (inlined into bundle)
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-
 # Build the application
 RUN pnpm run build
 
@@ -27,6 +23,9 @@ FROM nginx:alpine
 
 # Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Use production config
+COPY --from=builder /app/dist/config.prod.json /usr/share/nginx/html/config.json
 
 # Copy nginx configuration for SPA routing and metrics
 RUN echo 'server { \

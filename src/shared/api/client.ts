@@ -1,11 +1,11 @@
 import axios, { AxiosError } from 'axios';
 import type { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import { useTokenStore } from '@/shared/stores';
-import { getApiBaseUrl } from './endpoints';
+import { getProjectsBaseUrl } from './endpoints';
 import type { ApiError, ApiResponse } from './types';
 
 export const apiClient = axios.create({
-  baseURL: getApiBaseUrl(),
+  baseURL: getProjectsBaseUrl(),
   headers: {
     'Content-Type': 'application/json'
   },
@@ -88,7 +88,7 @@ apiClient.interceptors.response.use(
 
       try {
         const response = await axios.post<ApiResponse<{ accessToken: string; refreshToken?: string }>>(
-          `${getApiBaseUrl()}/auth/refresh`,
+          `${getProjectsBaseUrl()}/auth/refresh`,
           { refreshToken }
         );
 
