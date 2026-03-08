@@ -1,1 +1,1 @@
-export { getAppConfig, loadAppConfig } from './app';
+export { getAppConfig } from './app';

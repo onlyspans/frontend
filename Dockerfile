@@ -25,7 +25,7 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Use production config
-COPY --from=builder /app/dist/config.prod.json /usr/share/nginx/html/config.json
+COPY --from=builder /app/dist/config.prod.js /usr/share/nginx/html/config.js
 
 # Copy nginx configuration for SPA routing and metrics
 RUN echo 'server { \
