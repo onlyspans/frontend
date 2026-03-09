@@ -1,5 +1,4 @@
-export { apiClient, handleApiError, extractData } from './client';
-export { API_ENDPOINTS, getApiBaseUrl } from './endpoints';
+export { api, createServiceClient, handleApiError, extractData } from './client';
 export type {
   ApiResponse,
   ApiError,

@@ -1,8 +1,7 @@
 import type { CreateSpaceFormData } from '@/entities/space/model/create-space-schema';
 import type { Space } from '@/entities/space/model/space';
-// import { apiClient, extractData } from '@/shared/api';
+// import { api, extractData } from '@/shared/api';
 // import type { ApiResponse } from '@/shared/api/types';
-// import { API_ENDPOINTS } from '@/shared/api/endpoints';
 
 const spaces = [
   {
@@ -34,9 +33,7 @@ export const spaceApi = {
     });
 
     // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<Space[]>>(
-    //   API_ENDPOINTS.SPACES.BASE
-    // );
+    // const response = await api.projects.get<ApiResponse<Space[]>>('/spaces');
     // return extractData(response);
   },
 
@@ -54,9 +51,7 @@ export const spaceApi = {
     });
 
     // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<Space>>(
-    //   API_ENDPOINTS.SPACES.BY_ID(id)
-    // );
+    // const response = await api.projects.get<ApiResponse<Space>>(`/spaces/${id}`);
     // return extractData(response);
   },
 
@@ -74,9 +69,7 @@ export const spaceApi = {
     });
 
     // Real implementation (commented out):
-    // const response = await apiClient.get<ApiResponse<Space>>(
-    //   API_ENDPOINTS.SPACES.BY_SLUG(slug)
-    // );
+    // const response = await api.projects.get<ApiResponse<Space>>(`/spaces/slug/${slug}`);
     // return extractData(response);
   },
 
@@ -96,10 +89,7 @@ export const spaceApi = {
     });
 
     // Real implementation (commented out):
-    // const response = await apiClient.post<ApiResponse<Space>>(
-    //   API_ENDPOINTS.SPACES.BASE,
-    //   data
-    // );
+    // const response = await api.projects.post<ApiResponse<Space>>('/spaces', data);
     // return extractData(response);
   }
 };

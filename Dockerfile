@@ -16,7 +16,9 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build-time env for Vite (inlined into bundle)
-ENV VITE_API_URL=http://projects.onlyspans.ru/api
+ENV VITE_AUTH_API_URL=http://auth.onlyspans.ru/api \
+    VITE_PROJECTS_API_URL=http://projects.onlyspans.ru/api \
+    VITE_EVENTS_API_URL=http://events.onlyspans.ru/api
 
 # Build the application
 RUN pnpm run build

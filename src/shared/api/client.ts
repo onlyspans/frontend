@@ -1,129 +1,161 @@
 import axios, { AxiosError } from 'axios';
-import type { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig
+} from 'axios';
 import { useTokenStore } from '@/shared/stores';
-import { getApiBaseUrl } from './endpoints';
+import { appConfig } from '@/shared/config/app';
 import type { ApiError, ApiResponse } from './types';
 
-export const apiClient = axios.create({
-  baseURL: getApiBaseUrl(),
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  timeout: 30000
-});
+const AUTH_REFRESH_PATH = '/auth/refresh';
 
 let isRefreshing = false;
 let failedQueue: Array<{
-  resolve: (value?: unknown) => void;
+  resolve: (value: unknown) => void;
   reject: (error?: unknown) => void;
+  request: AxiosRequestConfig & { _retry?: boolean };
+  client: AxiosInstance;
 }> = [];
 
 const processQueue = (error: AxiosError | null, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-
+  const queue = failedQueue;
   failedQueue = [];
+
+  queue.forEach((item) => {
+    if (error || !token) {
+      item.reject(error);
+      return;
+    }
+
+    if (item.request.headers) {
+      item.request.headers.Authorization = `Bearer ${token}`;
+    }
+
+    item.resolve(item.client(item.request));
+  });
 };
 
-apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = useTokenStore.getState().accessToken;
+export function createServiceClient(baseURL: string): AxiosInstance {
+  const client = axios.create({
+    baseURL,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    timeout: 30000
+  });
 
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+  client.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+      const token = useTokenStore.getState().accessToken;
+
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
+  );
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  return client;
+}
 
-apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error: AxiosError<ApiError>) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+const authClient = createServiceClient(appConfig.api.auth);
+const projectsClient = createServiceClient(appConfig.api.projects);
+const eventsClient = createServiceClient(appConfig.api.events);
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then((token) => {
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-            }
-            return apiClient(originalRequest);
-          })
-          .catch((err) => {
-            return Promise.reject(err);
+export const api = {
+  auth: authClient,
+  projects: projectsClient,
+  events: eventsClient
+} as const;
+
+function attachAuthRefreshInterceptor(client: AxiosInstance) {
+  client.interceptors.response.use(
+    (response) => response,
+    async (error: AxiosError<ApiError>) => {
+      const originalRequest = error.config as
+        | (AxiosRequestConfig & { _retry?: boolean })
+        | undefined;
+
+      if (!originalRequest) return Promise.reject(error);
+
+      const url = String(originalRequest.url ?? '');
+      const isRefreshCall = url.includes(AUTH_REFRESH_PATH);
+
+      if (error.response?.status === 401 && !originalRequest._retry && !isRefreshCall) {
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({
+              resolve,
+              reject,
+              request: originalRequest,
+              client
+            });
           });
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        const tokenStore = useTokenStore.getState();
+        const refreshToken = tokenStore.refreshToken;
+
+        if (!refreshToken) {
+          tokenStore.clearTokens();
+          processQueue(error, null);
+          isRefreshing = false;
+
+          if (typeof window !== 'undefined') {
+            window.location.href = '/sign-in';
+          }
+
+          return Promise.reject(error);
+        }
+
+        try {
+          const response = await api.auth.post<
+            ApiResponse<{ accessToken: string; refreshToken?: string }>
+          >(AUTH_REFRESH_PATH, { refreshToken });
+
+          const { accessToken, refreshToken: newRefreshToken } = response.data.data;
+
+          if (newRefreshToken) {
+            tokenStore.setTokens(accessToken, newRefreshToken);
+          } else {
+            tokenStore.setAccessToken(accessToken);
+          }
+
+          if (originalRequest.headers) {
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          }
+
+          processQueue(null, accessToken);
+          isRefreshing = false;
+
+          return client(originalRequest);
+        } catch (refreshError) {
+          useTokenStore.getState().clearTokens();
+          processQueue(refreshError as AxiosError, null);
+          isRefreshing = false;
+
+          if (typeof window !== 'undefined') {
+            window.location.href = '/sign-in';
+          }
+
+          return Promise.reject(refreshError);
+        }
       }
 
-      originalRequest._retry = true;
-      isRefreshing = true;
-
-      const tokenStore = useTokenStore.getState();
-      const refreshToken = tokenStore.refreshToken;
-
-      if (!refreshToken) {
-        tokenStore.clearTokens();
-        processQueue(error, null);
-        isRefreshing = false;
-
-        if (typeof window !== 'undefined') {
-          window.location.href = '/sign-in';
-        }
-
-        return Promise.reject(error);
-      }
-
-      try {
-        const response = await axios.post<ApiResponse<{ accessToken: string; refreshToken?: string }>>(
-          `${getApiBaseUrl()}/auth/refresh`,
-          { refreshToken }
-        );
-
-        const { accessToken, refreshToken: newRefreshToken } = response.data.data;
-
-        if (newRefreshToken) {
-          tokenStore.setTokens(accessToken, newRefreshToken);
-        } else {
-          tokenStore.setAccessToken(accessToken);
-        }
-
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        }
-
-        processQueue(null, accessToken);
-        isRefreshing = false;
-
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        useTokenStore.getState().clearTokens();
-        processQueue(refreshError as AxiosError, null);
-        isRefreshing = false;
-
-        if (typeof window !== 'undefined') {
-          window.location.href = '/sign-in';
-        }
-
-        return Promise.reject(refreshError);
-      }
+      return Promise.reject(error);
     }
+  );
+}
 
-    return Promise.reject(error);
-  }
-);
+[api.auth, api.projects, api.events].forEach(attachAuthRefreshInterceptor);
 
 export const handleApiError = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
@@ -160,5 +192,3 @@ export const handleApiError = (error: unknown): string => {
 export const extractData = <T>(response: { data: ApiResponse<T> }): T => {
   return response.data.data;
 };
-
-export default apiClient;

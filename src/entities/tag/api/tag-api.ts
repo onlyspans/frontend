@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api';
+import { api } from '@/shared/api';
 import type { PaginatedListResponse } from '@/shared/api/types';
 import type {
   Tag,
@@ -16,18 +16,18 @@ const tagEndpoints = {
 
 export const tagApi = {
   getList: (params?: TagsListParams) =>
-    apiClient
+    api.projects
       .get<PaginatedListResponse<Tag>>(tagEndpoints.list, { params })
       .then((r) => r.data),
 
   getById: (id: string) =>
-    apiClient.get<Tag>(tagEndpoints.byId(id)).then((r) => r.data),
+    api.projects.get<Tag>(tagEndpoints.byId(id)).then((r) => r.data),
 
   create: (body: CreateTagRequest) =>
-    apiClient.post<Tag>(tagEndpoints.list, body).then((r) => r.data),
+    api.projects.post<Tag>(tagEndpoints.list, body).then((r) => r.data),
 
   update: (id: string, body: UpdateTagRequest) =>
-    apiClient.put<Tag>(tagEndpoints.byId(id), body).then((r) => r.data),
+    api.projects.put<Tag>(tagEndpoints.byId(id), body).then((r) => r.data),
 
-  delete: (id: string) => apiClient.delete(tagEndpoints.byId(id))
+  delete: (id: string) => api.projects.delete(tagEndpoints.byId(id))
 };

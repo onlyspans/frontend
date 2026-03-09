@@ -8,5 +8,9 @@ function getRequiredEnv(key: keyof ImportMetaEnv): string {
 }
 
 export const appConfig = {
-  apiBaseUrl: getRequiredEnv('VITE_API_URL')
+  api: {
+    auth: getRequiredEnv('VITE_AUTH_API_URL'),
+    projects: getRequiredEnv('VITE_PROJECTS_API_URL'),
+    events: getRequiredEnv('VITE_EVENTS_API_URL')
+  }
 } as const;
