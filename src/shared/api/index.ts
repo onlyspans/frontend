@@ -1,4 +1,5 @@
-export { api, createServiceClient, handleApiError, extractData } from './client';
+export { api, createServiceClient } from './client';
+export { handleApiError, extractData } from './utils';
 export type {
   ApiResponse,
   ApiError,
