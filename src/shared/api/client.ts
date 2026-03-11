@@ -31,4 +31,4 @@ export const api = {
 } as const;
 
 const attachAuthRefresh = createAuthRefreshInterceptor(() => api.auth);
-[api.auth, api.projects, api.events].forEach(attachAuthRefresh);
+[api.projects, api.events].forEach(attachAuthRefresh);
