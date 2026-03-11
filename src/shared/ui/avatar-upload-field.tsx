@@ -181,37 +181,30 @@ export function AvatarUploadField<T extends FieldValues>(
     return null;
   }, [avatarMode, avatarValue]);
 
-  const [filePreview, setFilePreview] = useState<string | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageErrored, setImageErrored] = useState(false);
-
-  useEffect(() => {
-    if (avatarFileValue) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFilePreview(reader.result as string);
-      };
-      reader.readAsDataURL(avatarFileValue);
-    } else {
-      setFilePreview(null);
-    }
+  const filePreview = useMemo<string | null>(() => {
+    if (!avatarFileValue) return null;
+    return URL.createObjectURL(avatarFileValue);
   }, [avatarFileValue]);
 
   useEffect(() => {
-    if (avatarMode === 'url' && previewUrl) {
-      setImageLoaded(false);
-      setImageErrored(false);
-    } else {
-      setImageLoaded(false);
-      setImageErrored(false);
-    }
-  }, [avatarMode, previewUrl]);
+    return () => {
+      if (filePreview) URL.revokeObjectURL(filePreview);
+    };
+  }, [filePreview]);
+
+  const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
+  const [erroredUrl, setErroredUrl] = useState<string | null>(null);
 
   const avatarPreview = avatarMode === 'file' ? filePreview : previewUrl;
   
   const isImageLoading = useMemo(() => {
-    return avatarMode === 'url' && previewUrl && !imageLoaded && !imageErrored;
-  }, [avatarMode, previewUrl, imageLoaded, imageErrored]);
+    return (
+      avatarMode === 'url' &&
+      previewUrl &&
+      loadedUrl !== previewUrl &&
+      erroredUrl !== previewUrl
+    );
+  }, [avatarMode, previewUrl, loadedUrl, erroredUrl]);
 
   const getInitials = (name: string | undefined) => {
     if (!name) return defaultInitials;
@@ -263,8 +256,8 @@ export function AvatarUploadField<T extends FieldValues>(
 
   const handleAvatarUrlChange = (url: string) => {
     setUrlError(null);
-    setImageLoaded(false);
-    setImageErrored(false);
+    setLoadedUrl(null);
+    setErroredUrl(null);
 
     if (!url.trim()) {
       form.setValue(avatarFieldName, '' as any);
@@ -281,8 +274,8 @@ export function AvatarUploadField<T extends FieldValues>(
   };
 
   const handleImageError = () => {
-    setImageErrored(true);
-    setImageLoaded(false);
+    setErroredUrl(previewUrl ?? '');
+    setLoadedUrl(null);
     setUrlError('Failed to load image from URL. Please check the link or use a different image.');
     toast.error('Invalid image URL', {
       description: 'The provided URL does not point to a valid image'
@@ -290,8 +283,8 @@ export function AvatarUploadField<T extends FieldValues>(
   };
 
   const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageErrored(false);
+    setLoadedUrl(previewUrl ?? '');
+    setErroredUrl(null);
     setUrlError(null);
   };
 
