@@ -31,7 +31,12 @@ export function EnvironmentsManagement({
         open={vm.createOpen}
         isPending={vm.createMutation.isPending}
         onOpenChange={vm.setCreateOpen}
-        onSubmit={vm.handleCreate}
+        onSubmit={(name, description, color) => {
+          if (color.mode === 'value') {
+            return vm.handleCreate(name, description, color);
+          }
+          return vm.handleCreate(name, description, { mode: 'unset' });
+        }}
       />
 
       <UpsertEnvironmentDialog
@@ -40,9 +45,15 @@ export function EnvironmentsManagement({
         isPending={vm.updateMutation.isPending}
         initial={vm.editEnv ?? undefined}
         onOpenChange={(open) => !open && vm.setEditEnv(null)}
-        onSubmit={(name, description) => {
+        onSubmit={(name, description, color) => {
           if (!vm.editEnv) return;
-          return vm.handleUpdate(vm.editEnv, name, description);
+          if (color.mode === 'value') {
+            return vm.handleUpdate(vm.editEnv, name, description, color);
+          }
+          if (color.mode === 'reset') {
+            return vm.handleUpdate(vm.editEnv, name, description, color);
+          }
+          return vm.handleUpdate(vm.editEnv, name, description, { mode: 'nochange' });
         }}
       />
 

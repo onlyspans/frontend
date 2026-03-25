@@ -10,6 +10,7 @@ import { Badge } from '@/shared/ui/badge';
 import { ProjectIcon, type Project, type ProjectSortField, type SortOrder } from '@/entities/project';
 import { useEnvironments } from '@/entities/environment';
 import { useTranslation } from '@/shared/lib/i18n';
+import { getContrastTextColor } from '@/shared/lib/color/get-contrast-text-color';
 
 interface ProjectsTableProps {
   projects: Project[];
@@ -155,7 +156,20 @@ export function ProjectsTable(
                 <div className="flex flex-wrap gap-1 max-w-[200px]">
                   {project.environments?.length ? (
                     project.environments.map((env) => (
-                      <Badge key={env.id} variant="secondary" className="text-xs font-normal">
+                      <Badge
+                        key={env.id}
+                        variant="secondary"
+                        className="text-xs font-normal"
+                        style={
+                          env.color
+                            ? {
+                                backgroundColor: env.color,
+                                color: getContrastTextColor(env.color),
+                                borderColor: 'transparent'
+                              }
+                            : undefined
+                        }
+                      >
                         {env.name}
                       </Badge>
                     ))
@@ -168,6 +182,15 @@ export function ProjectsTable(
                           key={env!.id}
                           variant="secondary"
                           className="text-xs font-normal"
+                          style={
+                            env!.color
+                              ? {
+                                  backgroundColor: env!.color,
+                                  color: getContrastTextColor(env!.color),
+                                  borderColor: 'transparent'
+                                }
+                              : undefined
+                          }
                         >
                           {env!.name}
                         </Badge>

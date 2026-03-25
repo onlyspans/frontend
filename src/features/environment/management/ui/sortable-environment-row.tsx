@@ -44,7 +44,19 @@ export function SortableEnvironmentRow({
           <GripVertical className="size-4" />
         </Button>
       </TableCell>
-      <TableCell className="font-medium">{environment.name}</TableCell>
+      <TableCell className="font-medium">
+        <span className="inline-flex items-center gap-2">
+          <span
+            className="size-2 rounded-full border"
+            style={{
+              backgroundColor: environment.color ?? 'transparent',
+              borderColor: environment.color ? 'transparent' : 'var(--border)'
+            }}
+            aria-hidden
+          />
+          {environment.name}
+        </span>
+      </TableCell>
       <TableCell className="min-w-[280px] whitespace-normal">
         {environment.description ?? <span className="text-muted-foreground">—</span>}
       </TableCell>

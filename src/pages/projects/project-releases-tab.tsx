@@ -54,6 +54,7 @@ export function ProjectReleasesTab() {
             id: env!.id,
             name: env!.name,
             description: env!.description,
+            color: env!.color,
             position: env!.position
           }));
 

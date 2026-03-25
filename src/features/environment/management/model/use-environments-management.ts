@@ -112,12 +112,21 @@ export function useEnvironmentsManagement({
     }
   };
 
-  const handleCreate = async (name: string, description: string) => {
+  const handleCreate = async (
+    name: string,
+    description: string,
+    color:
+      | { mode: 'unset' }
+      | { mode: 'value'; value: string }
+  ) => {
     try {
+      const colorPayload =
+        color.mode === 'value' ? { color: color.value.trim() } : {};
       await createMutation.mutateAsync({
         name: name.trim(),
         description: normalizeDescription(description) ?? undefined,
-        position: getNextPosition(environmentsQuery.data)
+        position: getNextPosition(environmentsQuery.data),
+        ...colorPayload
       });
       toast.success(t('pages.environments.toast.created'));
       setCreateOpen(false);
@@ -128,13 +137,28 @@ export function useEnvironmentsManagement({
     }
   };
 
-  const handleUpdate = async (env: Environment, name: string, description: string) => {
+  const handleUpdate = async (
+    env: Environment,
+    name: string,
+    description: string,
+    color:
+      | { mode: 'nochange' }
+      | { mode: 'reset' }
+      | { mode: 'value'; value: string }
+  ) => {
     try {
+      const colorPayload =
+        color.mode === 'nochange'
+          ? {}
+          : color.mode === 'reset'
+            ? { color: null as null }
+            : { color: color.value.trim() };
       await updateMutation.mutateAsync({
         id: env.id,
         data: {
           name: name.trim(),
-          description: normalizeDescription(description)
+          description: normalizeDescription(description),
+          ...colorPayload
         }
       });
       toast.success(t('pages.environments.toast.updated'));
