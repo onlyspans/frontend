@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api';
+import { api } from '@/shared/api';
 import type { PaginatedListResponse } from '@/shared/api/types';
 import type {
   Release,
@@ -17,7 +17,7 @@ const releaseEndpoints = (projectId: string) => {
 
 export const releaseApi = {
   getList: (projectId: string, params?: ReleasesListParams) =>
-    apiClient
+    api.projects
       .get<PaginatedListResponse<Release>>(
         releaseEndpoints(projectId).list,
         { params }
@@ -25,12 +25,12 @@ export const releaseApi = {
       .then((r) => r.data),
 
   getById: (projectId: string, releaseId: string) =>
-    apiClient
+    api.projects
       .get<Release>(releaseEndpoints(projectId).byId(releaseId))
       .then((r) => r.data),
 
   create: (projectId: string, body: CreateReleaseRequest) =>
-    apiClient
+    api.projects
       .post<Release>(releaseEndpoints(projectId).list, body)
       .then((r) => r.data),
 
@@ -39,7 +39,7 @@ export const releaseApi = {
     releaseId: string,
     body: UpdateReleaseRequest
   ) =>
-    apiClient
+    api.projects
       .put<Release>(
         releaseEndpoints(projectId).byId(releaseId),
         body
@@ -47,5 +47,5 @@ export const releaseApi = {
       .then((r) => r.data),
 
   delete: (projectId: string, releaseId: string) =>
-    apiClient.delete(releaseEndpoints(projectId).byId(releaseId))
+    api.projects.delete(releaseEndpoints(projectId).byId(releaseId))
 };

@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api';
+import { api } from '@/shared/api';
 import type { PaginatedListResponse } from '@/shared/api/types';
 import type {
   Project,
@@ -39,24 +39,24 @@ export const projectApi = {
     const search = buildListParams(params);
     const query = search.toString();
     const url = query ? `${projectEndpoints.list}?${query}` : projectEndpoints.list;
-    return apiClient
+    return api.projects
       .get<PaginatedListResponse<Project>>(url)
       .then((r) => r.data);
   },
 
   getById: (id: string) =>
-    apiClient.get<Project>(projectEndpoints.byId(id)).then((r) => r.data),
+    api.projects.get<Project>(projectEndpoints.byId(id)).then((r) => r.data),
 
   getBySlug: (slug: string) =>
-    apiClient.get<Project>(projectEndpoints.bySlug(slug)).then((r) => r.data),
+    api.projects.get<Project>(projectEndpoints.bySlug(slug)).then((r) => r.data),
 
   create: (body: CreateProjectRequest) =>
-    apiClient.post<Project>(projectEndpoints.list, body).then((r) => r.data),
+    api.projects.post<Project>(projectEndpoints.list, body).then((r) => r.data),
 
   update: (id: string, body: UpdateProjectRequest) =>
-    apiClient.put<Project>(projectEndpoints.byId(id), body).then((r) => r.data),
+    api.projects.put<Project>(projectEndpoints.byId(id), body).then((r) => r.data),
 
-  delete: (id: string) => apiClient.delete(projectEndpoints.byId(id)),
+  delete: (id: string) => api.projects.delete(projectEndpoints.byId(id)),
 
   uploadIcon: async (id: string, file: File): Promise<Project> => {
     if (file.size > MAX_ICON_SIZE) {
@@ -67,7 +67,7 @@ export const projectApi = {
     }
     const formData = new FormData();
     formData.append('file', file);
-    const r = await apiClient
+    const r = await api.projects
       .post<Project>(projectEndpoints.icon(id), formData, {
         headers: {
           'Content-Type': undefined
