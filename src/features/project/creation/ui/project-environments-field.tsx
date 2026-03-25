@@ -11,12 +11,14 @@ import { Checkbox } from '@/shared/ui/checkbox';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateProjectFormData } from '@/entities/project';
 import { useEnvironments } from '@/entities/environment';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface ProjectEnvironmentsFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
 }
 
 export function ProjectEnvironmentsField({ form }: ProjectEnvironmentsFieldProps) {
+  const { t } = useTranslation();
   const environmentsQuery = useEnvironments();
 
   function normalizeIds(value: unknown): string[] {
@@ -42,11 +44,13 @@ export function ProjectEnvironmentsField({ form }: ProjectEnvironmentsFieldProps
       render={({ field }) => (
         <FormItem>
           <Field>
-            <FormLabel>Environments</FormLabel>
+            <FormLabel>{t('project.creation.environmentsLabel')}</FormLabel>
             <FormControl>
               <div className="flex flex-wrap gap-4 pt-2">
                 {environmentsQuery.isLoading ? (
-                  <span className="text-sm text-muted-foreground">Loading…</span>
+                  <span className="text-sm text-muted-foreground">
+                    {t('project.creation.environmentsLoading')}
+                  </span>
                 ) : environmentsQuery.data?.length ? (
                   environmentsQuery.data.map((env) => (
                     <label
@@ -67,12 +71,14 @@ export function ProjectEnvironmentsField({ form }: ProjectEnvironmentsFieldProps
                     </label>
                   ))
                 ) : (
-                  <span className="text-sm text-muted-foreground">No environments found</span>
+                  <span className="text-sm text-muted-foreground">
+                    {t('project.creation.environmentsEmpty')}
+                  </span>
                 )}
               </div>
             </FormControl>
             <FieldDescription>
-              Environments define the promotion pipeline for releases.
+              {t('project.creation.environmentsDescription')}
             </FieldDescription>
             <FormMessage />
           </Field>

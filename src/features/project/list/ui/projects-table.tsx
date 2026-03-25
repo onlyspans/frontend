@@ -81,7 +81,7 @@ export function ProjectsTable(
               <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
               <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
               <TableHead>{t('project.table.description')}</TableHead>
-              <TableHead>{t('project.table.stages')}</TableHead>
+              <TableHead>{t('project.table.environments')}</TableHead>
               <TableHead>{t('project.table.tags')}</TableHead>
               <SortHeader label={t('project.table.status')} field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
             </TableRow>
@@ -107,7 +107,7 @@ export function ProjectsTable(
               <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
               <TableHead>{t('project.table.name')}</TableHead>
               <TableHead>{t('project.table.description')}</TableHead>
-              <TableHead>{t('project.table.stages')}</TableHead>
+              <TableHead>{t('project.table.environments')}</TableHead>
               <TableHead>{t('project.table.tags')}</TableHead>
               <TableHead>{t('project.table.status')}</TableHead>
             </TableRow>
@@ -132,7 +132,7 @@ export function ProjectsTable(
             <TableHead className="w-[50px]"></TableHead>
             <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
             <TableHead>{t('project.table.description')}</TableHead>
-            <TableHead>{t('project.table.stages')}</TableHead>
+            <TableHead>{t('project.table.environments')}</TableHead>
             <TableHead>{t('project.table.tags')}</TableHead>
             <SortHeader label={t('project.table.status')} field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
           </TableRow>
