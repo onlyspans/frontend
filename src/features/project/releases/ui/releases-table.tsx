@@ -9,16 +9,8 @@ import {
 import { Button } from '@/shared/ui/button';
 import { Check, CircleX } from 'lucide-react';
 import { useTranslation } from '@/shared/lib/i18n';
-import type { TranslationKey } from '@/shared/lib/i18n';
 import type { Release } from '@/entities/release';
-import type { LifecycleStage } from '@/entities/project';
-
-const TABLE_STAGE_KEYS: Record<LifecycleStage, TranslationKey> = {
-  development: 'project.releases.table.dev',
-  testing: 'project.releases.table.test',
-  staging: 'project.releases.table.stage',
-  production: 'project.releases.table.prod'
-};
+import type { ProjectEnvironmentRef } from '@/entities/project';
 
 export type StubDeployment = {
   status: 'success' | 'failed';
@@ -37,47 +29,47 @@ function formatDateTime(iso: string): string {
 interface ReleasesTableProps {
   releases: Release[];
   isLoading: boolean;
-  lifecycleStages: LifecycleStage[];
+  environments: ProjectEnvironmentRef[];
   stubDeployments: StubDeploymentsMap;
-  onDeploy: (releaseId: string, stage: LifecycleStage) => void;
+  onDeploy: (releaseId: string, environmentId: string) => void;
 }
 
-function getStubKey(releaseId: string, stage: LifecycleStage): string {
-  return `${releaseId}:${stage}`;
+function getStubKey(releaseId: string, environmentId: string): string {
+  return `${releaseId}:${environmentId}`;
 }
 
 /** Можно ли деплоить на этап: только если предыдущий этап в цепочке уже задеплоен. */
 function canDeployStage(
   releaseId: string,
   stageIndex: number,
-  lifecycleStages: LifecycleStage[],
+  environments: ProjectEnvironmentRef[],
   stubDeployments: StubDeploymentsMap
 ): boolean {
   if (stageIndex === 0) return true;
-  const prevStage = lifecycleStages[stageIndex - 1];
-  const prevKey = getStubKey(releaseId, prevStage);
+  const prevEnv = environments[stageIndex - 1];
+  const prevKey = getStubKey(releaseId, prevEnv.id);
   return stubDeployments[prevKey]?.status === 'success';
 }
 
 export function ReleasesTable({
   releases,
   isLoading,
-  lifecycleStages,
+  environments,
   stubDeployments,
   onDeploy
 }: ReleasesTableProps) {
   const { t } = useTranslation();
 
   if (isLoading) {
-    const colCount = 2 + lifecycleStages.length;
+    const colCount = 2 + environments.length;
     return (
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>{t('project.releases.table.version')}</TableHead>
-              {lifecycleStages.map((stage) => (
-                <TableHead key={stage}>{t(TABLE_STAGE_KEYS[stage])}</TableHead>
+              {environments.map((env) => (
+                <TableHead key={env.id}>{env.name}</TableHead>
               ))}
               <TableHead>{t('project.releases.table.createdAt')}</TableHead>
             </TableRow>
@@ -95,15 +87,15 @@ export function ReleasesTable({
   }
 
   if (releases.length === 0) {
-    const colCount = 2 + lifecycleStages.length;
+    const colCount = 2 + environments.length;
     return (
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>{t('project.releases.table.version')}</TableHead>
-              {lifecycleStages.map((stage) => (
-                <TableHead key={stage}>{t(TABLE_STAGE_KEYS[stage])}</TableHead>
+              {environments.map((env) => (
+                <TableHead key={env.id}>{env.name}</TableHead>
               ))}
               <TableHead>{t('project.releases.table.createdAt')}</TableHead>
             </TableRow>
@@ -126,8 +118,8 @@ export function ReleasesTable({
         <TableHeader>
           <TableRow>
             <TableHead>{t('project.releases.table.version')}</TableHead>
-            {lifecycleStages.map((stage) => (
-              <TableHead key={stage}>{t(TABLE_STAGE_KEYS[stage])}</TableHead>
+            {environments.map((env) => (
+              <TableHead key={env.id}>{env.name}</TableHead>
             ))}
             <TableHead>{t('project.releases.table.createdAt')}</TableHead>
           </TableRow>
@@ -136,18 +128,18 @@ export function ReleasesTable({
           {releases.map((release) => (
             <TableRow key={release.id}>
               <TableCell className="font-medium">{release.version}</TableCell>
-              {lifecycleStages.map((stage, stageIndex) => {
-                const key = getStubKey(release.id, stage);
+              {environments.map((env, stageIndex) => {
+                const key = getStubKey(release.id, env.id);
                 const stub = stubDeployments[key];
                 const deployAllowed = canDeployStage(
                   release.id,
                   stageIndex,
-                  lifecycleStages,
+                  environments,
                   stubDeployments
                 );
                 if (stub) {
                   return (
-                    <TableCell key={stage} className="text-muted-foreground">
+                    <TableCell key={env.id} className="text-muted-foreground">
                       <span className="flex items-center gap-2">
                         <Button
                           variant={stub.status === 'success' ? 'default' : 'destructive'}
@@ -170,7 +162,7 @@ export function ReleasesTable({
                   );
                 }
                 return (
-                  <TableCell key={stage}>
+                  <TableCell key={env.id}>
                     <Button
                       type="button"
                       variant="outline"
@@ -181,7 +173,7 @@ export function ReleasesTable({
                           ? t('project.releases.table.deployDisabledHint')
                           : undefined
                       }
-                      onClick={() => deployAllowed && onDeploy(release.id, stage)}
+                      onClick={() => deployAllowed && onDeploy(release.id, env.id)}
                     >
                       {t('project.releases.table.deploy')}
                     </Button>

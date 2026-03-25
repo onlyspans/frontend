@@ -24,7 +24,7 @@ import { ProjectSlugField } from '@/features/project/creation/ui/project-slug-fi
 import { ProjectDescriptionField } from '@/features/project/creation/ui/project-description-field';
 import { ProjectIconField } from '@/features/project/creation/ui/project-icon-field';
 import { DeployToField } from '@/features/project/creation/ui/deploy-to-field';
-import { ProjectLifecycleField } from '@/features/project/creation/ui/project-lifecycle-field';
+import { ProjectEnvironmentsField } from '@/features/project/creation/ui/project-environments-field';
 import { ProjectTagsField } from '@/features/project/creation/ui/project-tags-field';
 
 interface ProjectSettingsGeneralFormProps {
@@ -40,8 +40,10 @@ function projectToDefaultValues(project: Project): CreateProjectFormData {
     emoji: project.emoji ?? '',
     iconFile: undefined,
     deployTo: 'aws',
-    lifecycleStages:
-      project.lifecycleStages?.length > 0 ? project.lifecycleStages : ['development'],
+    environmentIds:
+      project.environments?.length
+        ? project.environments.map((e) => e.id)
+        : project.environmentIds ?? [],
     tagIds: project.tags?.map((t) => t.id) ?? []
   };
 }
@@ -62,17 +64,20 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
 
   const onSubmit = async (data: CreateProjectFormData) => {
     try {
+      const imageUrl = data.imageUrl?.trim() || null;
+      const emoji = data.emoji?.trim() || null;
+
       await updateMutation.mutateAsync({
         id: project.id,
         data: {
           name: data.name,
           slug: data.slug?.trim() || data.slug,
           description: data.description,
-          lifecycleStages: data.lifecycleStages,
+          environmentIds: data.environmentIds,
           tagIds: data.tagIds ?? [],
           ...(!data.iconFile && {
-            imageUrl: data.imageUrl?.trim() ?? '',
-            emoji: data.emoji?.trim() ?? ''
+            imageUrl,
+            emoji
           })
         }
       });
@@ -104,7 +109,7 @@ export function ProjectSettingsGeneralForm({ project }: ProjectSettingsGeneralFo
               <ProjectSlugField form={form} />
               <ProjectDescriptionField form={form} />
               <DeployToField form={form} />
-              <ProjectLifecycleField form={form} />
+              <ProjectEnvironmentsField form={form} />
               <ProjectTagsField form={form} />
 
               <div className="flex justify-end gap-4 pt-4">

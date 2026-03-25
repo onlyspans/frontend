@@ -7,19 +7,9 @@ import {
   TableRow
 } from '@/shared/ui/table';
 import { Badge } from '@/shared/ui/badge';
-import { ProjectIcon, type Project, type ProjectSortField, type SortOrder, type LifecycleStage } from '@/entities/project';
+import { ProjectIcon, type Project, type ProjectSortField, type SortOrder } from '@/entities/project';
+import { useEnvironments } from '@/entities/environment';
 import { useTranslation } from '@/shared/lib/i18n';
-
-const STAGE_LABELS: Record<LifecycleStage, string> = {
-  development: 'dev',
-  testing: 'test',
-  staging: 'stage',
-  production: 'prod'
-};
-
-function getStageLabel(stage: LifecycleStage): string {
-  return STAGE_LABELS[stage] ?? stage;
-}
 
 interface ProjectsTableProps {
   projects: Project[];
@@ -76,6 +66,11 @@ export function ProjectsTable(
   }: ProjectsTableProps
 ) {
   const { t } = useTranslation();
+  const environmentsQuery = useEnvironments();
+
+  const environmentsById = new Map(
+    (environmentsQuery.data ?? []).map((env) => [env.id, env] as const)
+  );
 
   if (isLoading) {
     return (
@@ -158,16 +153,25 @@ export function ProjectsTable(
               </TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1 max-w-[200px]">
-                  {project.lifecycleStages?.length ? (
-                    project.lifecycleStages.map((stage) => (
-                      <Badge
-                        key={stage}
-                        variant="secondary"
-                        className="text-xs font-normal"
-                      >
-                        {getStageLabel(stage)}
+                  {project.environments?.length ? (
+                    project.environments.map((env) => (
+                      <Badge key={env.id} variant="secondary" className="text-xs font-normal">
+                        {env.name}
                       </Badge>
                     ))
+                  ) : project.environmentIds?.length ? (
+                    project.environmentIds
+                      .map((id) => environmentsById.get(id))
+                      .filter(Boolean)
+                      .map((env) => (
+                        <Badge
+                          key={env!.id}
+                          variant="secondary"
+                          className="text-xs font-normal"
+                        >
+                          {env!.name}
+                        </Badge>
+                      ))
                   ) : (
                     <span className="text-muted-foreground text-xs">—</span>
                   )}
