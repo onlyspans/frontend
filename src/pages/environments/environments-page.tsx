@@ -14,14 +14,14 @@ export function EnvironmentsPage() {
           <h1 className="text-3xl font-bold">{t('pages.environments.title')}</h1>
           <p className="text-muted-foreground mt-1">{t('pages.environments.subtitle')}</p>
         </div>
-        <Button
-          type="button"
-          onClick={() => setCreateOpen(true)}
-        >
+        <Button type="button" onClick={() => setCreateOpen(true)}>
           {t('pages.environments.createEnvironment')}
         </Button>
       </div>
-      <EnvironmentsManagement createOpen={createOpen} onCreateOpenChange={setCreateOpen} />
+      <EnvironmentsManagement
+        createOpen={createOpen}
+        onCreateOpenChange={setCreateOpen}
+      />
     </div>
   );
 }

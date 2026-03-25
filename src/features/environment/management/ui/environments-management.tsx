@@ -21,7 +21,12 @@ export function EnvironmentsManagement({
         environmentsQuery={vm.environmentsQuery}
         orderedEnvironments={vm.orderedEnvironments}
         dndSensors={vm.dndSensors}
-        onReorder={vm.handleReorder}
+        reorderMode={vm.reorderMode}
+        hasDraftReorderChanges={vm.hasDraftReorderChanges}
+        onEnterReorderMode={vm.enterReorderMode}
+        onDraftReorder={vm.handleDraftReorder}
+        onSaveReorder={vm.saveReorderMode}
+        onCancelReorder={vm.cancelReorderMode}
         onEdit={vm.openEdit}
         onDelete={vm.openDelete}
       />

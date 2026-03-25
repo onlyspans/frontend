@@ -79,6 +79,15 @@
       "title": "Environments",
       "subtitle": "Manage your environments",
       "createEnvironment": "Create environment",
+      "reorder": {
+        "save": "Save changes",
+        "cancel": "Cancel",
+        "confirm": {
+          "title": "Save environment order?",
+          "description": "This affects the promotion pipeline / deploy order. Proceed?",
+          "confirm": "Confirm"
+        }
+      },
       "table": {
         "title": "All environments",
         "loading": "Loading environments...",

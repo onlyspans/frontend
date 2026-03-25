@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { PointerSensor, useSensor, useSensors, type SensorDescriptor } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { toast } from 'sonner';
@@ -43,6 +43,13 @@ function useControlledBoolean({
   return [value, setValue] as const;
 }
 
+function areArraysEqual(a: string[], b: string[]) {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+  return true;
+}
+
 export function useEnvironmentsManagement({
   createOpen: createOpenControlled,
   onCreateOpenChange
@@ -63,16 +70,34 @@ export function useEnvironmentsManagement({
     onChange: onCreateOpenChange
   });
 
+  const [reorderMode, setReorderMode] = useState(false);
+
   const [editEnv, setEditEnv] = useState<Environment | null>(null);
   const [deleteEnv, setDeleteEnv] = useState<Environment | null>(null);
-  const [orderedIds, setOrderedIds] = useState<string[]>([]);
+  const [draftOrderedIds, setDraftOrderedIds] = useState<string[]>([]);
+  const [baselineOrderedIds, setBaselineOrderedIds] = useState<string[]>([]);
+  const wasReorderMode = useRef<boolean>(reorderMode);
 
   const dndSensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   useEffect(() => {
     if (!environmentsQuery.data) return;
-    setOrderedIds(environmentsQuery.data.map((e) => e.id));
-  }, [environmentsQuery.data]);
+    const serverIds = environmentsQuery.data.map((e) => e.id);
+    if (!reorderMode) {
+      setDraftOrderedIds(serverIds);
+    }
+  }, [environmentsQuery.data, reorderMode]);
+
+  useEffect(() => {
+    const prev = wasReorderMode.current;
+    if (prev === reorderMode) return;
+    wasReorderMode.current = reorderMode;
+
+    if (!reorderMode) return;
+    const snapshot = (environmentsQuery.data ?? []).map((e) => e.id);
+    setBaselineOrderedIds(snapshot);
+    setDraftOrderedIds(snapshot);
+  }, [environmentsQuery.data, reorderMode]);
 
   const environmentsById = useMemo(() => {
     const map = new Map<string, Environment>();
@@ -81,15 +106,16 @@ export function useEnvironmentsManagement({
   }, [environmentsQuery.data]);
 
   const orderedEnvironments = useMemo(() => {
-    if (!orderedIds.length) return environmentsQuery.data ?? [];
-    const resolved = orderedIds
+    if (!draftOrderedIds.length) return environmentsQuery.data ?? [];
+    const resolved = draftOrderedIds
       .map((id) => environmentsById.get(id))
       .filter((e): e is Environment => Boolean(e));
-    const missing = (environmentsQuery.data ?? []).filter((e) => !orderedIds.includes(e.id));
+    const missing = (environmentsQuery.data ?? []).filter((e) => !draftOrderedIds.includes(e.id));
     return [...resolved, ...missing];
-  }, [environmentsById, environmentsQuery.data, orderedIds]);
+  }, [draftOrderedIds, environmentsById, environmentsQuery.data]);
 
-  const handleReorder = async (activeId: string, overId: string) => {
+  const handleDraftReorder = (activeId: string, overId: string) => {
+    if (!reorderMode) return;
     if (activeId === overId) return;
 
     const currentIds = orderedEnvironments.map((e) => e.id);
@@ -98,14 +124,33 @@ export function useEnvironmentsManagement({
     if (oldIndex < 0 || newIndex < 0) return;
 
     const next = arrayMove(currentIds, oldIndex, newIndex);
-    const prev = orderedIds.length ? orderedIds : currentIds;
-    setOrderedIds(next);
+    setDraftOrderedIds(next);
+  };
+
+  const enterReorderMode = () => setReorderMode(true);
+
+  const hasDraftReorderChanges = useMemo(() => {
+    if (!reorderMode) return false;
+    return !areArraysEqual(draftOrderedIds, baselineOrderedIds);
+  }, [baselineOrderedIds, draftOrderedIds, reorderMode]);
+
+  const cancelReorderMode = () => {
+    setDraftOrderedIds(baselineOrderedIds);
+    setReorderMode(false);
+  };
+
+  const saveReorderMode = async () => {
+    if (!reorderMode) return;
+    if (!hasDraftReorderChanges) {
+      setReorderMode(false);
+      return;
+    }
 
     try {
-      await reorderMutation.mutateAsync(next);
+      await reorderMutation.mutateAsync(draftOrderedIds);
       toast.success(t('pages.environments.toast.reordered'));
+      setReorderMode(false);
     } catch (error) {
-      setOrderedIds(prev);
       toast.error(t('pages.environments.toast.reorderFailed'), {
         description: error instanceof Error ? error.message : undefined
       });
@@ -193,10 +238,13 @@ export function useEnvironmentsManagement({
 
     createOpen,
     setCreateOpen,
+    reorderMode,
+    setReorderMode,
     editEnv,
     setEditEnv,
     deleteEnv,
     setDeleteEnv,
+    hasDraftReorderChanges,
 
     reorderMutation,
     createMutation,
@@ -207,7 +255,10 @@ export function useEnvironmentsManagement({
     openEdit,
     openDelete,
 
-    handleReorder,
+    enterReorderMode,
+    handleDraftReorder,
+    saveReorderMode,
+    cancelReorderMode,
     handleCreate,
     handleUpdate,
     handleDelete
