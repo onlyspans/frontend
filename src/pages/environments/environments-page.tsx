@@ -12,8 +12,7 @@ export function EnvironmentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">{t('pages.environments.title')}</h1>
-          <p className="text-muted-foreground mt-1">Manage your environments</p>
-          {/*<p className="text-muted-foreground mt-1">{t('pages.environments.subtitle')}</p>*/}
+          <p className="text-muted-foreground mt-1">{t('pages.environments.subtitle')}</p>
         </div>
         <Button
           type="button"

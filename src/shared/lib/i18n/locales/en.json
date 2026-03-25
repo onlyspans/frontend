@@ -194,7 +194,6 @@
       "name": "Name",
       "description": "Description",
       "environments": "Environments",
-      "stages": "Environments",
       "tags": "Tags",
       "status": "Status",
       "noProjects": "No projects found",
@@ -219,11 +218,7 @@
         "deployedSuccess": "Deployed (success)",
         "deployedFailed": "Deployed (failed)",
         "loading": "Loading releases...",
-        "noReleases": "No releases",
-        "dev": "development",
-        "test": "testing",
-        "stage": "staging",
-        "prod": "production"
+        "noReleases": "No releases"
       },
       "pagination": {
         "range": "Showing {{from}} to {{to}} of {{total}} releases"

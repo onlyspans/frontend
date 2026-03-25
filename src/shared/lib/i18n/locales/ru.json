@@ -191,7 +191,6 @@
       "name": "Название",
       "description": "Описание",
       "environments": "Окружения",
-      "stages": "Окружения",
       "tags": "Теги",
       "status": "Статус",
       "noProjects": "Проекты не найдены",
@@ -216,11 +215,7 @@
         "deployedSuccess": "Задеплоено (успех)",
         "deployedFailed": "Задеплоено (ошибка)",
         "loading": "Загрузка релизов...",
-        "noReleases": "Нет релизов",
-        "dev": "development",
-        "test": "testing",
-        "stage": "staging",
-        "prod": "production"
+        "noReleases": "Нет релизов"
       },
       "pagination": {
         "range": "Показано {{from}}–{{to}} из {{total}} релизов"
