@@ -6,6 +6,8 @@ import type { Environment } from '@/entities/environment';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { TableCell } from '@/shared/ui/table';
+import { getContrastTextColor } from '@/shared/lib/color/get-contrast-text-color.ts';
+import { Badge } from '@/shared/ui/badge.tsx';
 
 export function SortableEnvironmentRow({
   environment,
@@ -45,17 +47,22 @@ export function SortableEnvironmentRow({
         </Button>
       </TableCell>
       <TableCell className="font-medium">
-        <span className="inline-flex items-center gap-2">
-          <span
-            className="size-2 rounded-full border"
-            style={{
-              backgroundColor: environment.color ?? 'transparent',
-              borderColor: environment.color ? 'transparent' : 'var(--border)'
-            }}
-            aria-hidden
-          />
+        <Badge
+          key={environment.id}
+          variant="secondary"
+          className="text-xs"
+          style={
+            environment.color
+              ? {
+                backgroundColor: environment.color,
+                color: getContrastTextColor(environment.color),
+                borderColor: 'transparent'
+              }
+              : undefined
+          }
+        >
           {environment.name}
-        </span>
+        </Badge>
       </TableCell>
       <TableCell className="min-w-[280px] whitespace-normal">
         {environment.description ?? <span className="text-muted-foreground">—</span>}

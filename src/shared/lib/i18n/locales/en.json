@@ -268,6 +268,7 @@
       "failedToLoadImage": "Failed to load image. Check the URL or use a file/emoji.",
       "selectEmoji": "Select",
       "clearEmoji": "Clear emoji",
+      "clearColor": "Clear color",
       "iconHint": "Upload an image (PNG, JPEG, GIF, WebP, max 2 MB), enter a URL, or pick an emoji.",
       "tagsFieldDescription": "Add or remove tags from the project. Create and edit tags via the list.",
       "createNewTag": "Create new tag",

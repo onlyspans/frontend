@@ -276,14 +276,23 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     style={{ width: '100%', height: 120 }}
                   />
                 </div>
-                <Input
-                  value={createColor}
-                  onChange={(e) => setCreateColor(e.target.value)}
-                  placeholder={t('project.creation.colorPlaceholder')}
-                  className="font-mono w-24"
-                  aria-invalid={!!createColorError}
-                  aria-describedby={createColorError ? 'create-color-error' : undefined}
-                />
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={createColor}
+                    onChange={(e) => setCreateColor(e.target.value)}
+                    placeholder={t('project.creation.colorPlaceholder')}
+                    className="font-mono w-24"
+                    aria-invalid={!!createColorError}
+                    aria-describedby={createColorError ? 'create-color-error' : undefined}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setCreateColor('')}
+                  >
+                    {t('project.creation.clearColor')}
+                  </Button>
+                </div>
                 {createColorError && (
                   <p id="create-color-error" className="text-sm text-destructive">
                     {createColorError}
@@ -346,14 +355,23 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     style={{ width: '100%', height: 120 }}
                   />
                 </div>
-                <Input
-                  value={editColor}
-                  onChange={(e) => setEditColor(e.target.value)}
-                  placeholder={t('project.creation.colorPlaceholder')}
-                  className="font-mono w-24"
-                  aria-invalid={!!editColorError}
-                  aria-describedby={editColorError ? 'edit-color-error' : undefined}
-                />
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={editColor}
+                    onChange={(e) => setEditColor(e.target.value)}
+                    placeholder={t('project.creation.colorPlaceholder')}
+                    className="font-mono w-24"
+                    aria-invalid={!!editColorError}
+                    aria-describedby={editColorError ? 'edit-color-error' : undefined}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEditColor('')}
+                  >
+                    {t('project.creation.clearColor')}
+                  </Button>
+                </div>
                 {editColorError && (
                   <p id="edit-color-error" className="text-sm text-destructive">
                     {editColorError}

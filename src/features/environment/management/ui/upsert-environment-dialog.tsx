@@ -140,7 +140,7 @@ export function UpsertEnvironmentDialog({
                     setColorDirty(true);
                   }}
                 >
-                  {t('project.creation.clearEmoji')}
+                  {t('project.creation.clearColor')}
                 </Button>
               </div>
               {colorError && (
