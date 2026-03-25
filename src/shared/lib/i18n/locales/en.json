@@ -57,7 +57,8 @@
   "breadcrumb": {
     "home": "Home",
     "projects": "Projects",
-    "newProject": "New Project"
+    "newProject": "New Project",
+    "environments": "Environments"
   },
   "pages": {
     "dashboard": {
@@ -73,6 +74,49 @@
       "description": "Create a new project to deploy and manage your application",
       "aboutTitle": "About Projects",
       "aboutDescription": "A project represents a specific software component, service, or database that you want to deploy and manage. Each project has its own deployment process."
+    },
+    "environments": {
+      "title": "Environments",
+      "subtitle": "Create, edit, delete, and reorder environments",
+      "createEnvironment": "Create environment",
+      "table": {
+        "title": "All environments",
+        "loading": "Loading environments...",
+        "loadFailed": "Failed to load environments",
+        "empty": "No environments yet",
+        "name": "Name",
+        "description": "Description",
+        "position": "Position",
+        "actions": "Actions"
+      },
+      "form": {
+        "name": "Name",
+        "description": "Description"
+      },
+      "create": {
+        "title": "Create environment",
+        "confirm": "Create"
+      },
+      "edit": {
+        "title": "Edit environment",
+        "confirm": "Save"
+      },
+      "delete": {
+        "title": "Delete environment?",
+        "description": "This will permanently delete \"{{name}}\".",
+        "confirm": "Delete",
+        "deleting": "Deleting..."
+      },
+      "toast": {
+        "created": "Environment created",
+        "createFailed": "Failed to create environment",
+        "updated": "Environment updated",
+        "updateFailed": "Failed to update environment",
+        "deleted": "Environment deleted",
+        "deleteFailed": "Failed to delete environment",
+        "reordered": "Order updated",
+        "reorderFailed": "Failed to reorder environments"
+      }
     },
     "projectDetail": {
       "overview": "Overview",
