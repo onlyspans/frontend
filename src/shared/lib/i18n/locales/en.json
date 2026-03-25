@@ -77,7 +77,7 @@
     },
     "environments": {
       "title": "Environments",
-      "subtitle": "Create, edit, delete, and reorder environments",
+      "subtitle": "Manage your environments",
       "createEnvironment": "Create environment",
       "table": {
         "title": "All environments",

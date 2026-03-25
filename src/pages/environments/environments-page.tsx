@@ -1,9 +1,11 @@
 import { useTranslation } from '@/shared/lib/i18n';
 import { EnvironmentsManagement } from '@/features/environment/management';
-import { Button } from '@/shared/ui/button.tsx';
+import { Button } from '@/shared/ui/button';
+import { useState } from 'react';
 
 export function EnvironmentsPage() {
   const { t } = useTranslation();
+  const [createOpen, setCreateOpen] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -14,13 +16,13 @@ export function EnvironmentsPage() {
           {/*<p className="text-muted-foreground mt-1">{t('pages.environments.subtitle')}</p>*/}
         </div>
         <Button
-          // onClick={() => setCreateOpen(true)}
+          type="button"
+          onClick={() => setCreateOpen(true)}
         >
           {t('pages.environments.createEnvironment')}
         </Button>
       </div>
-
-      <EnvironmentsManagement />
+      <EnvironmentsManagement createOpen={createOpen} onCreateOpenChange={setCreateOpen} />
     </div>
   );
 }
