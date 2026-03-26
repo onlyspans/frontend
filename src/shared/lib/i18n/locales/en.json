@@ -158,6 +158,9 @@
         "variableDeleted": "Variable deleted",
         "variableDeleteFailed": "Failed to delete variable"
       },
+      "errors": {
+        "notFound": "Entity was not found (it may have been deleted)."
+      },
       "sets": {
         "list": {
           "title": "Variable sets",
@@ -236,6 +239,9 @@
         "setLinkFailed": "Failed to link variable set",
         "setUnlinked": "Variable set unlinked",
         "setUnlinkFailed": "Failed to unlink variable set"
+      },
+      "errors": {
+        "notFound": "Entity was not found (it may have been deleted)."
       },
       "direct": {
         "title": "Project variables",

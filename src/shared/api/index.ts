@@ -1,5 +1,13 @@
 export { api, createServiceClient, type ServiceClientOptions } from './client';
-export { handleApiError, extractData } from './utils';
+export {
+  handleApiError,
+  extractData,
+  getApiStatus,
+  isApiStatus,
+  getApiValidationErrors,
+  getApiProblemDetail,
+  getFirstValidationErrorMessage
+} from './utils';
 export type {
   ApiResponse,
   ApiError,

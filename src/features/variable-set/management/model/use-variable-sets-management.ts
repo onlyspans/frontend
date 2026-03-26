@@ -15,6 +15,12 @@ import {
   variableSetQueryKeys
 } from '@/entities/variable-set';
 import { useTranslation } from '@/shared/lib/i18n';
+import {
+  getApiProblemDetail,
+  getFirstValidationErrorMessage,
+  handleApiError,
+  isApiStatus
+} from '@/shared/api';
 
 export function useVariableSetsManagement() {
   const { t } = useTranslation();
@@ -73,7 +79,7 @@ export function useVariableSetsManagement() {
       setSelectedId(created.id);
     } catch (e) {
       toast.error(t('pages.environmentsVariables.toast.setCreateFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description: getFirstValidationErrorMessage(e) ?? handleApiError(e)
       });
     }
   };
@@ -90,8 +96,11 @@ export function useVariableSetsManagement() {
       toast.success(t('pages.environmentsVariables.toast.setUpdated'));
       setEditSet(null);
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.environmentsVariables.errors.notFound')
+        : getFirstValidationErrorMessage(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.setUpdateFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
@@ -106,8 +115,11 @@ export function useVariableSetsManagement() {
         setSelectedId(next?.id ?? null);
       }
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.environmentsVariables.errors.notFound')
+        : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.setDeleteFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
@@ -121,7 +133,7 @@ export function useVariableSetsManagement() {
       queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(selectedId) });
     } catch (e) {
       toast.error(t('pages.environmentsVariables.toast.variableCreateFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description: getFirstValidationErrorMessage(e) ?? handleApiError(e)
       });
     }
   };
@@ -131,14 +143,18 @@ export function useVariableSetsManagement() {
     try {
       await updateVarMutation.mutateAsync({
         id: variable.id,
-        body: { key: data.key.trim(), value: data.value }
+        body: { key: data.key.trim(), value: data.value },
+        setId: selectedId
       });
       toast.success(t('pages.environmentsVariables.toast.variableUpdated'));
       setEditVar(null);
       queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(selectedId) });
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.environmentsVariables.errors.notFound')
+        : getFirstValidationErrorMessage(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.variableUpdateFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
@@ -146,13 +162,16 @@ export function useVariableSetsManagement() {
   const handleDeleteVar = async (variable: VariableResponse) => {
     if (!selectedId) return;
     try {
-      await deleteVarMutation.mutateAsync({ id: variable.id });
+      await deleteVarMutation.mutateAsync({ id: variable.id, setId: selectedId });
       toast.success(t('pages.environmentsVariables.toast.variableDeleted'));
       setDeleteVar(null);
       queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(selectedId) });
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.environmentsVariables.errors.notFound')
+        : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.variableDeleteFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };

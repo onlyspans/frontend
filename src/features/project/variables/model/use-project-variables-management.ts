@@ -16,6 +16,12 @@ import {
   useProjectVariableSets,
   useUnlinkVariableSet
 } from '@/entities/project-variable-sets';
+import {
+  getApiProblemDetail,
+  getFirstValidationErrorMessage,
+  handleApiError,
+  isApiStatus
+} from '@/shared/api';
 
 export function useProjectVariablesManagement(projectId: string) {
   const { t } = useTranslation();
@@ -51,7 +57,7 @@ export function useProjectVariablesManagement(projectId: string) {
       setCreateVarOpen(false);
     } catch (e) {
       toast.error(t('pages.projectVariables.toast.variableCreateFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description: getFirstValidationErrorMessage(e) ?? handleApiError(e)
       });
     }
   };
@@ -60,25 +66,32 @@ export function useProjectVariablesManagement(projectId: string) {
     try {
       await updateVarMutation.mutateAsync({
         id: variable.id,
-        body: { key: data.key.trim(), value: data.value }
+        body: { key: data.key.trim(), value: data.value },
+        projectId
       });
       toast.success(t('pages.projectVariables.toast.variableUpdated'));
       setEditVar(null);
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.projectVariables.errors.notFound')
+        : getFirstValidationErrorMessage(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.variableUpdateFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
 
   const handleDeleteVar = async (variable: VariableResponse) => {
     try {
-      await deleteVarMutation.mutateAsync({ id: variable.id });
+      await deleteVarMutation.mutateAsync({ id: variable.id, projectId });
       toast.success(t('pages.projectVariables.toast.variableDeleted'));
       setDeleteVar(null);
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.projectVariables.errors.notFound')
+        : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.variableDeleteFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
@@ -89,8 +102,11 @@ export function useProjectVariablesManagement(projectId: string) {
       toast.success(t('pages.projectVariables.toast.setLinked'));
       setLinkOpen(false);
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.projectVariables.errors.notFound')
+        : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.setLinkFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
@@ -100,8 +116,11 @@ export function useProjectVariablesManagement(projectId: string) {
       await unlinkMutation.mutateAsync({ setId: set.id });
       toast.success(t('pages.projectVariables.toast.setUnlinked'));
     } catch (e) {
+      const description = isApiStatus(e, 404)
+        ? t('pages.projectVariables.errors.notFound')
+        : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.setUnlinkFailed'), {
-        description: e instanceof Error ? e.message : undefined
+        description
       });
     }
   };
