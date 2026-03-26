@@ -224,7 +224,72 @@
     },
     "projectVariables": {
       "title": "Variables",
-      "subtitle": "Manage variables and linked sets for {{projectName}}"
+      "subtitle": "Manage variables and linked sets for {{projectName}}",
+      "toast": {
+        "variableCreated": "Variable created",
+        "variableCreateFailed": "Failed to create variable",
+        "variableUpdated": "Variable updated",
+        "variableUpdateFailed": "Failed to update variable",
+        "variableDeleted": "Variable deleted",
+        "variableDeleteFailed": "Failed to delete variable",
+        "setLinked": "Variable set linked",
+        "setLinkFailed": "Failed to link variable set",
+        "setUnlinked": "Variable set unlinked",
+        "setUnlinkFailed": "Failed to unlink variable set"
+      },
+      "direct": {
+        "title": "Project variables",
+        "hint": "Direct variables only (sets are managed separately).",
+        "table": {
+          "key": "Key",
+          "value": "Value",
+          "loading": "Loading variables...",
+          "empty": "No variables"
+        },
+        "form": {
+          "key": "Key",
+          "value": "Value"
+        },
+        "create": {
+          "action": "Add variable",
+          "title": "Add variable",
+          "confirm": "Add"
+        },
+        "edit": {
+          "action": "Edit",
+          "title": "Edit variable",
+          "confirm": "Save"
+        },
+        "delete": {
+          "action": "Delete",
+          "title": "Delete variable?",
+          "description": "This will permanently delete \"{{key}}\".",
+          "confirm": "Delete",
+          "deleting": "Deleting..."
+        }
+      },
+      "linked": {
+        "title": "Linked variable sets",
+        "hint": "Linked sets apply to this project. Direct variables are not merged with sets in this tab.",
+        "table": {
+          "name": "Name",
+          "description": "Description",
+          "loading": "Loading linked sets...",
+          "empty": "No linked sets"
+        },
+        "link": {
+          "action": "Link set",
+          "title": "Link variable set",
+          "confirm": "Link",
+          "form": {
+            "set": "Variable set",
+            "placeholder": "Select a set..."
+          }
+        },
+        "unlink": {
+          "action": "Unlink"
+        }
+      }
     },
     "projectSettings": {
       "general": "General",

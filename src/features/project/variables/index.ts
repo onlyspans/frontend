@@ -1,0 +1,1 @@
+export { ProjectVariablesTabContent } from './ui';
