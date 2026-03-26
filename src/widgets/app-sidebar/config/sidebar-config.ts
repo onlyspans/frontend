@@ -126,8 +126,6 @@ export const sidebarConfig: SidebarConfig = {
       items: [
         { title: 'sidebar.navbar.allEnvironments', url: '/environments' },
         { title: 'sidebar.navbar.variables', url: '/environments/variables' },
-        { title: 'sidebar.navbar.kubernetes', url: '/environments/kubernetes' },
-        { title: 'sidebar.navbar.virtualMachines', url: '/environments/vms' }
       ]
     },
     {

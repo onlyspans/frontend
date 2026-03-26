@@ -14,8 +14,6 @@
       "environments": "Environments",
       "variables": "Variables",
       "allEnvironments": "All Environments",
-      "kubernetes": "Kubernetes",
-      "virtualMachines": "Virtual Machines",
       "infrastructure": "Infrastructure",
       "clusters": "Clusters",
       "nodes": "Nodes",

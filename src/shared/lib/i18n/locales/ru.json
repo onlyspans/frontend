@@ -14,8 +14,6 @@
       "environments": "Окружения",
       "variables": "Переменные",
       "allEnvironments": "Все окружения",
-      "kubernetes": "Kubernetes",
-      "virtualMachines": "Виртуальные машины",
       "infrastructure": "Инфраструктура",
       "clusters": "Кластеры",
       "nodes": "Узлы",
