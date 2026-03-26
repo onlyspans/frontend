@@ -24,7 +24,7 @@ import { ProjectSlugField } from './project-slug-field';
 import { ProjectDescriptionField } from './project-description-field';
 import { ProjectIconField } from './project-icon-field';
 import { DeployToField } from './deploy-to-field';
-import { ProjectLifecycleField } from './project-lifecycle-field';
+import { ProjectEnvironmentsField } from './project-environments-field';
 import { ProjectTagsField } from './project-tags-field';
 import { useNavigate } from 'react-router-dom';
 import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
@@ -51,7 +51,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
       emoji: '',
       iconFile: undefined,
       deployTo: 'aws',
-      lifecycleStages: ['development'],
+      environmentIds: [],
       tagIds: []
     }
   });
@@ -74,7 +74,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         ...(!data.iconFile && data.imageUrl?.trim() && { imageUrl: data.imageUrl.trim() }),
         ...(!data.iconFile && data.emoji?.trim() && { emoji: data.emoji.trim() }),
         status: 'active',
-        lifecycleStages: data.lifecycleStages,
+        environmentIds: data.environmentIds,
         tagIds: data.tagIds?.length ? data.tagIds : undefined
       });
       if (data.iconFile) {
@@ -115,7 +115,7 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
               <ProjectSlugField form={form} />
               <ProjectDescriptionField form={form} />
               <DeployToField form={form} />
-              <ProjectLifecycleField form={form} />
+              <ProjectEnvironmentsField form={form} />
               <ProjectTagsField form={form} />
 
               <div className="flex justify-end gap-4 pt-4">

@@ -6,7 +6,13 @@ export type ProjectSortField = 'name' | 'createdAt' | 'status';
 
 export type SortOrder = 'asc' | 'desc';
 
-export type LifecycleStage = 'development' | 'testing' | 'staging' | 'production';
+export interface ProjectEnvironmentRef {
+  id: string;
+  name: string;
+  description?: string | null;
+  color?: string | null;
+  position?: number;
+}
 
 export interface Project {
   id: string;
@@ -18,7 +24,8 @@ export interface Project {
   status: ProjectStatus;
   ownerId: string | null;
   tags: Tag[];
-  lifecycleStages: LifecycleStage[];
+  environmentIds?: string[];
+  environments?: ProjectEnvironmentRef[];
   metadata: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
@@ -41,7 +48,7 @@ export interface CreateProjectRequest {
   emoji?: string; // max 20 (1 emoji)
   status?: ProjectStatus;
   ownerId?: string;
-  lifecycleStages?: LifecycleStage[];
+  environmentIds?: string[];
   tagIds?: string[];
   metadata?: Record<string, unknown>;
 }
@@ -54,7 +61,7 @@ export interface UpdateProjectRequest {
   emoji?: string | null;
   status?: ProjectStatus;
   ownerId?: string;
-  lifecycleStages?: LifecycleStage[];
+  environmentIds?: string[];
   tagIds?: string[];
   metadata?: Record<string, unknown>;
 }

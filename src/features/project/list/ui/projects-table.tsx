@@ -7,19 +7,10 @@ import {
   TableRow
 } from '@/shared/ui/table';
 import { Badge } from '@/shared/ui/badge';
-import { ProjectIcon, type Project, type ProjectSortField, type SortOrder, type LifecycleStage } from '@/entities/project';
+import { ProjectIcon, type Project, type ProjectSortField, type SortOrder } from '@/entities/project';
+import { useEnvironments } from '@/entities/environment';
 import { useTranslation } from '@/shared/lib/i18n';
-
-const STAGE_LABELS: Record<LifecycleStage, string> = {
-  development: 'dev',
-  testing: 'test',
-  staging: 'stage',
-  production: 'prod'
-};
-
-function getStageLabel(stage: LifecycleStage): string {
-  return STAGE_LABELS[stage] ?? stage;
-}
+import { getContrastTextColor } from '@/shared/lib/color/get-contrast-text-color';
 
 interface ProjectsTableProps {
   projects: Project[];
@@ -76,6 +67,11 @@ export function ProjectsTable(
   }: ProjectsTableProps
 ) {
   const { t } = useTranslation();
+  const environmentsQuery = useEnvironments();
+
+  const environmentsById = new Map(
+    (environmentsQuery.data ?? []).map((env) => [env.id, env] as const)
+  );
 
   if (isLoading) {
     return (
@@ -86,7 +82,7 @@ export function ProjectsTable(
               <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
               <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
               <TableHead>{t('project.table.description')}</TableHead>
-              <TableHead>{t('project.table.stages')}</TableHead>
+              <TableHead>{t('project.table.environments')}</TableHead>
               <TableHead>{t('project.table.tags')}</TableHead>
               <SortHeader label={t('project.table.status')} field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
             </TableRow>
@@ -112,7 +108,7 @@ export function ProjectsTable(
               <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
               <TableHead>{t('project.table.name')}</TableHead>
               <TableHead>{t('project.table.description')}</TableHead>
-              <TableHead>{t('project.table.stages')}</TableHead>
+              <TableHead>{t('project.table.environments')}</TableHead>
               <TableHead>{t('project.table.tags')}</TableHead>
               <TableHead>{t('project.table.status')}</TableHead>
             </TableRow>
@@ -137,7 +133,7 @@ export function ProjectsTable(
             <TableHead className="w-[50px]"></TableHead>
             <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
             <TableHead>{t('project.table.description')}</TableHead>
-            <TableHead>{t('project.table.stages')}</TableHead>
+            <TableHead>{t('project.table.environments')}</TableHead>
             <TableHead>{t('project.table.tags')}</TableHead>
             <SortHeader label={t('project.table.status')} field="status" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
           </TableRow>
@@ -158,16 +154,47 @@ export function ProjectsTable(
               </TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1 max-w-[200px]">
-                  {project.lifecycleStages?.length ? (
-                    project.lifecycleStages.map((stage) => (
+                  {project.environments?.length ? (
+                    project.environments.map((env) => (
                       <Badge
-                        key={stage}
+                        key={env.id}
                         variant="secondary"
                         className="text-xs font-normal"
+                        style={
+                          env.color
+                            ? {
+                                backgroundColor: env.color,
+                                color: getContrastTextColor(env.color),
+                                borderColor: 'transparent'
+                              }
+                            : undefined
+                        }
                       >
-                        {getStageLabel(stage)}
+                        {env.name}
                       </Badge>
                     ))
+                  ) : project.environmentIds?.length ? (
+                    project.environmentIds
+                      .map((id) => environmentsById.get(id))
+                      .filter(Boolean)
+                      .map((env) => (
+                        <Badge
+                          key={env!.id}
+                          variant="secondary"
+                          className="text-xs font-normal"
+                          style={
+                            env!.color
+                              ? {
+                                  backgroundColor: env!.color,
+                                  color: getContrastTextColor(env!.color),
+                                  borderColor: 'transparent'
+                                }
+                              : undefined
+                          }
+                        >
+                          {env!.name}
+                        </Badge>
+                      ))
                   ) : (
                     <span className="text-muted-foreground text-xs">—</span>
                   )}

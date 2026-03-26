@@ -32,37 +32,14 @@ import type { CreateProjectFormData } from '@/entities/project';
 import { PlusIcon, PencilIcon, XIcon } from 'lucide-react';
 import { Separator } from '@/shared/ui/separator';
 import { useTranslation } from '@/shared/lib/i18n';
+import { getContrastTextColor } from '@/shared/lib/color/get-contrast-text-color';
+import { getHexColorErrorKey } from '@/shared/lib/color/hex';
 
 interface ProjectTagsFieldProps {
   form: UseFormReturn<CreateProjectFormData>;
 }
 
 const DEFAULT_COLOR = '#6366f1';
-
-const HEX_COLOR_REGEX = /^#[0-9A-Fa-f]{6}$/;
-
-/** Returns dark (#000) or light (#fff) text color for contrast on the given hex background. */
-function getContrastTextColor(hex: string | null): string {
-  if (!hex || !HEX_COLOR_REGEX.test(hex)) return '#fff';
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return luminance > 0.45 ? '#000' : '#fff';
-}
-
-type ColorErrorKey =
-  | 'project.creation.colorErrorStartWithHash'
-  | 'project.creation.colorErrorSevenChars'
-  | 'project.creation.colorErrorHexOnly';
-
-function getColorError(value: string): ColorErrorKey | null {
-  if (!value.trim()) return null;
-  if (!value.startsWith('#')) return 'project.creation.colorErrorStartWithHash';
-  if (value.length !== 7) return 'project.creation.colorErrorSevenChars';
-  if (!HEX_COLOR_REGEX.test(value)) return 'project.creation.colorErrorHexOnly';
-  return null;
-}
 
 export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
   const { t } = useTranslation();
@@ -81,8 +58,8 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
   const createTagMutation = useCreateTag();
   const updateTagMutation = useUpdateTag();
 
-  const createColorErrorKey = getColorError(createColor);
-  const editColorErrorKey = getColorError(editColor);
+  const createColorErrorKey = getHexColorErrorKey(createColor);
+  const editColorErrorKey = getHexColorErrorKey(editColor);
   const createColorError = createColorErrorKey ? t(createColorErrorKey) : null;
   const editColorError = editColorErrorKey ? t(editColorErrorKey) : null;
 
@@ -299,14 +276,23 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     style={{ width: '100%', height: 120 }}
                   />
                 </div>
-                <Input
-                  value={createColor}
-                  onChange={(e) => setCreateColor(e.target.value)}
-                  placeholder={t('project.creation.colorPlaceholder')}
-                  className="font-mono w-24"
-                  aria-invalid={!!createColorError}
-                  aria-describedby={createColorError ? 'create-color-error' : undefined}
-                />
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={createColor}
+                    onChange={(e) => setCreateColor(e.target.value)}
+                    placeholder={t('project.creation.colorPlaceholder')}
+                    className="font-mono w-24"
+                    aria-invalid={!!createColorError}
+                    aria-describedby={createColorError ? 'create-color-error' : undefined}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setCreateColor('')}
+                  >
+                    {t('project.creation.clearColor')}
+                  </Button>
+                </div>
                 {createColorError && (
                   <p id="create-color-error" className="text-sm text-destructive">
                     {createColorError}
@@ -369,14 +355,23 @@ export function ProjectTagsField({ form }: ProjectTagsFieldProps) {
                     style={{ width: '100%', height: 120 }}
                   />
                 </div>
-                <Input
-                  value={editColor}
-                  onChange={(e) => setEditColor(e.target.value)}
-                  placeholder={t('project.creation.colorPlaceholder')}
-                  className="font-mono w-24"
-                  aria-invalid={!!editColorError}
-                  aria-describedby={editColorError ? 'edit-color-error' : undefined}
-                />
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={editColor}
+                    onChange={(e) => setEditColor(e.target.value)}
+                    placeholder={t('project.creation.colorPlaceholder')}
+                    className="font-mono w-24"
+                    aria-invalid={!!editColorError}
+                    aria-describedby={editColorError ? 'edit-color-error' : undefined}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEditColor('')}
+                  >
+                    {t('project.creation.clearColor')}
+                  </Button>
+                </div>
                 {editColorError && (
                   <p id="edit-color-error" className="text-sm text-destructive">
                     {editColorError}

@@ -9,6 +9,7 @@ import { ProjectPageLayout } from '@/pages/projects/project-page-layout';
 import { ProjectOverviewTab } from '@/pages/projects/project-overview-tab';
 import { ProjectReleasesTab } from '@/pages/projects/project-releases-tab';
 import { ProjectSettingsTab } from '@/pages/projects/project-settings-tab';
+import { EnvironmentsPage } from '@/pages/environments/environments-page';
 import { CreateSpacePage } from '@/pages/spaces/create-space-page';
 import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
                 ]
               }
             ]
+          },
+          {
+            path: 'environments',
+            element: <EnvironmentsPage />
           },
           {
             index: true,

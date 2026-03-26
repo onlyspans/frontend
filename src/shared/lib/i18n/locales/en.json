@@ -57,7 +57,8 @@
   "breadcrumb": {
     "home": "Home",
     "projects": "Projects",
-    "newProject": "New Project"
+    "newProject": "New Project",
+    "environments": "Environments"
   },
   "pages": {
     "dashboard": {
@@ -73,6 +74,58 @@
       "description": "Create a new project to deploy and manage your application",
       "aboutTitle": "About Projects",
       "aboutDescription": "A project represents a specific software component, service, or database that you want to deploy and manage. Each project has its own deployment process."
+    },
+    "environments": {
+      "title": "Environments",
+      "subtitle": "Manage your environments",
+      "createEnvironment": "Create environment",
+      "reorder": {
+        "save": "Save changes",
+        "cancel": "Cancel",
+        "confirm": {
+          "title": "Save environment order?",
+          "description": "This affects the promotion pipeline / deploy order. Proceed?",
+          "confirm": "Confirm"
+        }
+      },
+      "table": {
+        "title": "All environments",
+        "loading": "Loading environments...",
+        "loadFailed": "Failed to load environments",
+        "empty": "No environments yet",
+        "name": "Name",
+        "description": "Description",
+        "position": "Position",
+        "actions": "Actions"
+      },
+      "form": {
+        "name": "Name",
+        "description": "Description"
+      },
+      "create": {
+        "title": "Create environment",
+        "confirm": "Create"
+      },
+      "edit": {
+        "title": "Edit environment",
+        "confirm": "Save"
+      },
+      "delete": {
+        "title": "Delete environment?",
+        "description": "This will permanently delete \"{{name}}\".",
+        "confirm": "Delete",
+        "deleting": "Deleting..."
+      },
+      "toast": {
+        "created": "Environment created",
+        "createFailed": "Failed to create environment",
+        "updated": "Environment updated",
+        "updateFailed": "Failed to update environment",
+        "deleted": "Environment deleted",
+        "deleteFailed": "Failed to delete environment",
+        "reordered": "Order updated",
+        "reorderFailed": "Failed to reorder environments"
+      }
     },
     "projectDetail": {
       "overview": "Overview",
@@ -149,7 +202,7 @@
       "icon": "Icon",
       "name": "Name",
       "description": "Description",
-      "stages": "Lifecycle",
+      "environments": "Environments",
       "tags": "Tags",
       "status": "Status",
       "noProjects": "No projects found",
@@ -174,11 +227,7 @@
         "deployedSuccess": "Deployed (success)",
         "deployedFailed": "Deployed (failed)",
         "loading": "Loading releases...",
-        "noReleases": "No releases",
-        "dev": "development",
-        "test": "testing",
-        "stage": "staging",
-        "prod": "production"
+        "noReleases": "No releases"
       },
       "pagination": {
         "range": "Showing {{from}} to {{to}} of {{total}} releases"
@@ -193,6 +242,10 @@
       "success": "Project created successfully!",
       "failed": "Failed to create project",
       "unknownError": "Unknown error",
+      "environmentsLabel": "Environments",
+      "environmentsLoading": "Loading…",
+      "environmentsEmpty": "No environments found",
+      "environmentsDescription": "Environments define the promotion pipeline for releases.",
       "projectIcon": "Project icon",
       "uploadFile": "Upload file",
       "imageUrl": "Image URL",
@@ -224,6 +277,7 @@
       "failedToLoadImage": "Failed to load image. Check the URL or use a file/emoji.",
       "selectEmoji": "Select",
       "clearEmoji": "Clear emoji",
+      "clearColor": "Clear color",
       "iconHint": "Upload an image (PNG, JPEG, GIF, WebP, max 2 MB), enter a URL, or pick an emoji.",
       "tagsFieldDescription": "Add or remove tags from the project. Create and edit tags via the list.",
       "createNewTag": "Create new tag",

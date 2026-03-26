@@ -48,6 +48,15 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
     { labelKey: 'breadcrumb.home', href: baseUrl, isCurrent: parts.length === 1 }
   ];
 
+  if (parts.length >= 2 && parts[1] === 'environments') {
+    segments.push({
+      labelKey: 'breadcrumb.environments',
+      href: `${baseUrl}/environments`,
+      isCurrent: true
+    });
+    return segments;
+  }
+
   if (parts.length >= 2 && parts[1] === 'projects') {
     const projectsUrl = `${baseUrl}/projects`;
     segments.push({

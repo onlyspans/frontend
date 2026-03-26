@@ -5,7 +5,7 @@ export type {
   ProjectStatus,
   ProjectSortField,
   SortOrder,
-  LifecycleStage,
+  ProjectEnvironmentRef,
   CreateProjectRequest,
   UpdateProjectRequest,
   QueryProjectsParams
