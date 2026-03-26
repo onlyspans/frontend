@@ -12,6 +12,7 @@
       "history": "History",
       "scheduled": "Scheduled",
       "environments": "Environments",
+      "variables": "Variables",
       "allEnvironments": "All Environments",
       "kubernetes": "Kubernetes",
       "virtualMachines": "Virtual Machines",
@@ -58,7 +59,10 @@
     "home": "Home",
     "projects": "Projects",
     "newProject": "New Project",
-    "environments": "Environments"
+    "environments": "Environments",
+    "variables": "Variables",
+    "releases": "Releases",
+    "settings": "Settings"
   },
   "pages": {
     "dashboard": {
@@ -74,6 +78,18 @@
       "description": "Create a new project to deploy and manage your application",
       "aboutTitle": "About Projects",
       "aboutDescription": "A project represents a specific software component, service, or database that you want to deploy and manage. Each project has its own deployment process."
+    },
+    "projectDetail": {
+      "overview": "Overview",
+      "releases": "Releases",
+      "variables": "Variables",
+      "settings": "Settings",
+      "goBack": "Go back",
+      "backToProjects": "Back to projects",
+      "projectNotFound": "Project not found.",
+      "failedToLoad": "Failed to load project",
+      "slugMissing": "Project slug is missing.",
+      "created": "Created"
     },
     "environments": {
       "title": "Environments",
@@ -127,16 +143,13 @@
         "reorderFailed": "Failed to reorder environments"
       }
     },
-    "projectDetail": {
-      "overview": "Overview",
-      "releases": "Releases",
-      "settings": "Settings",
-      "goBack": "Go back",
-      "backToProjects": "Back to projects",
-      "projectNotFound": "Project not found.",
-      "failedToLoad": "Failed to load project",
-      "slugMissing": "Project slug is missing.",
-      "created": "Created"
+    "environmentsVariables": {
+      "title": "Variables",
+      "subtitle": "Manage variable sets for your environments"
+    },
+    "projectVariables": {
+      "title": "Variables",
+      "subtitle": "Manage variables and linked sets for {{projectName}}"
     },
     "projectSettings": {
       "general": "General",

@@ -11,6 +11,7 @@ export const appConfig = {
   api: {
     auth: getRequiredEnv('VITE_AUTH_API_URL'),
     projects: getRequiredEnv('VITE_PROJECTS_API_URL'),
-    events: getRequiredEnv('VITE_EVENTS_API_URL')
+    events: getRequiredEnv('VITE_EVENTS_API_URL'),
+    variables: getRequiredEnv('VITE_VARIABLES_API_URL')
   }
 } as const;
