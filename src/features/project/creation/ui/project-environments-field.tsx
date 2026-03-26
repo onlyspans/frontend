@@ -35,7 +35,7 @@ export function ProjectEnvironmentsField({ form }: ProjectEnvironmentsFieldProps
       shouldTouch: false,
       shouldValidate: true
     });
-  }, [environmentsQuery.data, form]);
+  }, [environmentsQuery.data]);
 
   return (
     <FormField

@@ -6,9 +6,10 @@ export type HexColorErrorKey =
   | 'project.creation.colorErrorHexOnly';
 
 export function getHexColorErrorKey(value: string): HexColorErrorKey | null {
-  if (!value.trim()) return null;
-  if (!value.startsWith('#')) return 'project.creation.colorErrorStartWithHash';
-  if (value.length !== 7) return 'project.creation.colorErrorSevenChars';
-  if (!HEX_COLOR_REGEX.test(value)) return 'project.creation.colorErrorHexOnly';
+  const v = value.trim();
+  if (!v) return null;
+  if (!v.startsWith('#')) return 'project.creation.colorErrorStartWithHash';
+  if (v.length !== 7) return 'project.creation.colorErrorSevenChars';
+  if (!HEX_COLOR_REGEX.test(v)) return 'project.creation.colorErrorHexOnly';
   return null;
 }

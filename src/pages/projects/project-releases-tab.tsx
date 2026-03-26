@@ -58,13 +58,17 @@ export function ProjectReleasesTab() {
             position: env!.position
           }));
 
+  const sortedEnvironments = [...environments].sort(
+    (a, b) => (a.position ?? 0) - (b.position ?? 0)
+  );
+
   return (
     <>
       <h2 className="text-lg font-semibold">{t('project.releases.title')}</h2>
       <ReleasesTable
         releases={releases}
         isLoading={isLoading}
-        environments={environments}
+        environments={sortedEnvironments}
         stubDeployments={stubDeployments}
         onDeploy={handleDeploy}
       />

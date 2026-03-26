@@ -17,7 +17,6 @@ import {
   useCreateProject,
   useUploadProjectIcon
 } from '@/entities/project';
-import { useEnvironments } from '@/entities/environment';
 import { nameToSlug } from '@/shared/lib';
 import { toast } from 'sonner';
 import { ProjectNameField } from './project-name-field';
@@ -41,7 +40,6 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
   const { t } = useTranslation();
   const createProjectMutation = useCreateProject();
   const uploadIconMutation = useUploadProjectIcon();
-  const environmentsQuery = useEnvironments();
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -57,17 +55,6 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
       tagIds: []
     }
   });
-
-  useEffect(() => {
-    if (!environmentsQuery.data?.length) return;
-    const current = form.getValues('environmentIds') ?? [];
-    if (current.length > 0) return;
-    form.setValue('environmentIds', [environmentsQuery.data[0].id], {
-      shouldDirty: false,
-      shouldTouch: false,
-      shouldValidate: true
-    });
-  }, [environmentsQuery.data, form]);
 
   const name = form.watch('name');
   const slugDirty = form.formState.dirtyFields.slug;
