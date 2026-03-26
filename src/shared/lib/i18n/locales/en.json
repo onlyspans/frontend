@@ -145,7 +145,84 @@
     },
     "environmentsVariables": {
       "title": "Variables",
-      "subtitle": "Manage variable sets for your environments"
+      "subtitle": "Manage variable sets for your environments",
+      "toast": {
+        "setCreated": "Variable set created",
+        "setCreateFailed": "Failed to create variable set",
+        "setUpdated": "Variable set updated",
+        "setUpdateFailed": "Failed to update variable set",
+        "setDeleted": "Variable set deleted",
+        "setDeleteFailed": "Failed to delete variable set",
+        "variableCreated": "Variable created",
+        "variableCreateFailed": "Failed to create variable",
+        "variableUpdated": "Variable updated",
+        "variableUpdateFailed": "Failed to update variable",
+        "variableDeleted": "Variable deleted",
+        "variableDeleteFailed": "Failed to delete variable"
+      },
+      "sets": {
+        "list": {
+          "title": "Variable sets",
+          "searchPlaceholder": "Search sets...",
+          "loading": "Loading sets...",
+          "empty": "No variable sets"
+        },
+        "form": {
+          "name": "Name",
+          "description": "Description"
+        },
+        "create": {
+          "action": "Create set",
+          "title": "Create variable set",
+          "confirm": "Create"
+        },
+        "edit": {
+          "action": "Edit",
+          "title": "Edit variable set",
+          "confirm": "Save"
+        },
+        "delete": {
+          "action": "Delete",
+          "title": "Delete variable set?",
+          "description": "This will permanently delete \"{{name}}\".",
+          "confirm": "Delete",
+          "deleting": "Deleting..."
+        }
+      },
+      "detail": {
+        "emptyState": "Select a variable set to see details.",
+        "loading": "Loading set...",
+        "notFound": "Variable set not found (it may have been deleted)."
+      },
+      "variables": {
+        "table": {
+          "title": "Variables",
+          "key": "Key",
+          "value": "Value",
+          "empty": "No variables"
+        },
+        "form": {
+          "key": "Key",
+          "value": "Value"
+        },
+        "create": {
+          "action": "Add variable",
+          "title": "Add variable",
+          "confirm": "Add"
+        },
+        "edit": {
+          "action": "Edit",
+          "title": "Edit variable",
+          "confirm": "Save"
+        },
+        "delete": {
+          "action": "Delete",
+          "title": "Delete variable?",
+          "description": "This will permanently delete \"{{key}}\".",
+          "confirm": "Delete",
+          "deleting": "Deleting..."
+        }
+      }
     },
     "projectVariables": {
       "title": "Variables",
