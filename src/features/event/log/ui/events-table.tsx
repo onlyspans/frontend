@@ -278,7 +278,7 @@ export function EventsTable({
                   <TableCell colSpan={9} className="bg-muted/30">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm py-2">
                       {changes.map((c, idx) => (
-                        <div key={idx} className="rounded-md border bg-background p-3">
+                        <div key={idx} className="rounded-md border bg-card p-3">
                           <div className="text-xs text-muted-foreground">
                             {t('pages.events.table.changeField')}: {c.field ?? '—'}
                           </div>

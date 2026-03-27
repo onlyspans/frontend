@@ -99,7 +99,7 @@ export function EventsExportModal({ open, onOpenChange, body }: EventsExportModa
             ) : (
               <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
                 {summary.map(([k, v]) => (
-                  <li key={k} className="flex gap-2">
+                  <li key={k} className="flex gap-2 items-center">
                     <span className="font-mono text-xs text-foreground/80">{k}</span>
                     <span className="truncate">{v}</span>
                   </li>

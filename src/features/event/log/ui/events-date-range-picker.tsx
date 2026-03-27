@@ -13,13 +13,15 @@ import {
 import { useTranslation } from '@/shared/lib/i18n';
 import { cn } from '@/shared/lib/utils';
 
-type Preset = '12h' | '24h' | '7d' | '30d';
+type Preset = '4h' | '12h' | '24h' | '7d' | '30d' | '60d';
 
 const presetButtons: Array<{ value: Preset; labelKey: string }> = [
+  { value: '4h', labelKey: 'pages.events.filters.presets.last4h' },
   { value: '12h', labelKey: 'pages.events.filters.presets.last12h' },
   { value: '24h', labelKey: 'pages.events.filters.presets.last24h' },
   { value: '7d', labelKey: 'pages.events.filters.presets.last7d' },
-  { value: '30d', labelKey: 'pages.events.filters.presets.last30d' }
+  { value: '30d', labelKey: 'pages.events.filters.presets.last30d' },
+  { value: '60d', labelKey: 'pages.events.filters.presets.last60d' },
 ];
 
 function toDate(value?: string): Date | undefined {
@@ -31,6 +33,8 @@ function toDate(value?: string): Date | undefined {
 function presetToRange(preset: Preset): { from: Date; to: Date } {
   const now = new Date();
   switch (preset) {
+    case '4h':
+      return { from: subHours(now, 4), to: now };
     case '12h':
       return { from: subHours(now, 12), to: now };
     case '24h':
@@ -39,6 +43,8 @@ function presetToRange(preset: Preset): { from: Date; to: Date } {
       return { from: subDays(now, 7), to: now };
     case '30d':
       return { from: subDays(now, 30), to: now };
+    case '60d':
+      return { from: subDays(now, 60), to: now };
     default:
       return { from: subHours(now, 24), to: now };
   }
