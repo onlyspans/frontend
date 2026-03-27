@@ -224,7 +224,77 @@
       "title": "События",
       "subtitle": "Журнал аудита и история активности",
       "comingSoonTitle": "Скоро будет",
-      "comingSoonDescription": "UI лога событий появится здесь на следующем шаге."
+      "comingSoonDescription": "UI лога событий появится здесь на следующем шаге.",
+      "log": {
+        "title": "Журнал событий",
+        "subtitle": "Поиск, фильтры и экспорт audit-событий"
+      },
+      "filters": {
+        "entityId": "Entity ID",
+        "entityName": "Имя сущности",
+        "action": "Действие",
+        "userId": "User ID",
+        "tenant": "Tenant",
+        "startDate": "Дата начала",
+        "endDate": "Дата окончания",
+        "sortBy": "Сортировка",
+        "sortOrder": "Порядок",
+        "pageSize": "Размер страницы",
+        "pageSizeValue": "{{value}} / стр.",
+        "clear": "Сбросить фильтры",
+        "sort": {
+          "asc": "По возрастанию",
+          "desc": "По убыванию",
+          "timestamp": "Время",
+          "entityId": "Entity ID",
+          "entityName": "Имя сущности",
+          "action": "Действие",
+          "userId": "User ID",
+          "tenant": "Tenant"
+        }
+      },
+      "table": {
+        "timestamp": "Время",
+        "entityId": "Entity ID",
+        "entityName": "Имя сущности",
+        "action": "Действие",
+        "userId": "User ID",
+        "tenant": "Tenant",
+        "changes": "Изменения",
+        "changesCount": "{{value}} изм.",
+        "copyId": "Скопировать ID события",
+        "changeField": "Поле",
+        "oldValue": "Было",
+        "newValue": "Стало",
+        "loading": "Загрузка событий...",
+        "empty": "События не найдены",
+        "loadFailed": "Не удалось загрузить события",
+        "sortHint": "Сортировать по колонке",
+        "sortAsc": "Сортировка по возрастанию",
+        "sortDesc": "Сортировка по убыванию"
+      },
+      "pagination": {
+        "range": "Показано {{from}}–{{to}} из {{total}} событий"
+      },
+      "export": {
+        "open": "Экспорт CSV",
+        "title": "Экспорт событий в CSV",
+        "description": "Экспорт использует текущие фильтры и сортировку.",
+        "currentFilters": "Текущие фильтры",
+        "noFilters": "Фильтры не применены",
+        "download": "Скачать",
+        "downloading": "Скачивание...",
+        "failed": "Экспорт не удался"
+      },
+      "settings": {
+        "title": "Настройки",
+        "loading": "Загрузка настроек...",
+        "loadFailed": "Не удалось загрузить настройки",
+        "retentionDays": "Срок хранения (дни)",
+        "maxExportSize": "Лимит экспорта",
+        "updated": "Настройки обновлены",
+        "updateFailed": "Не удалось обновить настройки"
+      }
     },
     "projectVariables": {
       "title": "Переменные",

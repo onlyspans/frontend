@@ -1,4 +1,6 @@
 import { useTranslation } from '@/shared/lib/i18n';
+import { EventsLog } from '@/features/event/log';
+import { EventsSettingsCard } from '@/features/event/log';
 
 export function EventsPage() {
   const { t } = useTranslation();
@@ -10,9 +12,13 @@ export function EventsPage() {
         <p className="text-muted-foreground mt-1">{t('pages.events.subtitle')}</p>
       </div>
 
-      <div className="rounded-lg border bg-card p-6">
-        <h2 className="text-lg font-semibold">{t('pages.events.comingSoonTitle')}</h2>
-        <p className="text-muted-foreground mt-2">{t('pages.events.comingSoonDescription')}</p>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3">
+          <EventsLog />
+        </div>
+        <div className="lg:col-span-1">
+          <EventsSettingsCard />
+        </div>
       </div>
     </div>
   );
