@@ -6,6 +6,7 @@ import {
   SquareTerminal,
   Rocket,
   Layers,
+  Activity,
   Server,
   CheckCircle2,
   Code,
@@ -127,6 +128,11 @@ export const sidebarConfig: SidebarConfig = {
         { title: 'sidebar.navbar.allEnvironments', url: '/environments' },
         { title: 'sidebar.navbar.variables', url: '/environments/variables' },
       ]
+    },
+    {
+      title: 'sidebar.navbar.events',
+      url: '/events',
+      icon: Activity
     },
     {
       title: 'sidebar.navbar.infrastructure',

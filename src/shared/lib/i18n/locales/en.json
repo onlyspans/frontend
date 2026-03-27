@@ -14,6 +14,7 @@
       "environments": "Environments",
       "variables": "Variables",
       "allEnvironments": "All Environments",
+      "events": "Events",
       "infrastructure": "Infrastructure",
       "clusters": "Clusters",
       "nodes": "Nodes",
@@ -221,6 +222,12 @@
           "deleting": "Deleting..."
         }
       }
+    },
+    "events": {
+      "title": "Events",
+      "subtitle": "Audit log and activity history",
+      "comingSoonTitle": "Coming soon",
+      "comingSoonDescription": "Events log UI will appear here in the next step."
     },
     "projectVariables": {
       "title": "Variables",

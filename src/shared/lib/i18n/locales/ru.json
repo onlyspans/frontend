@@ -14,6 +14,7 @@
       "environments": "Окружения",
       "variables": "Переменные",
       "allEnvironments": "Все окружения",
+      "events": "События",
       "infrastructure": "Инфраструктура",
       "clusters": "Кластеры",
       "nodes": "Узлы",
@@ -218,6 +219,12 @@
           "deleting": "Удаление..."
         }
       }
+    },
+    "events": {
+      "title": "События",
+      "subtitle": "Журнал аудита и история активности",
+      "comingSoonTitle": "Скоро будет",
+      "comingSoonDescription": "UI лога событий появится здесь на следующем шаге."
     },
     "projectVariables": {
       "title": "Переменные",
