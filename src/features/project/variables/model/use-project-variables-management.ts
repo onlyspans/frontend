@@ -44,8 +44,9 @@ export function useProjectVariablesManagement(projectId: string) {
   const [linkOpen, setLinkOpen] = useState(false);
 
   const availableToLink = useMemo(() => {
-    const all = allSetsQuery.data ?? [];
-    const linked = linkedSetsQuery.data ?? [];
+    const all = allSetsQuery.data;
+    const linked = linkedSetsQuery.data;
+    if (!all || !linked) return [];
     const linkedIds = new Set(linked.map((s) => s.id));
     return all.filter((s) => !linkedIds.has(s.id));
   }, [allSetsQuery.data, linkedSetsQuery.data]);
@@ -115,6 +116,7 @@ export function useProjectVariablesManagement(projectId: string) {
     try {
       await unlinkMutation.mutateAsync({ setId: set.id });
       toast.success(t('pages.projectVariables.toast.setUnlinked'));
+      return true;
     } catch (e) {
       const description = isApiStatus(e, 404)
         ? t('common.errors.entityNotFound')
@@ -122,6 +124,7 @@ export function useProjectVariablesManagement(projectId: string) {
       toast.error(t('pages.projectVariables.toast.setUnlinkFailed'), {
         description
       });
+      return false;
     }
   };
 

@@ -164,6 +164,8 @@
           "title": "Variable sets",
           "searchPlaceholder": "Search sets...",
           "loading": "Loading sets...",
+          "error": "Failed to load variable sets.",
+          "retry": "Retry",
           "empty": "No variable sets"
         },
         "form": {
@@ -191,6 +193,8 @@
       "detail": {
         "emptyState": "Select a variable set to see details.",
         "loading": "Loading set...",
+        "error": "Failed to load variable set.",
+        "retry": "Retry",
         "notFound": "Variable set not found (it may have been deleted)."
       },
       "variables": {
@@ -334,6 +338,8 @@
           "key": "Key",
           "value": "Value",
           "loading": "Loading variables...",
+          "error": "Failed to load variables.",
+          "retry": "Retry",
           "empty": "No variables"
         },
         "form": {
@@ -365,6 +371,8 @@
           "name": "Name",
           "description": "Description",
           "loading": "Loading linked sets...",
+          "error": "Failed to load linked sets.",
+          "retry": "Retry",
           "empty": "No linked sets"
         },
         "link": {

@@ -16,6 +16,8 @@ import { Eye, EyeOff, MoreVertical, Plus } from 'lucide-react';
 export function VariableSetDetail({
   selectedId,
   isLoading,
+  error,
+  onRetry,
   selected,
   revealed,
   onToggleReveal,
@@ -27,6 +29,8 @@ export function VariableSetDetail({
 }: {
   selectedId: string | null;
   isLoading: boolean;
+  error?: unknown;
+  onRetry?: () => void;
   selected: VariableSetDetailResponse | null;
   revealed: Record<string, boolean>;
   onToggleReveal: (variableId: string) => void;
@@ -46,6 +50,15 @@ export function VariableSetDetail({
         </div>
       ) : isLoading ? (
         <div className="text-sm text-muted-foreground">{t('pages.environmentsVariables.detail.loading')}</div>
+      ) : error ? (
+        <div className="space-y-2">
+          <div className="text-sm text-muted-foreground">{t('pages.environmentsVariables.detail.error')}</div>
+          {onRetry ? (
+            <Button type="button" variant="outline" onClick={onRetry}>
+              {t('pages.environmentsVariables.detail.retry')}
+            </Button>
+          ) : null}
+        </div>
       ) : !selected ? (
         <div className="text-sm text-muted-foreground">{t('pages.environmentsVariables.detail.notFound')}</div>
       ) : (

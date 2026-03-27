@@ -30,7 +30,12 @@ export function useVariableSetsManagement() {
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const effectiveSelectedId = selectedId ?? variableSetsQuery.data?.[0]?.id ?? null;
+  const effectiveSelectedId = useMemo(() => {
+    const items = variableSetsQuery.data ?? [];
+    if (items.length === 0) return null;
+    if (selectedId && items.some((s) => s.id === selectedId)) return selectedId;
+    return items[0].id;
+  }, [selectedId, variableSetsQuery.data]);
   const selectedQuery = useVariableSet(effectiveSelectedId ?? '');
   const selected = selectedQuery.data ?? null;
 
