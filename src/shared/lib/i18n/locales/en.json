@@ -233,6 +233,7 @@
         "subtitle": "Search, filter and export audit events"
       },
       "filters": {
+        "title": "Filters",
         "entityId": "Entity ID",
         "entityName": "Entity name",
         "action": "Action",
@@ -301,6 +302,7 @@
       },
       "settings": {
         "title": "Settings",
+        "description": "Manage retention and export limits for events service.",
         "loading": "Loading settings...",
         "loadFailed": "Failed to load settings",
         "retentionDays": "Retention period (days)",

@@ -1,2 +1,4 @@
 export { EventsLog } from './ui/events-log';
-export { EventsSettingsCard } from './ui/events-settings-card';
+export { EventsExportModal } from './ui/events-export-modal';
+export { EventsSettingsModal } from './ui/events-settings-modal';
+export { useEventsLog } from './hooks/use-events-log';

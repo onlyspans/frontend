@@ -3,11 +3,18 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
 import { FieldGroup } from '@/shared/ui/field';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/shared/ui/dialog';
 import { useTranslation } from '@/shared/lib/i18n';
 import { useEventsSettings, useUpdateEventsSettings } from '@/entities/event';
 
@@ -18,7 +25,12 @@ const settingsSchema = z.object({
 
 type SettingsFormData = z.infer<typeof settingsSchema>;
 
-export function EventsSettingsCard() {
+interface EventsSettingsModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function EventsSettingsModal({ open, onOpenChange }: EventsSettingsModalProps) {
   const { t } = useTranslation();
   const settingsQuery = useEventsSettings();
   const updateMutation = useUpdateEventsSettings();
@@ -46,6 +58,7 @@ export function EventsSettingsCard() {
         maxExportSize: data.maxExportSize
       });
       toast.success(t('pages.events.settings.updated'));
+      onOpenChange(false);
     } catch (e) {
       toast.error(t('pages.events.settings.updateFailed'), {
         description: e instanceof Error ? e.message : undefined
@@ -54,18 +67,20 @@ export function EventsSettingsCard() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('pages.events.settings.title')}</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('pages.events.settings.title')}</DialogTitle>
+          <DialogDescription>{t('pages.events.settings.description')}</DialogDescription>
+        </DialogHeader>
+
         {settingsQuery.isLoading ? (
           <div className="text-sm text-muted-foreground">{t('pages.events.settings.loading')}</div>
         ) : settingsQuery.isError ? (
           <div className="text-sm text-destructive">{t('pages.events.settings.loadFailed')}</div>
         ) : (
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FieldGroup>
                 <FormField
                   control={form.control}
@@ -112,22 +127,22 @@ export function EventsSettingsCard() {
                     </FormItem>
                   )}
                 />
-
-                <div className="flex justify-end gap-2 pt-2">
-                  <Button
-                    type="submit"
-                    disabled={form.formState.isSubmitting || updateMutation.isPending}
-                  >
-                    {form.formState.isSubmitting || updateMutation.isPending
-                      ? t('common.saving')
-                      : t('common.saveChanges')}
-                  </Button>
-                </div>
               </FieldGroup>
+
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                  {t('common.cancel')}
+                </Button>
+                <Button type="submit" disabled={form.formState.isSubmitting || updateMutation.isPending}>
+                  {form.formState.isSubmitting || updateMutation.isPending
+                    ? t('common.saving')
+                    : t('common.saveChanges')}
+                </Button>
+              </DialogFooter>
             </form>
           </Form>
         )}
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 }
