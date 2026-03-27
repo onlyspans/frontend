@@ -87,22 +87,21 @@ export function EventsFilters({
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-between">
+      <div className="flex flex-col sm:flex-row gap-3 justify-end">
         <div className="flex items-end gap-2">
           <Field className="w-[170px]">
-            <FieldLabel htmlFor="events-page-size">{t('pages.events.filters.pageSize')}</FieldLabel>
-          <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
-            <SelectTrigger id="events-page-size" className="w-full">
-              <SelectValue placeholder={t('pages.events.filters.pageSize')} />
-            </SelectTrigger>
-            <SelectContent>
-              {pageSizeOptions.map((s) => (
-                <SelectItem key={s} value={String(s)}>
-                  {t('pages.events.filters.pageSizeValue', { value: s })}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
+              <SelectTrigger id="events-page-size" className="w-full">
+                <SelectValue placeholder={t('pages.events.filters.pageSize')} />
+              </SelectTrigger>
+              <SelectContent>
+                {pageSizeOptions.map((s) => (
+                  <SelectItem key={s} value={String(s)}>
+                    {t('pages.events.filters.pageSizeValue', { value: s })}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
         </div>
 
