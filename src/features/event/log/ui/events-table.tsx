@@ -115,10 +115,10 @@ export function EventsTable({
 
   if (isLoading) {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-card overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow>
+          <TableHeader className="bg-secondary">
+            <TableRow className="hover:bg-secondary">
               <TableHead className="w-[40px]" />
               {columns.map((c) => (
                 <TableHead key={c.key}>{c.label}</TableHead>
@@ -140,7 +140,12 @@ export function EventsTable({
 
   if (isError) {
     return (
-      <div className="rounded-md border p-6 text-sm text-destructive">
+      <div
+        className={cn(
+          'rounded-md border bg-card overflow-hidden',
+          'p-6 text-sm text-destructive'
+        )}
+      >
         {t('pages.events.table.loadFailed')}
       </div>
     );
@@ -148,10 +153,10 @@ export function EventsTable({
 
   if (events.length === 0) {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-card overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow>
+          <TableHeader className="bg-secondary">
+            <TableRow className="hover:bg-secondary">
               <TableHead className="w-[40px]" />
               {columns.map((c) => (
                 <TableHead key={c.key}>{c.label}</TableHead>
@@ -172,10 +177,10 @@ export function EventsTable({
   }
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border bg-card overflow-hidden">
       <Table>
-        <TableHeader>
-          <TableRow>
+        <TableHeader className="bg-secondary">
+          <TableRow className="hover:bg-secondary">
             <TableHead className="w-[40px]" />
             <SortHead
               label={t('pages.events.table.timestamp')}
@@ -229,70 +234,70 @@ export function EventsTable({
             const changes = e.changes ?? [];
             return (
               <tbody key={e.id} className="contents">
-                <TableRow
-                  className={cn(changes.length > 0 ? 'cursor-pointer' : undefined)}
-                  onClick={() => changes.length > 0 && toggleExpanded(e.id)}
-                >
-                  <TableCell className="text-muted-foreground w-[40px]">
-                    {changes.length > 0 ? (expanded ? '▾' : '▸') : ''}
-                  </TableCell>
-                  <TableCell className="font-medium">{formatDateTime(e.timestamp)}</TableCell>
-                  <TableCell className="font-mono text-xs">{e.entityId}</TableCell>
-                  <TableCell className="text-muted-foreground">{e.entityName ?? '—'}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className="font-normal">
-                      {e.action}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{e.userId ?? '—'}</TableCell>
-                  <TableCell className="text-muted-foreground">{e.tenant ?? '—'}</TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {changes.length ? t('pages.events.table.changesCount', { value: changes.length }) : '—'}
-                  </TableCell>
-                  <TableCell onClick={(evt) => evt.stopPropagation()}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          aria-label={t('pages.events.table.copyId')}
-                          onClick={async () => {
-                            await copyToClipboard(e.id);
-                          }}
-                        >
-                          <Copy className="size-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent sideOffset={6}>{t('pages.events.table.copyId')}</TooltipContent>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-                {expanded && changes.length > 0 && (
-                  <TableRow>
-                    <TableCell colSpan={9} className="bg-muted/30">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm py-2">
-                        {changes.map((c, idx) => (
-                          <div key={idx} className="rounded-md border bg-background p-3">
-                            <div className="text-xs text-muted-foreground">
-                              {t('pages.events.table.changeField')}: {c.field ?? '—'}
+              <TableRow
+                className={cn(changes.length > 0 ? 'cursor-pointer' : undefined)}
+                onClick={() => changes.length > 0 && toggleExpanded(e.id)}
+              >
+                <TableCell className="text-muted-foreground w-[40px]">
+                  {changes.length > 0 ? (expanded ? '▾' : '▸') : ''}
+                </TableCell>
+                <TableCell className="font-medium">{formatDateTime(e.timestamp)}</TableCell>
+                <TableCell className="font-mono text-xs">{e.entityId}</TableCell>
+                <TableCell className="text-muted-foreground">{e.entityName ?? '—'}</TableCell>
+                <TableCell>
+                  <Badge variant="secondary" className="font-normal">
+                    {e.action}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-muted-foreground">{e.userId ?? '—'}</TableCell>
+                <TableCell className="text-muted-foreground">{e.tenant ?? '—'}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {changes.length ? t('pages.events.table.changesCount', { value: changes.length }) : '—'}
+                </TableCell>
+                <TableCell onClick={(evt) => evt.stopPropagation()}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        aria-label={t('pages.events.table.copyId')}
+                        onClick={async () => {
+                          await copyToClipboard(e.id);
+                        }}
+                      >
+                        <Copy className="size-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent sideOffset={6}>{t('pages.events.table.copyId')}</TooltipContent>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+              {expanded && changes.length > 0 && (
+                <TableRow>
+                  <TableCell colSpan={9} className="bg-muted/30">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm py-2">
+                      {changes.map((c, idx) => (
+                        <div key={idx} className="rounded-md border bg-background p-3">
+                          <div className="text-xs text-muted-foreground">
+                            {t('pages.events.table.changeField')}: {c.field ?? '—'}
+                          </div>
+                          <div className="mt-2 grid grid-cols-2 gap-2">
+                            <div>
+                              <div className="text-xs text-muted-foreground">{t('pages.events.table.oldValue')}</div>
+                              <div className="font-mono text-xs break-all">{c.oldValue ?? '—'}</div>
                             </div>
-                            <div className="mt-2 grid grid-cols-2 gap-2">
-                              <div>
-                                <div className="text-xs text-muted-foreground">{t('pages.events.table.oldValue')}</div>
-                                <div className="font-mono text-xs break-all">{c.oldValue ?? '—'}</div>
-                              </div>
-                              <div>
-                                <div className="text-xs text-muted-foreground">{t('pages.events.table.newValue')}</div>
-                                <div className="font-mono text-xs break-all">{c.newValue ?? '—'}</div>
-                              </div>
+                            <div>
+                              <div className="text-xs text-muted-foreground">{t('pages.events.table.newValue')}</div>
+                              <div className="font-mono text-xs break-all">{c.newValue ?? '—'}</div>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
+                        </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
               </tbody>
             );
           })}
