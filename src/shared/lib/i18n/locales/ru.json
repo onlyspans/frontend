@@ -58,7 +58,8 @@
     "environments": "Окружения",
     "variables": "Переменные",
     "releases": "Релизы",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "events": "События"
   },
   "pages": {
     "dashboard": {

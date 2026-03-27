@@ -61,7 +61,8 @@
     "environments": "Environments",
     "variables": "Variables",
     "releases": "Releases",
-    "settings": "Settings"
+    "settings": "Settings",
+    "events": "Events"
   },
   "pages": {
     "dashboard": {

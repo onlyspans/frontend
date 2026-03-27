@@ -5,6 +5,7 @@
  *   /default/projects → Home > Projects
  *   /default/projects/mobile-sdk → Home > Projects > [Project Name]
  *   /default/projects/mobile-sdk/settings → Home > Projects > [Project Name]
+ *   /default/events → Home > Events
  */
 
 export interface BreadcrumbSegment {
@@ -64,6 +65,15 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
       });
     }
 
+    return segments;
+  }
+
+  if (parts.length >= 2 && parts[1] === 'events') {
+    segments.push({
+      labelKey: 'breadcrumb.events',
+      href: null,
+      isCurrent: true
+    });
     return segments;
   }
 
