@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
+import { InputStepper } from '@/shared/ui/input-stepper';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
 import { FieldGroup } from '@/shared/ui/field';
 import {
@@ -89,16 +89,16 @@ export function EventsSettingsModal({ open, onOpenChange }: EventsSettingsModalP
                     <FormItem>
                       <FormLabel>{t('pages.events.settings.retentionDays')}</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
+                        <InputStepper
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          inputRef={field.ref}
                           min={1}
                           max={3650}
                           step={1}
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.currentTarget.valueAsNumber)}
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          ref={field.ref}
+                          disabled={updateMutation.isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -112,15 +112,15 @@ export function EventsSettingsModal({ open, onOpenChange }: EventsSettingsModalP
                     <FormItem>
                       <FormLabel>{t('pages.events.settings.maxExportSize')}</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          min={1}
-                          step={1}
+                        <InputStepper
                           value={field.value}
-                          onChange={(e) => field.onChange(e.currentTarget.valueAsNumber)}
+                          onChange={field.onChange}
                           onBlur={field.onBlur}
                           name={field.name}
-                          ref={field.ref}
+                          inputRef={field.ref}
+                          min={1}
+                          step={1}
+                          disabled={updateMutation.isPending}
                         />
                       </FormControl>
                       <FormMessage />
