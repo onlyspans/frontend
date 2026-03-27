@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/shared/ui/select';
+import { EventsDateRangePicker } from './events-date-range-picker';
 
 const pageSizeOptions = [20, 50, 100, 500, 1000] as const;
 
@@ -75,17 +76,11 @@ export function EventsFilters({
           onChange={(e) => onChange({ tenant: e.target.value })}
         />
 
-        <Input
-          type="datetime-local"
-          value={filters.startDate}
-          onChange={(e) => onChange({ startDate: e.target.value })}
-          aria-label={t('pages.events.filters.startDate')}
-        />
-        <Input
-          type="datetime-local"
-          value={filters.endDate}
-          onChange={(e) => onChange({ endDate: e.target.value })}
-          aria-label={t('pages.events.filters.endDate')}
+        <EventsDateRangePicker
+          startDate={filters.startDate}
+          endDate={filters.endDate}
+          onChange={({ startDate, endDate }) => onChange({ startDate, endDate })}
+          className="md:col-span-2 lg:col-span-3"
         />
       </div>
 

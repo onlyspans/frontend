@@ -238,6 +238,9 @@
         "action": "Action",
         "userId": "User ID",
         "tenant": "Tenant",
+        "dateRange": "Date range",
+        "pickDateRange": "Pick a date range",
+        "clearDateRange": "Clear date",
         "startDate": "Start date",
         "endDate": "End date",
         "sortBy": "Sort by",
@@ -245,6 +248,13 @@
         "pageSize": "Page size",
         "pageSizeValue": "{{value}} / page",
         "clear": "Clear filters",
+        "presets": {
+          "last1h": "Last 1h",
+          "last12h": "Last 12h",
+          "last24h": "Last 24h",
+          "last7d": "Last 7d",
+          "last30d": "Last 30d"
+        },
         "sort": {
           "asc": "Ascending",
           "desc": "Descending",

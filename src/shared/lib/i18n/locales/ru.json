@@ -235,6 +235,9 @@
         "action": "Действие",
         "userId": "User ID",
         "tenant": "Tenant",
+        "dateRange": "Диапазон дат",
+        "pickDateRange": "Выберите период",
+        "clearDateRange": "Очистить дату",
         "startDate": "Дата начала",
         "endDate": "Дата окончания",
         "sortBy": "Сортировка",
@@ -242,6 +245,13 @@
         "pageSize": "Размер страницы",
         "pageSizeValue": "{{value}} / стр.",
         "clear": "Сбросить фильтры",
+        "presets": {
+          "last1h": "Последний 1ч",
+          "last12h": "Последние 12ч",
+          "last24h": "Последние 24ч",
+          "last7d": "Последние 7д",
+          "last30d": "Последние 30д"
+        },
         "sort": {
           "asc": "По возрастанию",
           "desc": "По убыванию",
