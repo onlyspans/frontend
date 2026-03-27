@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from '@/shared/lib/i18n';
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
@@ -21,19 +21,14 @@ export function UpsertProjectVariableDialog({
   onSubmit: (data: { key: string; value: string }) => Promise<void> | void;
 }) {
   const { t } = useTranslation();
-  const [keyValue, setKeyValue] = useState('');
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    if (!open) return;
-    if (mode === 'edit' && initial) {
-      setKeyValue(initial.key ?? '');
-      setValue(initial.value ?? '');
-      return;
-    }
-    setKeyValue('');
-    setValue('');
-  }, [initial, mode, open]);
+  const keyInputId = useId();
+  const valueInputId = useId();
+  const [keyValue, setKeyValue] = useState(() =>
+    mode === 'edit' && initial ? (initial.key ?? '') : ''
+  );
+  const [value, setValue] = useState(() =>
+    mode === 'edit' && initial ? (initial.value ?? '') : ''
+  );
 
   const canSubmit = keyValue.trim().length > 0 && value.trim().length > 0;
 
@@ -56,12 +51,16 @@ export function UpsertProjectVariableDialog({
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">{t('pages.projectVariables.direct.form.key')}</label>
-            <Input value={keyValue} onChange={(e) => setKeyValue(e.target.value)} />
+            <label className="text-sm font-medium" htmlFor={keyInputId}>
+              {t('pages.projectVariables.direct.form.key')}
+            </label>
+            <Input id={keyInputId} value={keyValue} onChange={(e) => setKeyValue(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">{t('pages.projectVariables.direct.form.value')}</label>
-            <Input value={value} onChange={(e) => setValue(e.target.value)} />
+            <label className="text-sm font-medium" htmlFor={valueInputId}>
+              {t('pages.projectVariables.direct.form.value')}
+            </label>
+            <Input id={valueInputId} value={value} onChange={(e) => setValue(e.target.value)} />
           </div>
         </div>
 

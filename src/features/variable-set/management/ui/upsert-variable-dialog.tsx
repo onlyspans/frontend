@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from '@/shared/lib/i18n';
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
@@ -21,19 +21,14 @@ export function UpsertVariableDialog({
   onSubmit: (data: { key: string; value: string }) => Promise<void> | void;
 }) {
   const { t } = useTranslation();
-  const [keyValue, setKeyValue] = useState('');
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    if (!open) return;
-    if (mode === 'edit' && initial) {
-      setKeyValue(initial.key ?? '');
-      setValue(initial.value ?? '');
-      return;
-    }
-    setKeyValue('');
-    setValue('');
-  }, [initial, mode, open]);
+  const keyInputId = useId();
+  const valueInputId = useId();
+  const [keyValue, setKeyValue] = useState(() =>
+    mode === 'edit' && initial ? (initial.key ?? '') : ''
+  );
+  const [value, setValue] = useState(() =>
+    mode === 'edit' && initial ? (initial.value ?? '') : ''
+  );
 
   const canSubmit = keyValue.trim().length > 0 && value.trim().length > 0;
 
@@ -56,16 +51,16 @@ export function UpsertVariableDialog({
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">
+            <label className="text-sm font-medium" htmlFor={keyInputId}>
               {t('pages.environmentsVariables.variables.form.key')}
             </label>
-            <Input value={keyValue} onChange={(e) => setKeyValue(e.target.value)} />
+            <Input id={keyInputId} value={keyValue} onChange={(e) => setKeyValue(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">
+            <label className="text-sm font-medium" htmlFor={valueInputId}>
               {t('pages.environmentsVariables.variables.form.value')}
             </label>
-            <Input value={value} onChange={(e) => setValue(e.target.value)} />
+            <Input id={valueInputId} value={value} onChange={(e) => setValue(e.target.value)} />
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { variableApi } from '../api/variable-api';
 import { variableQueryKeys } from './query-keys';
+import { variableSetQueryKeys } from '@/entities/variable-set';
 
 export function useDeleteVariable() {
   const queryClient = useQueryClient();
@@ -13,14 +14,14 @@ export function useDeleteVariable() {
       }
       if (variables.setId) {
         queryClient.invalidateQueries({
-          queryKey: ['variable-sets', 'detail', variables.setId]
+          queryKey: variableSetQueryKeys.detail(variables.setId)
         });
       }
       if (!variables.projectId && !variables.setId) {
         queryClient.invalidateQueries({ queryKey: variableQueryKeys.all() });
       } else {
         queryClient.invalidateQueries({ queryKey: variableQueryKeys.projectLists() });
-        queryClient.invalidateQueries({ queryKey: ['variable-sets', 'list'] });
+        queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.list() });
       }
     }
   });

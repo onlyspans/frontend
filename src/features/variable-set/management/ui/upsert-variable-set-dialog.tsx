@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from '@/shared/lib/i18n';
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
@@ -22,19 +22,12 @@ export function UpsertVariableSetDialog({
   onSubmit: (data: { name: string; description: string }) => Promise<void> | void;
 }) {
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-
-  useEffect(() => {
-    if (!open) return;
-    if (mode === 'edit' && initial) {
-      setName(initial.name ?? '');
-      setDescription(initial.description ?? '');
-      return;
-    }
-    setName('');
-    setDescription('');
-  }, [initial, mode, open]);
+  const nameInputId = useId();
+  const descriptionInputId = useId();
+  const [name, setName] = useState(() => (mode === 'edit' && initial ? (initial.name ?? '') : ''));
+  const [description, setDescription] = useState(() =>
+    mode === 'edit' && initial ? (initial.description ?? '') : ''
+  );
 
   const canSubmit = name.trim().length > 0;
 
@@ -57,16 +50,17 @@ export function UpsertVariableSetDialog({
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">
+            <label className="text-sm font-medium" htmlFor={nameInputId}>
               {t('pages.environmentsVariables.sets.form.name')}
             </label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
+            <Input id={nameInputId} value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">
+            <label className="text-sm font-medium" htmlFor={descriptionInputId}>
               {t('pages.environmentsVariables.sets.form.description')}
             </label>
             <Textarea
+              id={descriptionInputId}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -30,14 +30,9 @@ export function useVariableSetsManagement() {
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const selectedQuery = useVariableSet(selectedId ?? '');
+  const effectiveSelectedId = selectedId ?? variableSetsQuery.data?.[0]?.id ?? null;
+  const selectedQuery = useVariableSet(effectiveSelectedId ?? '');
   const selected = selectedQuery.data ?? null;
-
-  useEffect(() => {
-    if (selectedId) return;
-    const first = variableSetsQuery.data?.[0];
-    if (first) setSelectedId(first.id);
-  }, [selectedId, variableSetsQuery.data]);
 
   const filteredSets = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -64,7 +59,7 @@ export function useVariableSetsManagement() {
   const updateSetMutation = useUpdateVariableSet();
   const deleteSetMutation = useDeleteVariableSet();
 
-  const addVarMutation = useAddVariableToSet(selectedId ?? '');
+  const addVarMutation = useAddVariableToSet(effectiveSelectedId ?? '');
   const updateVarMutation = useUpdateVariable();
   const deleteVarMutation = useDeleteVariable();
 
@@ -90,14 +85,14 @@ export function useVariableSetsManagement() {
         id: set.id,
         body: {
           name: data.name.trim(),
-          description: data.description.trim() ? data.description.trim() : null
+          description: data.description.trim() ? data.description.trim() : undefined
         }
       });
       toast.success(t('pages.environmentsVariables.toast.setUpdated'));
       setEditSet(null);
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.environmentsVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getFirstValidationErrorMessage(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.setUpdateFailed'), {
         description
@@ -110,13 +105,13 @@ export function useVariableSetsManagement() {
       await deleteSetMutation.mutateAsync({ id: set.id });
       toast.success(t('pages.environmentsVariables.toast.setDeleted'));
       setDeleteSet(null);
-      if (selectedId === set.id) {
+      if (effectiveSelectedId === set.id) {
         const next = (variableSetsQuery.data ?? []).find((s) => s.id !== set.id) ?? null;
         setSelectedId(next?.id ?? null);
       }
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.environmentsVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.setDeleteFailed'), {
         description
@@ -125,12 +120,12 @@ export function useVariableSetsManagement() {
   };
 
   const handleCreateVar = async (data: { key: string; value: string }) => {
-    if (!selectedId) return;
+    if (!effectiveSelectedId) return;
     try {
-      await addVarMutation.mutateAsync({ key: data.key.trim(), value: data.value });
+      await addVarMutation.mutateAsync({ key: data.key.trim(), value: data.value.trim() });
       toast.success(t('pages.environmentsVariables.toast.variableCreated'));
       setCreateVarOpen(false);
-      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(selectedId) });
+      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(effectiveSelectedId) });
     } catch (e) {
       toast.error(t('pages.environmentsVariables.toast.variableCreateFailed'), {
         description: getFirstValidationErrorMessage(e) ?? handleApiError(e)
@@ -139,19 +134,19 @@ export function useVariableSetsManagement() {
   };
 
   const handleEditVar = async (variable: VariableResponse, data: { key: string; value: string }) => {
-    if (!selectedId) return;
+    if (!effectiveSelectedId) return;
     try {
       await updateVarMutation.mutateAsync({
         id: variable.id,
-        body: { key: data.key.trim(), value: data.value },
-        setId: selectedId
+        body: { key: data.key.trim(), value: data.value.trim() },
+        setId: effectiveSelectedId
       });
       toast.success(t('pages.environmentsVariables.toast.variableUpdated'));
       setEditVar(null);
-      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(selectedId) });
+      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(effectiveSelectedId) });
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.environmentsVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getFirstValidationErrorMessage(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.variableUpdateFailed'), {
         description
@@ -160,15 +155,15 @@ export function useVariableSetsManagement() {
   };
 
   const handleDeleteVar = async (variable: VariableResponse) => {
-    if (!selectedId) return;
+    if (!effectiveSelectedId) return;
     try {
-      await deleteVarMutation.mutateAsync({ id: variable.id, setId: selectedId });
+      await deleteVarMutation.mutateAsync({ id: variable.id, setId: effectiveSelectedId });
       toast.success(t('pages.environmentsVariables.toast.variableDeleted'));
       setDeleteVar(null);
-      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(selectedId) });
+      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(effectiveSelectedId) });
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.environmentsVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.environmentsVariables.toast.variableDeleteFailed'), {
         description
@@ -182,7 +177,7 @@ export function useVariableSetsManagement() {
     query,
     setQuery,
 
-    selectedId,
+    selectedId: effectiveSelectedId,
     setSelectedId,
     selectedQuery,
     selected,

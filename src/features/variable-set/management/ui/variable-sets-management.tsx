@@ -1,11 +1,11 @@
 import type { VariableResponse } from '@/entities/variable';
 import type { VariableSetResponse } from '@/entities/variable-set';
 import {
-  DeleteVariableDialog,
-  DeleteVariableSetDialog,
-  UpsertVariableDialog,
-  UpsertVariableSetDialog
-} from './index';
+  DeleteVariableDialog
+} from './delete-variable-dialog';
+import { DeleteVariableSetDialog } from './delete-variable-set-dialog';
+import { UpsertVariableDialog } from './upsert-variable-dialog';
+import { UpsertVariableSetDialog } from './upsert-variable-set-dialog';
 import { VariableSetsList } from './variable-sets-list';
 import { VariableSetDetail } from './variable-set-detail';
 import { useVariableSetsManagement } from '../model/use-variable-sets-management';
@@ -57,6 +57,7 @@ export function VariableSetsManagement() {
       </div>
 
       <UpsertVariableSetDialog
+        key={vm.createSetOpen ? 'set-create-open' : 'set-create-closed'}
         mode="create"
         open={vm.createSetOpen}
         onOpenChange={vm.setCreateSetOpen}
@@ -64,6 +65,7 @@ export function VariableSetsManagement() {
         onSubmit={vm.handleCreateSet}
       />
       <UpsertVariableSetDialog
+        key={`${vm.editSet?.id ?? 'set-edit'}-${vm.editSet != null ? 'open' : 'closed'}`}
         mode="edit"
         open={vm.editSet != null}
         onOpenChange={(o) => vm.setEditSet(o ? vm.editSet : null)}
@@ -80,6 +82,7 @@ export function VariableSetsManagement() {
       />
 
       <UpsertVariableDialog
+        key={vm.createVarOpen ? 'var-create-open' : 'var-create-closed'}
         mode="create"
         open={vm.createVarOpen}
         onOpenChange={vm.setCreateVarOpen}
@@ -87,6 +90,7 @@ export function VariableSetsManagement() {
         onSubmit={vm.handleCreateVar}
       />
       <UpsertVariableDialog
+        key={`${vm.editVar?.id ?? 'var-edit'}-${vm.editVar != null ? 'open' : 'closed'}`}
         mode="edit"
         open={vm.editVar != null}
         onOpenChange={(o) => vm.setEditVar(o ? vm.editVar : null)}

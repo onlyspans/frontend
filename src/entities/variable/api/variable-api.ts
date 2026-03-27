@@ -5,8 +5,8 @@ import type {
   VariableResponse
 } from '../model/types';
 
-const PROJECTS_BASE = '/api/projects';
-const VARIABLES_BASE = '/api/variables';
+const PROJECTS_BASE = '/projects';
+const VARIABLES_BASE = '/variables';
 
 const variableEndpoints = {
   projectList: (projectId: string) => `${PROJECTS_BASE}/${projectId}/variables`,
@@ -27,5 +27,5 @@ export const variableApi = {
   update: (id: string, body: UpdateVariableRequest) =>
     api.variables.put<VariableResponse>(variableEndpoints.byId(id), body).then((r) => r.data),
 
-  delete: (id: string) => api.variables.delete(variableEndpoints.byId(id))
+  delete: (id: string) => api.variables.delete(variableEndpoints.byId(id)).then((r) => r.data)
 };

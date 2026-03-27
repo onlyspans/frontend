@@ -7,7 +7,7 @@ import type {
   VariableSetResponse
 } from '../model/types';
 
-const BASE = '/api/variable-sets';
+const BASE = '/variable-sets';
 
 const variableSetEndpoints = {
   list: BASE,
@@ -32,7 +32,7 @@ export const variableSetApi = {
       .put<VariableSetResponse>(variableSetEndpoints.byId(id), body)
       .then((r) => r.data),
 
-  delete: (id: string) => api.variables.delete(variableSetEndpoints.byId(id)),
+  delete: (id: string) => api.variables.delete(variableSetEndpoints.byId(id)).then((r) => r.data),
 
   addVariable: (id: string, body: CreateVariableRequest) =>
     api.variables

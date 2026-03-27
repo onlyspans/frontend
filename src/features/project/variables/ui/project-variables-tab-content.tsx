@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import type { Project } from '@/entities/project';
 import { useProjectVariablesManagement } from '../model/use-project-variables-management';
 import { useTranslation } from '@/shared/lib/i18n';
 import { Button } from '@/shared/ui/button';
-import { Plus, Eye, EyeOff, Link2, Unlink2 } from 'lucide-react';
+import { Plus, Eye, EyeOff, Link2, Unlink2, MoreVertical } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -12,14 +13,24 @@ import {
   TableRow
 } from '@/shared/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
-import { MoreVertical } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from '@/shared/ui/alert-dialog';
 import { UpsertProjectVariableDialog } from './upsert-project-variable-dialog';
 import { DeleteProjectVariableDialog } from './delete-project-variable-dialog';
 import { LinkVariableSetDialog } from './link-variable-set-dialog';
+import type { VariableSetResponse } from '@/entities/variable-set';
 
 export function ProjectVariablesTabContent({ project }: { project: Project }) {
   const { t } = useTranslation();
   const vm = useProjectVariablesManagement(project.id);
+  const [unlinkSet, setUnlinkSet] = useState<VariableSetResponse | null>(null);
 
   const directVars = vm.directVarsQuery.data ?? [];
   const linkedSets = vm.linkedSetsQuery.data ?? [];
@@ -71,7 +82,7 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
             ) : (
               directVars.map((v) => {
                 const isRevealed = vm.revealed[v.id] === true;
-                const masked = '•'.repeat(Math.min(24, Math.max(8, v.value?.length ?? 8)));
+                const masked = '•'.repeat(12);
                 return (
                   <TableRow key={v.id}>
                     <TableCell className="font-mono">{v.key}</TableCell>
@@ -169,7 +180,7 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => vm.handleUnlinkSet(s)}
+                      onClick={() => setUnlinkSet(s)}
                       disabled={vm.unlinkMutation.isPending}
                     >
                       <Unlink2 className="size-4" />
@@ -184,6 +195,7 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
       </section>
 
       <UpsertProjectVariableDialog
+        key={vm.createVarOpen ? 'create-open' : 'create-closed'}
         mode="create"
         open={vm.createVarOpen}
         onOpenChange={vm.setCreateVarOpen}
@@ -191,6 +203,7 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
         onSubmit={vm.handleCreateVar}
       />
       <UpsertProjectVariableDialog
+        key={`${vm.editVar?.id ?? 'edit'}-${vm.editVar != null ? 'open' : 'closed'}`}
         mode="edit"
         open={vm.editVar != null}
         onOpenChange={(o) => vm.setEditVar(o ? vm.editVar : null)}
@@ -207,12 +220,39 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
       />
 
       <LinkVariableSetDialog
+        key={vm.linkOpen ? 'link-open' : 'link-closed'}
         open={vm.linkOpen}
         onOpenChange={vm.setLinkOpen}
         availableSets={vm.availableToLink}
         isPending={vm.linkMutation.isPending}
         onSubmit={vm.handleLinkSet}
       />
+
+      <AlertDialog open={unlinkSet != null} onOpenChange={(o) => setUnlinkSet(o ? unlinkSet : null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('pages.projectVariables.linked.unlink.action')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {unlinkSet?.name ? unlinkSet.name : t('common.confirm')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setUnlinkSet(null)}>{t('common.cancel')}</AlertDialogCancel>
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={vm.unlinkMutation.isPending}
+              onClick={async () => {
+                if (!unlinkSet) return;
+                await vm.handleUnlinkSet(unlinkSet);
+                setUnlinkSet(null);
+              }}
+            >
+              {vm.unlinkMutation.isPending ? t('common.saving') : t('pages.projectVariables.linked.unlink.action')}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

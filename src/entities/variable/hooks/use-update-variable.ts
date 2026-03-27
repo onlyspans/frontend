@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { variableApi } from '../api/variable-api';
 import type { UpdateVariableRequest, VariableResponse } from '../model/types';
 import { variableQueryKeys } from './query-keys';
+import { variableSetQueryKeys } from '@/entities/variable-set';
 
 export function useUpdateVariable() {
   const queryClient = useQueryClient();
@@ -28,7 +29,7 @@ export function useUpdateVariable() {
 
       if (setId) {
         queryClient.invalidateQueries({
-          queryKey: ['variable-sets', 'detail', setId]
+          queryKey: variableSetQueryKeys.detail(setId)
         });
       }
 
@@ -36,7 +37,7 @@ export function useUpdateVariable() {
         queryClient.invalidateQueries({ queryKey: variableQueryKeys.all() });
       } else {
         queryClient.invalidateQueries({ queryKey: variableQueryKeys.projectLists() });
-        queryClient.invalidateQueries({ queryKey: ['variable-sets', 'list'] });
+        queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.list() });
       }
     }
   });

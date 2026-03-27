@@ -7,9 +7,9 @@ export function useDeleteVariableSet() {
 
   return useMutation({
     mutationFn: ({ id }: { id: string }) => variableSetApi.delete(id),
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.details() });
+      queryClient.removeQueries({ queryKey: variableSetQueryKeys.detail(variables.id) });
     }
   });
 }

@@ -19,6 +19,8 @@ export function VariableSetsList({
   onSelect: (id: string) => void;
 }) {
   const { t } = useTranslation();
+  const listboxId = 'variable-sets-listbox';
+  const selectedOptionId = selectedId ? `variable-set-option-${selectedId}` : undefined;
 
   return (
     <div className="rounded-lg border bg-card p-4 space-y-3">
@@ -28,10 +30,17 @@ export function VariableSetsList({
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           placeholder={t('pages.environmentsVariables.sets.list.searchPlaceholder')}
+          aria-label={t('pages.environmentsVariables.sets.list.searchPlaceholder')}
+          aria-controls={listboxId}
         />
       </div>
 
-      <div className="space-y-1">
+      <div
+        id={listboxId}
+        role="listbox"
+        aria-activedescendant={selectedOptionId}
+        className="space-y-1"
+      >
         {isLoading ? (
           <div className="text-sm text-muted-foreground">
             {t('pages.environmentsVariables.sets.list.loading')}
@@ -44,7 +53,10 @@ export function VariableSetsList({
           items.map((s) => (
             <button
               key={s.id}
+              id={`variable-set-option-${s.id}`}
               type="button"
+              role="option"
+              aria-selected={selectedId === s.id}
               onClick={() => onSelect(s.id)}
               className={cn(
                 'w-full text-left rounded-md border px-3 py-2 transition-colors',

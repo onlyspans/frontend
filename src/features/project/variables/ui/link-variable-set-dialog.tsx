@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from '@/shared/lib/i18n';
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
@@ -27,16 +27,12 @@ export function LinkVariableSetDialog({
   const { t } = useTranslation();
   const [selectedId, setSelectedId] = useState<string>('');
 
-  useEffect(() => {
-    if (!open) return;
-    setSelectedId('');
-  }, [open]);
-
   const canSubmit = selectedId.length > 0;
   const selectedLabel = useMemo(
     () => availableSets.find((s) => s.id === selectedId)?.name,
     [availableSets, selectedId]
   );
+  const hasAvailable = availableSets.length > 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,18 +43,24 @@ export function LinkVariableSetDialog({
 
         <div className="space-y-2">
           <label className="text-sm font-medium">{t('pages.projectVariables.linked.link.form.set')}</label>
-          <Select value={selectedId} onValueChange={setSelectedId}>
-            <SelectTrigger className="w-full">
+          <Select value={selectedId} onValueChange={setSelectedId} disabled={!hasAvailable}>
+            <SelectTrigger className="w-full" disabled={!hasAvailable}>
               <SelectValue placeholder={t('pages.projectVariables.linked.link.form.placeholder')}>
                 {selectedLabel}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {availableSets.map((s) => (
-                <SelectItem key={s.id} value={s.id}>
-                  {s.name}
+              {hasAvailable ? (
+                availableSets.map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.name}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem value="__empty__" disabled>
+                  {t('pages.projectVariables.linked.link.empty')}
                 </SelectItem>
-              ))}
+              )}
             </SelectContent>
           </Select>
         </div>

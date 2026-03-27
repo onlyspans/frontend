@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { variableSetApi } from '../api/variable-set-api';
 import type { UpdateVariableSetRequest } from '../model/types';
-import { variableSetQueryKeys } from './query-keys';
+import { invalidateVariableSetQueries } from './invalidate-variable-set-queries';
 
 export function useUpdateVariableSet() {
   const queryClient = useQueryClient();
@@ -10,8 +10,7 @@ export function useUpdateVariableSet() {
     mutationFn: ({ id, body }: { id: string; body: UpdateVariableSetRequest }) =>
       variableSetApi.update(id, body),
     onSuccess: (_updated, variables) => {
-      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: variableSetQueryKeys.detail(variables.id) });
+      invalidateVariableSetQueries(queryClient, variables.id);
     }
   });
 }

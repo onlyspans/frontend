@@ -105,7 +105,7 @@ export function VariableSetDetail({
                 ) : (
                   selected.variables.map((v) => {
                     const isRevealed = revealed[v.id] === true;
-                    const masked = '•'.repeat(Math.min(24, Math.max(8, v.value?.length ?? 8)));
+                    const masked = '•'.repeat(12);
                     return (
                       <TableRow key={v.id}>
                         <TableCell className="font-mono">{v.key}</TableCell>

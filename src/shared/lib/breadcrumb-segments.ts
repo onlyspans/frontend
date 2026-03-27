@@ -89,12 +89,17 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
 
         if (parts.length >= 4) {
           const tab = parts[3];
-          if (tab === 'settings') {
-            segments.push({ labelKey: 'breadcrumb.settings', href: null, isCurrent: true });
-          } else if (tab === 'releases') {
-            segments.push({ labelKey: 'breadcrumb.releases', href: null, isCurrent: true });
-          } else if (tab === 'variables') {
-            segments.push({ labelKey: 'breadcrumb.variables', href: null, isCurrent: true });
+          const tabLabelKeys: Record<string, string> = {
+            settings: 'breadcrumb.settings',
+            releases: 'breadcrumb.releases',
+            variables: 'breadcrumb.variables'
+          };
+
+          const labelKey = tabLabelKeys[tab];
+          if (labelKey) {
+            segments.push({ labelKey, href: null, isCurrent: true });
+          } else {
+            segments.push({ label: humanizeSlug(tab), href: null, isCurrent: true });
           }
         }
       }

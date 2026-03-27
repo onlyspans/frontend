@@ -1,7 +1,7 @@
 import { api } from '@/shared/api';
 import type { VariableSetResponse } from '@/entities/variable-set';
 
-const PROJECTS_BASE = '/api/projects';
+const PROJECTS_BASE = '/projects';
 
 const projectVariableSetsEndpoints = {
   list: (projectId: string) => `${PROJECTS_BASE}/${projectId}/variable-sets`,

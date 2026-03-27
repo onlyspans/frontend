@@ -52,7 +52,7 @@ export function useProjectVariablesManagement(projectId: string) {
 
   const handleCreateVar = async (data: { key: string; value: string }) => {
     try {
-      await createVarMutation.mutateAsync({ key: data.key.trim(), value: data.value });
+      await createVarMutation.mutateAsync({ key: data.key.trim(), value: data.value.trim() });
       toast.success(t('pages.projectVariables.toast.variableCreated'));
       setCreateVarOpen(false);
     } catch (e) {
@@ -66,14 +66,14 @@ export function useProjectVariablesManagement(projectId: string) {
     try {
       await updateVarMutation.mutateAsync({
         id: variable.id,
-        body: { key: data.key.trim(), value: data.value },
+        body: { key: data.key.trim(), value: data.value.trim() },
         projectId
       });
       toast.success(t('pages.projectVariables.toast.variableUpdated'));
       setEditVar(null);
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.projectVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getFirstValidationErrorMessage(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.variableUpdateFailed'), {
         description
@@ -88,7 +88,7 @@ export function useProjectVariablesManagement(projectId: string) {
       setDeleteVar(null);
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.projectVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.variableDeleteFailed'), {
         description
@@ -103,7 +103,7 @@ export function useProjectVariablesManagement(projectId: string) {
       setLinkOpen(false);
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.projectVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.setLinkFailed'), {
         description
@@ -117,7 +117,7 @@ export function useProjectVariablesManagement(projectId: string) {
       toast.success(t('pages.projectVariables.toast.setUnlinked'));
     } catch (e) {
       const description = isApiStatus(e, 404)
-        ? t('pages.projectVariables.errors.notFound')
+        ? t('common.errors.entityNotFound')
         : getApiProblemDetail(e) ?? handleApiError(e);
       toast.error(t('pages.projectVariables.toast.setUnlinkFailed'), {
         description
