@@ -18,6 +18,7 @@ import {
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogAction,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
@@ -238,9 +239,8 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setUnlinkSet(null)}>{t('common.cancel')}</AlertDialogCancel>
-            <Button
-              type="button"
-              variant="destructive"
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               disabled={vm.unlinkMutation.isPending}
               onClick={async () => {
                 if (!unlinkSet) return;
@@ -249,7 +249,7 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
               }}
             >
               {vm.unlinkMutation.isPending ? t('common.saving') : t('pages.projectVariables.linked.unlink.action')}
-            </Button>
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

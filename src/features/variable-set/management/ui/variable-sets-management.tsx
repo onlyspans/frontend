@@ -36,6 +36,8 @@ export function VariableSetsManagement() {
         <VariableSetsList
           items={vm.filteredSets}
           isLoading={vm.variableSetsQuery.isLoading}
+          error={vm.variableSetsQuery.error}
+          onRetry={() => void vm.variableSetsQuery.refetch()}
           query={vm.query}
           onQueryChange={vm.setQuery}
           selectedId={vm.selectedId}
@@ -45,6 +47,8 @@ export function VariableSetsManagement() {
         <VariableSetDetail
           selectedId={vm.selectedId}
           isLoading={vm.selectedQuery.isLoading}
+          error={vm.selectedQuery.error}
+          onRetry={() => void vm.selectedQuery.refetch()}
           selected={selected}
           revealed={vm.revealed}
           onToggleReveal={(id) => vm.setRevealed((prev) => ({ ...prev, [id]: !(prev[id] === true) }))}
