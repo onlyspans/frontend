@@ -248,6 +248,8 @@
           "key": "Key",
           "value": "Value",
           "loading": "Loading variables...",
+          "error": "Failed to load variables.",
+          "retry": "Retry",
           "empty": "No variables"
         },
         "form": {
@@ -279,6 +281,8 @@
           "name": "Name",
           "description": "Description",
           "loading": "Loading linked sets...",
+          "error": "Failed to load linked sets.",
+          "retry": "Retry",
           "empty": "No linked sets"
         },
         "link": {

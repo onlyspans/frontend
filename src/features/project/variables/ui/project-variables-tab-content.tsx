@@ -33,8 +33,11 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
   const vm = useProjectVariablesManagement(project.id);
   const [unlinkSet, setUnlinkSet] = useState<VariableSetResponse | null>(null);
 
-  const directVars = vm.directVarsQuery.data ?? [];
-  const linkedSets = vm.linkedSetsQuery.data ?? [];
+  const directVarsData = vm.directVarsQuery.data;
+  const linkedSetsData = vm.linkedSetsQuery.data;
+  const isLinkDataLoading = vm.allSetsQuery.isLoading || vm.linkedSetsQuery.isLoading;
+  const disableLinkButton =
+    isLinkDataLoading ? true : vm.allSetsQuery.data && vm.linkedSetsQuery.data ? vm.availableToLink.length === 0 : false;
 
   return (
     <div className="space-y-6">
@@ -74,14 +77,25 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
                   {t('pages.projectVariables.direct.table.loading')}
                 </TableCell>
               </TableRow>
-            ) : directVars.length === 0 ? (
+            ) : vm.directVarsQuery.error ? (
+              <TableRow>
+                <TableCell colSpan={3} className="text-muted-foreground">
+                  <div className="flex items-center justify-between gap-3">
+                    <span>{t('pages.projectVariables.direct.table.error')}</span>
+                    <Button type="button" variant="outline" size="sm" onClick={() => void vm.directVarsQuery.refetch()}>
+                      {t('pages.projectVariables.direct.table.retry')}
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (directVarsData?.length ?? 0) === 0 ? (
               <TableRow>
                 <TableCell colSpan={3} className="text-muted-foreground">
                   {t('pages.projectVariables.direct.table.empty')}
                 </TableCell>
               </TableRow>
             ) : (
-              directVars.map((v) => {
+              directVarsData!.map((v) => {
                 const isRevealed = vm.revealed[v.id] === true;
                 const masked = '•'.repeat(12);
                 return (
@@ -142,7 +156,7 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
             type="button"
             variant="outline"
             onClick={() => vm.setLinkOpen(true)}
-            disabled={vm.availableToLink.length === 0}
+            disabled={disableLinkButton}
           >
             <Link2 className="size-4" />
             {t('pages.projectVariables.linked.link.action')}
@@ -164,14 +178,25 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
                   {t('pages.projectVariables.linked.table.loading')}
                 </TableCell>
               </TableRow>
-            ) : linkedSets.length === 0 ? (
+            ) : vm.linkedSetsQuery.error ? (
+              <TableRow>
+                <TableCell colSpan={3} className="text-muted-foreground">
+                  <div className="flex items-center justify-between gap-3">
+                    <span>{t('pages.projectVariables.linked.table.error')}</span>
+                    <Button type="button" variant="outline" size="sm" onClick={() => void vm.linkedSetsQuery.refetch()}>
+                      {t('pages.projectVariables.linked.table.retry')}
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (linkedSetsData?.length ?? 0) === 0 ? (
               <TableRow>
                 <TableCell colSpan={3} className="text-muted-foreground">
                   {t('pages.projectVariables.linked.table.empty')}
                 </TableCell>
               </TableRow>
             ) : (
-              linkedSets.map((s) => (
+              linkedSetsData!.map((s) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-medium">{s.name}</TableCell>
                   <TableCell className="text-muted-foreground">
@@ -244,8 +269,8 @@ export function ProjectVariablesTabContent({ project }: { project: Project }) {
               disabled={vm.unlinkMutation.isPending}
               onClick={async () => {
                 if (!unlinkSet) return;
-                await vm.handleUnlinkSet(unlinkSet);
-                setUnlinkSet(null);
+                const ok = await vm.handleUnlinkSet(unlinkSet);
+                if (ok) setUnlinkSet(null);
               }}
             >
               {vm.unlinkMutation.isPending ? t('common.saving') : t('pages.projectVariables.linked.unlink.action')}
