@@ -10,6 +10,10 @@ export interface ApiError {
   message: string;
   errors?: Record<string, string[]>;
   statusCode?: number;
+  title?: string;
+  detail?: string;
+  status?: number;
+  type?: string;
 }
 
 export type ApiAxiosError<T = ApiError> = AxiosError<T>;

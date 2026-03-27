@@ -40,3 +40,35 @@ export function handleApiError(error: unknown): string {
 export function extractData<T>(response: { data: ApiResponse<T> }): T {
   return response.data.data;
 }
+
+export function getApiStatus(error: unknown): number | undefined {
+  if (!axios.isAxiosError(error)) return undefined;
+  return error.response?.status;
+}
+
+export function isApiStatus(error: unknown, status: number): boolean {
+  return getApiStatus(error) === status;
+}
+
+export function getApiValidationErrors(error: unknown): Record<string, string[]> | undefined {
+  if (!axios.isAxiosError(error)) return undefined;
+  const data = error.response?.data as ApiError | undefined;
+  return data?.errors;
+}
+
+export function getApiProblemDetail(error: unknown): string | undefined {
+  if (!axios.isAxiosError(error)) return undefined;
+  const data = error.response?.data as ApiError | undefined;
+  return data?.detail;
+}
+
+export function getFirstValidationErrorMessage(error: unknown): string | undefined {
+  const errors = getApiValidationErrors(error);
+  if (!errors) return undefined;
+
+  for (const messages of Object.values(errors)) {
+    if (messages.length > 0) return messages[0];
+  }
+
+  return undefined;
+}

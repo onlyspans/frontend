@@ -28,7 +28,9 @@ export function ProjectDetailLayout() {
       ? 'settings'
       : location.pathname.endsWith('/releases')
         ? 'releases'
-        : 'overview';
+        : location.pathname.endsWith('/variables')
+          ? 'variables'
+          : 'overview';
 
   if (!slug) {
     return (
@@ -116,6 +118,9 @@ export function ProjectDetailLayout() {
           </NavLink>
           <NavLink to="releases" className={({ isActive }) => tabLinkClass(isActive)}>
             {t('pages.projectDetail.releases')}
+          </NavLink>
+          <NavLink to="variables" className={({ isActive }) => tabLinkClass(isActive)}>
+            {t('pages.projectDetail.variables')}
           </NavLink>
           <NavLink to="settings" className={({ isActive }) => tabLinkClass(isActive)}>
             {t('pages.projectDetail.settings')}

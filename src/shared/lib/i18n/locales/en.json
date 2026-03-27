@@ -12,9 +12,8 @@
       "history": "History",
       "scheduled": "Scheduled",
       "environments": "Environments",
+      "variables": "Variables",
       "allEnvironments": "All Environments",
-      "kubernetes": "Kubernetes",
-      "virtualMachines": "Virtual Machines",
       "infrastructure": "Infrastructure",
       "clusters": "Clusters",
       "nodes": "Nodes",
@@ -58,7 +57,10 @@
     "home": "Home",
     "projects": "Projects",
     "newProject": "New Project",
-    "environments": "Environments"
+    "environments": "Environments",
+    "variables": "Variables",
+    "releases": "Releases",
+    "settings": "Settings"
   },
   "pages": {
     "dashboard": {
@@ -74,6 +76,18 @@
       "description": "Create a new project to deploy and manage your application",
       "aboutTitle": "About Projects",
       "aboutDescription": "A project represents a specific software component, service, or database that you want to deploy and manage. Each project has its own deployment process."
+    },
+    "projectDetail": {
+      "overview": "Overview",
+      "releases": "Releases",
+      "variables": "Variables",
+      "settings": "Settings",
+      "goBack": "Go back",
+      "backToProjects": "Back to projects",
+      "projectNotFound": "Project not found.",
+      "failedToLoad": "Failed to load project",
+      "slugMissing": "Project slug is missing.",
+      "created": "Created"
     },
     "environments": {
       "title": "Environments",
@@ -127,16 +141,164 @@
         "reorderFailed": "Failed to reorder environments"
       }
     },
-    "projectDetail": {
-      "overview": "Overview",
-      "releases": "Releases",
-      "settings": "Settings",
-      "goBack": "Go back",
-      "backToProjects": "Back to projects",
-      "projectNotFound": "Project not found.",
-      "failedToLoad": "Failed to load project",
-      "slugMissing": "Project slug is missing.",
-      "created": "Created"
+    "environmentsVariables": {
+      "title": "Variables",
+      "subtitle": "Manage variable sets for your environments",
+      "toast": {
+        "setCreated": "Variable set created",
+        "setCreateFailed": "Failed to create variable set",
+        "setUpdated": "Variable set updated",
+        "setUpdateFailed": "Failed to update variable set",
+        "setDeleted": "Variable set deleted",
+        "setDeleteFailed": "Failed to delete variable set",
+        "variableCreated": "Variable created",
+        "variableCreateFailed": "Failed to create variable",
+        "variableUpdated": "Variable updated",
+        "variableUpdateFailed": "Failed to update variable",
+        "variableDeleted": "Variable deleted",
+        "variableDeleteFailed": "Failed to delete variable"
+      },
+      "sets": {
+        "list": {
+          "title": "Variable sets",
+          "searchPlaceholder": "Search sets...",
+          "loading": "Loading sets...",
+          "error": "Failed to load variable sets.",
+          "retry": "Retry",
+          "empty": "No variable sets"
+        },
+        "form": {
+          "name": "Name",
+          "description": "Description"
+        },
+        "create": {
+          "action": "Create set",
+          "title": "Create variable set",
+          "confirm": "Create"
+        },
+        "edit": {
+          "action": "Edit",
+          "title": "Edit variable set",
+          "confirm": "Save"
+        },
+        "delete": {
+          "action": "Delete",
+          "title": "Delete variable set?",
+          "description": "This will permanently delete \"{{name}}\".",
+          "confirm": "Delete",
+          "deleting": "Deleting..."
+        }
+      },
+      "detail": {
+        "emptyState": "Select a variable set to see details.",
+        "loading": "Loading set...",
+        "error": "Failed to load variable set.",
+        "retry": "Retry",
+        "notFound": "Variable set not found (it may have been deleted)."
+      },
+      "variables": {
+        "table": {
+          "title": "Variables",
+          "key": "Key",
+          "value": "Value",
+          "empty": "No variables"
+        },
+        "form": {
+          "key": "Key",
+          "value": "Value"
+        },
+        "create": {
+          "action": "Add variable",
+          "title": "Add variable",
+          "confirm": "Add"
+        },
+        "edit": {
+          "action": "Edit",
+          "title": "Edit variable",
+          "confirm": "Save"
+        },
+        "delete": {
+          "action": "Delete",
+          "title": "Delete variable?",
+          "description": "This will permanently delete \"{{key}}\".",
+          "confirm": "Delete",
+          "deleting": "Deleting..."
+        }
+      }
+    },
+    "projectVariables": {
+      "title": "Variables",
+      "subtitle": "Manage variables and linked sets for {{projectName}}",
+      "toast": {
+        "variableCreated": "Variable created",
+        "variableCreateFailed": "Failed to create variable",
+        "variableUpdated": "Variable updated",
+        "variableUpdateFailed": "Failed to update variable",
+        "variableDeleted": "Variable deleted",
+        "variableDeleteFailed": "Failed to delete variable",
+        "setLinked": "Variable set linked",
+        "setLinkFailed": "Failed to link variable set",
+        "setUnlinked": "Variable set unlinked",
+        "setUnlinkFailed": "Failed to unlink variable set"
+      },
+      "direct": {
+        "title": "Project variables",
+        "hint": "Direct variables only (sets are managed separately).",
+        "table": {
+          "key": "Key",
+          "value": "Value",
+          "loading": "Loading variables...",
+          "error": "Failed to load variables.",
+          "retry": "Retry",
+          "empty": "No variables"
+        },
+        "form": {
+          "key": "Key",
+          "value": "Value"
+        },
+        "create": {
+          "action": "Add variable",
+          "title": "Add variable",
+          "confirm": "Add"
+        },
+        "edit": {
+          "action": "Edit",
+          "title": "Edit variable",
+          "confirm": "Save"
+        },
+        "delete": {
+          "action": "Delete",
+          "title": "Delete variable?",
+          "description": "This will permanently delete \"{{key}}\".",
+          "confirm": "Delete",
+          "deleting": "Deleting..."
+        }
+      },
+      "linked": {
+        "title": "Linked variable sets",
+        "hint": "Linked sets apply to this project. Direct variables are not merged with sets in this tab.",
+        "table": {
+          "name": "Name",
+          "description": "Description",
+          "loading": "Loading linked sets...",
+          "error": "Failed to load linked sets.",
+          "retry": "Retry",
+          "empty": "No linked sets"
+        },
+        "link": {
+          "action": "Link set",
+          "title": "Link variable set",
+          "confirm": "Link",
+          "empty": "No available variable sets",
+          "form": {
+            "set": "Variable set",
+            "placeholder": "Select a set..."
+          }
+        },
+        "unlink": {
+          "action": "Unlink"
+        }
+      }
     },
     "projectSettings": {
       "general": "General",
@@ -184,11 +346,15 @@
   },
   "common": {
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "saveChanges": "Save changes",
     "saving": "Saving...",
     "createSpace": "Create Space",
     "creating": "Creating...",
-    "languageToggle": "Language Toggle"
+    "languageToggle": "Language Toggle",
+    "errors": {
+      "entityNotFound": "Entity was not found (it may have been deleted)."
+    }
   },
   "project": {
     "searchPlaceholder": "Search projects by name or description...",

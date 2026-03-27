@@ -49,11 +49,21 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
   ];
 
   if (parts.length >= 2 && parts[1] === 'environments') {
+    const environmentsUrl = `${baseUrl}/environments`;
     segments.push({
       labelKey: 'breadcrumb.environments',
-      href: `${baseUrl}/environments`,
-      isCurrent: true
+      href: environmentsUrl,
+      isCurrent: parts.length === 2
     });
+
+    if (parts.length >= 3 && parts[2] === 'variables') {
+      segments.push({
+        labelKey: 'breadcrumb.variables',
+        href: null,
+        isCurrent: true
+      });
+    }
+
     return segments;
   }
 
@@ -70,11 +80,28 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
       if (slug === 'create') {
         segments.push({ labelKey: 'breadcrumb.newProject', href: null, isCurrent: true });
       } else {
+        const projectUrl = `${projectsUrl}/${slug}`;
         segments.push({
           label: humanizeSlug(slug),
-          href: `${projectsUrl}/${slug}`,
-          isCurrent: true
+          href: projectUrl,
+          isCurrent: parts.length === 3
         });
+
+        if (parts.length >= 4) {
+          const tab = parts[3];
+          const tabLabelKeys: Record<string, string> = {
+            settings: 'breadcrumb.settings',
+            releases: 'breadcrumb.releases',
+            variables: 'breadcrumb.variables'
+          };
+
+          const labelKey = tabLabelKeys[tab];
+          if (labelKey) {
+            segments.push({ labelKey, href: null, isCurrent: true });
+          } else {
+            segments.push({ label: humanizeSlug(tab), href: null, isCurrent: true });
+          }
+        }
       }
     }
   }

@@ -9,7 +9,9 @@ import { ProjectPageLayout } from '@/pages/projects/project-page-layout';
 import { ProjectOverviewTab } from '@/pages/projects/project-overview-tab';
 import { ProjectReleasesTab } from '@/pages/projects/project-releases-tab';
 import { ProjectSettingsTab } from '@/pages/projects/project-settings-tab';
+import { ProjectVariablesTab } from '@/pages/projects/project-variables-tab';
 import { EnvironmentsPage } from '@/pages/environments/environments-page';
+import { EnvironmentsVariablesPage } from '@/pages/environments/environments-variables-page';
 import { CreateSpacePage } from '@/pages/spaces/create-space-page';
 import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
@@ -69,6 +71,10 @@ export const router = createBrowserRouter([
                   {
                     path: 'settings',
                     element: <ProjectSettingsTab />
+                  },
+                  {
+                    path: 'variables',
+                    element: <ProjectVariablesTab />
                   }
                 ]
               }
@@ -76,7 +82,16 @@ export const router = createBrowserRouter([
           },
           {
             path: 'environments',
-            element: <EnvironmentsPage />
+            children: [
+              {
+                index: true,
+                element: <EnvironmentsPage />
+              },
+              {
+                path: 'variables',
+                element: <EnvironmentsVariablesPage />
+              }
+            ]
           },
           {
             index: true,
