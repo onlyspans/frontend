@@ -206,7 +206,7 @@ export function ProjectSwitcher() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               {routeSlug && routeProject ? (
-                <ProjectIcon project={routeProject} className="size-8 rounded-lg" />
+                <ProjectIcon project={routeProject} />
               ) : routeSlug && routeProjectLoading ? (
                 <div className="bg-sidebar-primary/80 flex size-8 items-center justify-center rounded-lg">
                   <Loader2 className="text-sidebar-primary-foreground size-4 animate-spin" />
@@ -278,7 +278,7 @@ export function ProjectSwitcher() {
                             onClick={() => navigateToProject(project.slug)}
                             className="gap-2 p-2"
                           >
-                            <ProjectIcon project={project} className="size-6 rounded-lg" />
+                            <ProjectIcon project={project} size='sm' />
                             <span className="min-w-0 flex-1 truncate">{project.name}</span>
                             {sc ? (
                               <DropdownMenuShortcut>{sc}</DropdownMenuShortcut>
@@ -304,7 +304,7 @@ export function ProjectSwitcher() {
                             onClick={() => navigateToProject(project.slug)}
                             className="gap-2 p-2"
                           >
-                            <ProjectIcon project={project} className="size-6 rounded-lg" />
+                            <ProjectIcon project={project} size='sm' />
                             <span className="min-w-0 flex-1 truncate">{project.name}</span>
                             {sc ? (
                               <DropdownMenuShortcut>{sc}</DropdownMenuShortcut>

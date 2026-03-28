@@ -93,7 +93,7 @@ export function ProjectDetailLayout() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-4">
-          <ProjectIcon project={project} className="size-12" />
+          <ProjectIcon project={project} size='xl' radius='xl'/>
           <div className="space-y-1">
             <div className='inline-flex items-center justify-start gap-2'>
               <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>

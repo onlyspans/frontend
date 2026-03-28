@@ -206,13 +206,14 @@ export function ProjectIconField({ form }: ProjectIconFieldProps) {
           <ProjectIcon
             key={mode === 'emoji' ? `emoji-${emoji}` : mode === 'file' ? 'file' : mode === 'url' ? `url-${previewUrl}` : 'initials'}
             project={iconProject}
-            className="size-20"
+            size='2xl'
+            radius='lg'
             onImageLoad={handleImageLoad}
             onImageError={handleImageError}
           />
           {isImageLoading && (
             <div
-              className="absolute inset-0 flex items-center justify-center rounded-full bg-muted"
+              className="absolute inset-0 flex items-center justify-center rounded-lg bg-muted"
               aria-hidden
             >
               <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
