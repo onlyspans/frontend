@@ -9,6 +9,19 @@ import {
   CollapsibleTrigger,
 } from "@/shared/ui/collapsible"
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/shared/ui/tooltip"
+import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -17,11 +30,14 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/shared/ui/sidebar"
 import type { SidebarNavItem } from '../config/sidebar-config';
 
 export function NavMain({ items }: { items: SidebarNavItem[] }) {
   const { t } = useTranslation();
+  const { state, isMobile } = useSidebar();
+  const collapsedDesktop = state === "collapsed" && !isMobile;
 
   return (
     <SidebarGroup>
@@ -29,6 +45,50 @@ export function NavMain({ items }: { items: SidebarNavItem[] }) {
       <SidebarMenu>
         {items.map((item) => {
           if (item.items && item.items.length > 0) {
+            if (collapsedDesktop) {
+              const label = t(item.title);
+              return (
+                <SidebarMenuItem key={item.title}>
+                  <DropdownMenu>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <DropdownMenuTrigger asChild>
+                          <SidebarMenuButton aria-label={label}>
+                            {item.icon && <item.icon />}
+                            <span className="sr-only">{label}</span>
+                          </SidebarMenuButton>
+                        </DropdownMenuTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="center">
+                        {label}
+                      </TooltipContent>
+                    </Tooltip>
+                    <DropdownMenuContent
+                      className="w-56 rounded-lg"
+                      side="right"
+                      align="start"
+                      sideOffset={4}
+                    >
+                      <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">
+                        {label}
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {item.items.map((subItem) => (
+                        <DropdownMenuItem key={subItem.title} asChild>
+                          <Link
+                            to={subItem.url}
+                            className="cursor-pointer"
+                          >
+                            {t(subItem.title)}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </SidebarMenuItem>
+              );
+            }
+
             return (
               <Collapsible
                 key={item.title}
