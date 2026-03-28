@@ -17,13 +17,7 @@
       "security": "Безопасность"
     },
     "recentActivity": {
-      "title": "Недавняя активность",
-      "time2MinAgo": "2 мин назад",
-      "time15MinAgo": "15 мин назад",
-      "time1HourAgo": "1 ч назад",
-      "typeDeployment": "деплой",
-      "typeBuild": "сборка",
-      "typeUpdate": "обновление"
+      "title": "Недавняя активность"
     },
     "user": {
       "settings": "Настройки",

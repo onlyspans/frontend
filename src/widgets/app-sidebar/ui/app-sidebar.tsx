@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import { NavMain } from './nav-main';
 import { NavActivity } from './nav-activity';
@@ -22,7 +20,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={sidebarConfig.navMain} />
-        <NavActivity activities={sidebarConfig.activities} />
+        <NavActivity />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={sidebarConfig.user} />

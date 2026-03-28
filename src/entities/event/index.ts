@@ -15,6 +15,7 @@ export {
   eventQueryKeys,
   useEventsSearch,
   type UseEventsSearchParams,
+  useRecentEventsPreview,
   useEventsSettings,
   useUpdateEventsSettings
 } from './hooks';
