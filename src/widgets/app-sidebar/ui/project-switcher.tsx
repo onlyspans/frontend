@@ -208,11 +208,11 @@ export function ProjectSwitcher() {
               {routeSlug && routeProject ? (
                 <ProjectIcon project={routeProject} />
               ) : routeSlug && routeProjectLoading ? (
-                <div className="bg-sidebar-primary/80 flex size-8 items-center justify-center rounded-lg">
+                <div className="bg-sidebar-primary/80 flex size-8 shrink-0 items-center justify-center rounded-lg">
                   <Loader2 className="text-sidebar-primary-foreground size-4 animate-spin" />
                 </div>
               ) : (
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex size-8 items-center justify-center rounded-lg">
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-lg">
                   <PackageOpen className="size-4" />
                 </div>
               )}
