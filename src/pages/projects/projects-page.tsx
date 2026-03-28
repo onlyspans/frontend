@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui/button';
-import { useSpaceUrl } from '@/shared/hooks/use-space-url';
 import { useTranslation } from '@/shared/lib/i18n';
 import {
   useProjectsList,
@@ -12,7 +11,6 @@ import {
 
 export function ProjectsPage() {
   const navigate = useNavigate();
-  const { getSpaceUrl } = useSpaceUrl();
   const { t } = useTranslation();
   const {
     projects,
@@ -33,7 +31,7 @@ export function ProjectsPage() {
   } = useProjectsList();
 
   const handleProjectClick = (projectSlug: string) => {
-    navigate(getSpaceUrl(`/projects/${projectSlug}`));
+    navigate(`/projects/${projectSlug}`);
   };
 
   return (
@@ -45,7 +43,7 @@ export function ProjectsPage() {
             {t('pages.projects.subtitle')}
           </p>
         </div>
-        <Button onClick={() => navigate(getSpaceUrl('/projects/create'))}>
+        <Button onClick={() => navigate('/projects/create')}>
           {t('pages.projects.createProject')}
         </Button>
       </div>

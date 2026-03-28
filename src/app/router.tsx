@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import SignInPage from '@/pages/auth/sign-in-page';
 import SignUpPage from '@/pages/auth/sign-up-page';
 import NotFoundPage from '@/pages/not-found-page';
@@ -12,16 +12,11 @@ import { ProjectSettingsTab } from '@/pages/projects/project-settings-tab';
 import { ProjectVariablesTab } from '@/pages/projects/project-variables-tab';
 import { EnvironmentsPage } from '@/pages/environments/environments-page';
 import { EnvironmentsVariablesPage } from '@/pages/environments/environments-variables-page';
-import { CreateSpacePage } from '@/pages/spaces/create-space-page';
 import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
 import { EventsPage } from '@/pages/events/events-page';
 
 export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Navigate to="/default" replace />
-  },
   {
     element: <AuthLayout />,
     children: [
@@ -39,70 +34,60 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        index: false,
-        path: 'spaces/create',
-        element: <CreateSpacePage />
+        index: true,
+        element: <DashboardPage />
       },
       {
-        path: ':spaceSlug',
+        path: 'projects',
         children: [
           {
-            path: 'projects',
-            children: [
-              {
-                index: true,
-                element: <ProjectsPage />
-              },
-              {
-                path: 'create',
-                element: <CreateProjectPage />
-              },
-              {
-                path: ':slug',
-                element: <ProjectPageLayout />,
-                children: [
-                  {
-                    index: true,
-                    element: <ProjectOverviewTab />
-                  },
-                  {
-                    path: 'releases',
-                    element: <ProjectReleasesTab />
-                  },
-                  {
-                    path: 'settings',
-                    element: <ProjectSettingsTab />
-                  },
-                  {
-                    path: 'variables',
-                    element: <ProjectVariablesTab />
-                  }
-                ]
-              }
-            ]
+            index: true,
+            element: <ProjectsPage />
           },
           {
-            path: 'environments',
+            path: 'create',
+            element: <CreateProjectPage />
+          },
+          {
+            path: ':slug',
+            element: <ProjectPageLayout />,
             children: [
               {
                 index: true,
-                element: <EnvironmentsPage />
+                element: <ProjectOverviewTab />
+              },
+              {
+                path: 'releases',
+                element: <ProjectReleasesTab />
+              },
+              {
+                path: 'settings',
+                element: <ProjectSettingsTab />
               },
               {
                 path: 'variables',
-                element: <EnvironmentsVariablesPage />
+                element: <ProjectVariablesTab />
               }
             ]
-          },
-          {
-            path: 'events',
-            element: <EventsPage />
-          },
-          {
-            index: true,
-            element: <DashboardPage />
           }
         ]
+      },
+      {
+        path: 'environments',
+        children: [
+          {
+            index: true,
+            element: <EnvironmentsPage />
+          },
+          {
+            path: 'variables',
+            element: <EnvironmentsVariablesPage />
+          }
+        ]
+      },
+      {
+        path: 'events',
+        element: <EventsPage />
       }
     ]
   },

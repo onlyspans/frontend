@@ -12,8 +12,6 @@ import {
   SidebarMenuItem
 } from '@/shared/ui/sidebar';
 import { Badge } from '@/shared/ui/badge';
-import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
-
 export function NavActivity(
   { activities }: {
     activities: {
@@ -25,7 +23,6 @@ export function NavActivity(
     }[]
   }
 ) {
-  const { getSpaceUrl } = useSpaceUrl();
   const { t } = useTranslation();
 
   const getTypeColor = (type?: string) => {
@@ -54,7 +51,7 @@ export function NavActivity(
         {activities.map((activity, index) => (
           <SidebarMenuItem key={`${activity.title}-${index}`}>
             <SidebarMenuButton asChild>
-              <Link to={getSpaceUrl(activity.url)} className="group/activity h-14">
+              <Link to={activity.url} className="group/activity h-14">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   {activity.icon && (
                     <activity.icon className="size-4 shrink-0 text-muted-foreground" />

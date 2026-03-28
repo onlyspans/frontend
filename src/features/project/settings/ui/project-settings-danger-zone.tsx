@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Input } from '@/shared/ui/input';
@@ -34,7 +34,6 @@ interface ProjectSettingsDangerZoneProps {
 
 export function ProjectSettingsDangerZone({ project }: ProjectSettingsDangerZoneProps) {
   const { t } = useTranslation();
-  const { spaceSlug } = useParams<{ spaceSlug: string }>();
   const navigate = useNavigate();
   const deleteMutation = useDeleteProject();
   const updateMutation = useUpdateProject();
@@ -53,9 +52,7 @@ export function ProjectSettingsDangerZone({ project }: ProjectSettingsDangerZone
       toast.success(t('project.settings.delete.success'));
       setDeleteOpen(false);
       setConfirmName('');
-      if (spaceSlug) {
-        navigate(`/${spaceSlug}/projects`, { replace: true });
-      }
+      navigate('/projects', { replace: true });
     } catch (error) {
       toast.error(t('project.settings.delete.failed'), {
         description: error instanceof Error ? error.message : undefined

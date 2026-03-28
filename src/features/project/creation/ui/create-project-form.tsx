@@ -27,8 +27,8 @@ import { DeployToField } from './deploy-to-field';
 import { ProjectEnvironmentsField } from './project-environments-field';
 import { ProjectTagsField } from './project-tags-field';
 import { useNavigate } from 'react-router-dom';
-import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
 import { useTranslation } from '@/shared/lib/i18n';
+import { recordProjectVisit } from '@/shared/lib/project-recent-storage';
 
 interface CreateProjectFormProps {
   className?: string;
@@ -36,7 +36,6 @@ interface CreateProjectFormProps {
 
 export function CreateProjectForm({ className }: CreateProjectFormProps) {
   const navigate = useNavigate();
-  const { getSpaceUrl } = useSpaceUrl();
   const { t } = useTranslation();
   const createProjectMutation = useCreateProject();
   const uploadIconMutation = useUploadProjectIcon();
@@ -90,7 +89,8 @@ export function CreateProjectForm({ className }: CreateProjectFormProps) {
         }
       }
       toast.success(t('project.creation.success'));
-      navigate(getSpaceUrl('/'));
+      recordProjectVisit(project.slug);
+      navigate(`/projects/${project.slug}`);
     } catch (error) {
       toast.error(t('project.creation.failed'), {
         description: error instanceof Error ? error.message : t('project.creation.unknownError')

@@ -9,6 +9,7 @@ import {
 } from '@/shared/ui/breadcrumb';
 import {
   getAppBreadcrumbSegments,
+  getProjectDetailHref,
   getProjectSlugFromPathname
 } from '@/shared/lib/breadcrumb-segments';
 import { useProjectBySlug } from '@/entities/project';
@@ -21,9 +22,15 @@ function AppBreadcrumbContent() {
   const segments = getAppBreadcrumbSegments(location.pathname);
   const projectSlug = getProjectSlugFromPathname(location.pathname);
   const { data: project } = useProjectBySlug(projectSlug ?? '');
+  const projectDetailHref =
+    projectSlug != null ? getProjectDetailHref(projectSlug) : null;
 
-  const resolvedSegments = segments.map((seg, i) => {
-    if (i === 2 && project?.name && projectSlug) {
+  const resolvedSegments = segments.map((seg) => {
+    if (
+      projectDetailHref &&
+      seg.href === projectDetailHref &&
+      project?.name
+    ) {
       return { ...seg, label: project.name };
     }
     return seg;

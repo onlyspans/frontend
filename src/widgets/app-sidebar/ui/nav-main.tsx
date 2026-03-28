@@ -18,12 +18,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/shared/ui/sidebar"
-import { useSpaceUrl } from '@/shared/hooks/use-space-url.ts';
-
 import type { SidebarNavItem } from '../config/sidebar-config';
 
 export function NavMain({ items }: { items: SidebarNavItem[] }) {
-  const { getSpaceUrl } = useSpaceUrl();
   const { t } = useTranslation();
 
   return (
@@ -52,7 +49,7 @@ export function NavMain({ items }: { items: SidebarNavItem[] }) {
                       {item.items.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <Link to={getSpaceUrl(subItem.url)}>
+                            <Link to={subItem.url}>
                               <span>{t(subItem.title)}</span>
                             </Link>
                           </SidebarMenuSubButton>
@@ -68,7 +65,7 @@ export function NavMain({ items }: { items: SidebarNavItem[] }) {
           return (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild tooltip={t(item.title)}>
-                <Link to={getSpaceUrl(item.url)}>
+                <Link to={item.url}>
                   {item.icon && <item.icon />}
                   <span>{t(item.title)}</span>
                 </Link>
