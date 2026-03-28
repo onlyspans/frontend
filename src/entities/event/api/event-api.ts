@@ -22,7 +22,7 @@ const eventEndpoints = {
 
 function getFilenameFromContentDisposition(value: string | undefined): string | null {
   if (!value) return null;
-  const match = value.match(/filename\*?=(?:UTF-8''|")?([^\";]+)"?/i);
+  const match = value.match(/filename\*?=(?:UTF-8''|")?([^";]+)"?/i);
   if (!match?.[1]) return null;
   try {
     return decodeURIComponent(match[1]);

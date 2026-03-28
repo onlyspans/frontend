@@ -46,7 +46,6 @@ export type SettingsDTO = {
   maxExportSize: number;
 };
 
-// Ingest endpoints use snake_case as per service contract
 export type IngestEventRequest = {
   timestamp?: string; // RFC3339
   entity_id: string;
