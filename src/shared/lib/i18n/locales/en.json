@@ -14,6 +14,7 @@
       "environments": "Environments",
       "variables": "Variables",
       "allEnvironments": "All Environments",
+      "events": "Events",
       "infrastructure": "Infrastructure",
       "clusters": "Clusters",
       "nodes": "Nodes",
@@ -60,7 +61,8 @@
     "environments": "Environments",
     "variables": "Variables",
     "releases": "Releases",
-    "settings": "Settings"
+    "settings": "Settings",
+    "events": "Events"
   },
   "pages": {
     "dashboard": {
@@ -224,6 +226,97 @@
           "confirm": "Delete",
           "deleting": "Deleting..."
         }
+      }
+    },
+    "events": {
+      "title": "Events",
+      "subtitle": "Audit log and activity history",
+      "comingSoonTitle": "Coming soon",
+      "comingSoonDescription": "Events log UI will appear here in the next step.",
+      "log": {
+        "title": "Event log",
+        "subtitle": "Search, filter and export audit events"
+      },
+      "filters": {
+        "title": "Filters",
+        "entityId": "Entity ID",
+        "entityName": "Entity name",
+        "action": "Action",
+        "userId": "User ID",
+        "tenant": "Tenant",
+        "dateRange": "Date range",
+        "pickDateRange": "Pick a date range",
+        "clearDateRange": "Clear date",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "sortBy": "Sort by",
+        "sortOrder": "Order",
+        "pageSize": "Page size",
+        "pageSizeValue": "{{value}} / page",
+        "clear": "Clear filters",
+        "presets": {
+          "last4h": "4h",
+          "last12h": "12h",
+          "last24h": "24h",
+          "last7d": "7d",
+          "last30d": "30d",
+          "last60d": "60d"
+        },
+        "sort": {
+          "asc": "Ascending",
+          "desc": "Descending",
+          "timestamp": "Timestamp",
+          "entityId": "Entity ID",
+          "entityName": "Entity name",
+          "action": "Action",
+          "userId": "User ID",
+          "tenant": "Tenant"
+        }
+      },
+      "table": {
+        "timestamp": "Timestamp",
+        "entityId": "Entity ID",
+        "entityName": "Entity name",
+        "action": "Action",
+        "userId": "User ID",
+        "tenant": "Tenant",
+        "changes": "Changes",
+        "changesCount": "{{value}} changes",
+        "copyId": "Copy event ID",
+        "changeField": "Field",
+        "oldValue": "Old",
+        "newValue": "New",
+        "loading": "Loading events...",
+        "empty": "No events found",
+        "loadFailed": "Failed to load events",
+        "sortHint": "Sort by column",
+        "sortAsc": "Sorted ascending",
+        "sortDesc": "Sorted descending",
+        "invalidTimestamp": "Invalid date",
+        "copyFailed": "Could not copy to clipboard"
+      },
+      "pagination": {
+        "range": "Showing {{from}} to {{to}} of {{total}} events"
+      },
+      "export": {
+        "open": "Export CSV",
+        "title": "Export events to CSV",
+        "description": "The export will use your current filters and sorting.",
+        "currentFilters": "Current filters",
+        "noFilters": "No filters applied",
+        "download": "Download",
+        "downloading": "Downloading...",
+        "failed": "Export failed"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Manage retention and export limits for events service.",
+        "loading": "Loading settings...",
+        "loadFailed": "Failed to load settings",
+        "retentionDays": "Retention period (days)",
+        "maxExportSize": "Max export size",
+        "updated": "Settings updated",
+        "updateFailed": "Failed to update settings"
       }
     },
     "projectVariables": {

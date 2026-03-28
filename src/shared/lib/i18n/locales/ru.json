@@ -14,6 +14,7 @@
       "environments": "Окружения",
       "variables": "Переменные",
       "allEnvironments": "Все окружения",
+      "events": "События",
       "infrastructure": "Инфраструктура",
       "clusters": "Кластеры",
       "nodes": "Узлы",
@@ -57,7 +58,8 @@
     "environments": "Окружения",
     "variables": "Переменные",
     "releases": "Релизы",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "events": "События"
   },
   "pages": {
     "dashboard": {
@@ -221,6 +223,97 @@
           "confirm": "Удалить",
           "deleting": "Удаление..."
         }
+      }
+    },
+    "events": {
+      "title": "События",
+      "subtitle": "Журнал аудита и история активности",
+      "comingSoonTitle": "Скоро будет",
+      "comingSoonDescription": "UI лога событий появится здесь на следующем шаге.",
+      "log": {
+        "title": "Журнал событий",
+        "subtitle": "Поиск, фильтры и экспорт audit-событий"
+      },
+      "filters": {
+        "title": "Фильтры",
+        "entityId": "Entity ID",
+        "entityName": "Имя сущности",
+        "action": "Действие",
+        "userId": "User ID",
+        "tenant": "Tenant",
+        "dateRange": "Диапазон дат",
+        "pickDateRange": "Выберите период",
+        "clearDateRange": "Очистить дату",
+        "startDate": "Дата начала",
+        "endDate": "Дата окончания",
+        "sortBy": "Сортировка",
+        "sortOrder": "Порядок",
+        "pageSize": "Размер страницы",
+        "pageSizeValue": "{{value}} / стр.",
+        "clear": "Сбросить фильтры",
+        "presets": {
+          "last4h": "4ч",
+          "last12h": "12ч",
+          "last24h": "24ч",
+          "last7d": "7д",
+          "last30d": "30д",
+          "last60d": "60д"
+        },
+        "sort": {
+          "asc": "По возрастанию",
+          "desc": "По убыванию",
+          "timestamp": "Время",
+          "entityId": "Entity ID",
+          "entityName": "Имя сущности",
+          "action": "Действие",
+          "userId": "User ID",
+          "tenant": "Tenant"
+        }
+      },
+      "table": {
+        "timestamp": "Время",
+        "entityId": "Entity ID",
+        "entityName": "Имя сущности",
+        "action": "Действие",
+        "userId": "User ID",
+        "tenant": "Tenant",
+        "changes": "Изменения",
+        "changesCount": "{{value}} изм.",
+        "copyId": "Скопировать ID события",
+        "changeField": "Поле",
+        "oldValue": "Было",
+        "newValue": "Стало",
+        "loading": "Загрузка событий...",
+        "empty": "События не найдены",
+        "loadFailed": "Не удалось загрузить события",
+        "sortHint": "Сортировать по колонке",
+        "sortAsc": "Сортировка по возрастанию",
+        "sortDesc": "Сортировка по убыванию",
+        "invalidTimestamp": "Неверная дата",
+        "copyFailed": "Не удалось скопировать"
+      },
+      "pagination": {
+        "range": "Показано {{from}}–{{to}} из {{total}} событий"
+      },
+      "export": {
+        "open": "Экспорт CSV",
+        "title": "Экспорт событий в CSV",
+        "description": "Экспорт использует текущие фильтры и сортировку.",
+        "currentFilters": "Текущие фильтры",
+        "noFilters": "Фильтры не применены",
+        "download": "Скачать",
+        "downloading": "Скачивание...",
+        "failed": "Экспорт не удался"
+      },
+      "settings": {
+        "title": "Настройки",
+        "description": "Управление сроком хранения и лимитом экспорта для сервиса событий.",
+        "loading": "Загрузка настроек...",
+        "loadFailed": "Не удалось загрузить настройки",
+        "retentionDays": "Срок хранения (дни)",
+        "maxExportSize": "Лимит экспорта",
+        "updated": "Настройки обновлены",
+        "updateFailed": "Не удалось обновить настройки"
       }
     },
     "projectVariables": {
