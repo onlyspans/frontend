@@ -9,7 +9,7 @@ export type UseEventsSearchParams = Omit<SearchEventsRequest, 'page'> & {
 };
 
 function toApiPage(uiPage: number | undefined): number | undefined {
-  if (!uiPage) return undefined;
+  if (uiPage == null) return undefined;
   return Math.max(0, uiPage - 1);
 }
 
