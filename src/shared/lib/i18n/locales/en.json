@@ -291,7 +291,9 @@
         "loadFailed": "Failed to load events",
         "sortHint": "Sort by column",
         "sortAsc": "Sorted ascending",
-        "sortDesc": "Sorted descending"
+        "sortDesc": "Sorted descending",
+        "invalidTimestamp": "Invalid date",
+        "copyFailed": "Could not copy to clipboard"
       },
       "pagination": {
         "range": "Showing {{from}} to {{to}} of {{total}} events"

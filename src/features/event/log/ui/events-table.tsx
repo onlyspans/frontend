@@ -15,12 +15,19 @@ import { cn } from '@/shared/lib';
 import { Copy } from 'lucide-react';
 import type { EventsSortField, SortOrder } from '../hooks/use-events-log';
 import { useTranslation } from '@/shared/lib/i18n';
+import { toast } from 'sonner';
 
-function formatDateTime(iso: string): string {
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'short',
-    timeStyle: 'short'
-  }).format(new Date(iso));
+function formatDateTime(iso: string, invalidLabel: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return invalidLabel;
+  try {
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'short',
+      timeStyle: 'short'
+    }).format(date);
+  } catch {
+    return invalidLabel;
+  }
 }
 
 async function copyToClipboard(text: string) {
@@ -35,8 +42,11 @@ async function copyToClipboard(text: string) {
   document.body.appendChild(el);
   el.focus();
   el.select();
-  document.execCommand('copy');
+  const ok = document.execCommand('copy');
   document.body.removeChild(el);
+  if (!ok) {
+    throw new Error('execCommand("copy") returned false');
+  }
 }
 
 function SortHead({
@@ -241,7 +251,9 @@ export function EventsTable({
                   <TableCell className="text-muted-foreground w-[40px]">
                     {changes.length > 0 ? (expanded ? '▾' : '▸') : ''}
                   </TableCell>
-                  <TableCell className="font-medium">{formatDateTime(e.timestamp)}</TableCell>
+                  <TableCell className="font-medium">
+                    {formatDateTime(e.timestamp, t('pages.events.table.invalidTimestamp'))}
+                  </TableCell>
                   <TableCell className="font-mono text-xs">{e.entityId}</TableCell>
                   <TableCell className="text-muted-foreground">{e.entityName ?? '—'}</TableCell>
                   <TableCell>
@@ -263,7 +275,12 @@ export function EventsTable({
                           size="icon"
                           aria-label={t('pages.events.table.copyId')}
                           onClick={async () => {
-                            await copyToClipboard(e.id);
+                            try {
+                              await copyToClipboard(e.id);
+                            } catch (err) {
+                              console.error('Failed to copy event id', err);
+                              toast.error(t('pages.events.table.copyFailed'));
+                            }
                           }}
                         >
                           <Copy className="size-4" />
