@@ -1,11 +1,11 @@
 /**
  * Rules for building app breadcrumb segments from pathname.
  * Path examples:
- *   /default → Home
- *   /default/projects → Home > Projects
- *   /default/projects/mobile-sdk → Home > Projects > [Project Name]
- *   /default/projects/mobile-sdk/settings → Home > Projects > [Project Name]
- *   /default/events → Home > Events
+ *   / → Home
+ *   /projects → Home > Projects
+ *   /projects/mobile-sdk → Home > Projects > [Project Name]
+ *   /projects/mobile-sdk/settings → Home > Projects > [Project Name] > Settings
+ *   /events → Home > Events
  */
 
 export interface BreadcrumbSegment {
@@ -26,15 +26,21 @@ export function humanizeSlug(slug: string): string {
 
 export function getProjectSlugFromPathname(pathname: string): string | null {
   const parts = pathname.split('/').filter(Boolean);
-  if (parts.length >= 3 && parts[1] === 'projects' && parts[2] !== 'create') {
-    return parts[2];
+  if (parts[0] === 'projects' && parts[1] && parts[1] !== 'create') {
+    return parts[1];
   }
   return null;
 }
 
+/** Breadcrumb `href` for the project root tab (`/projects/:slug`). */
+export function getProjectDetailHref(projectSlug: string): string {
+  return `/projects/${projectSlug}`;
+}
+
 /**
- * Returns breadcrumb segments for the app based on pathname.
- * Project name (third segment) should be resolved separately (e.g. from useProjectBySlug).
+ * Returns breadcrumb segments for the app based on pathname (no leading space segment).
+ * The project title segment uses `href` === `getProjectDetailHref(slug)`; resolve the display
+ * name with `useProjectBySlug` in the breadcrumb widget.
  */
 export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] {
   const parts = pathname.split('/').filter(Boolean);
@@ -43,68 +49,76 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
     return [{ labelKey: 'breadcrumb.home', href: '/', isCurrent: true }];
   }
 
-  const spaceSlug = parts[0];
-  const baseUrl = `/${spaceSlug}`;
-  const segments: BreadcrumbSegment[] = [
-    { labelKey: 'breadcrumb.home', href: baseUrl, isCurrent: parts.length === 1 }
-  ];
+  const home: BreadcrumbSegment = {
+    labelKey: 'breadcrumb.home',
+    href: '/',
+    isCurrent: false
+  };
 
-  if (parts.length >= 2 && parts[1] === 'environments') {
-    const environmentsUrl = `${baseUrl}/environments`;
-    segments.push({
-      labelKey: 'breadcrumb.environments',
-      href: environmentsUrl,
-      isCurrent: parts.length === 2
-    });
-
-    if (parts.length >= 3 && parts[2] === 'variables') {
+  if (parts[0] === 'environments') {
+    const segments: BreadcrumbSegment[] = [
+      home,
+      {
+        labelKey: 'breadcrumb.environments',
+        href: '/environments',
+        isCurrent: parts.length === 1
+      }
+    ];
+    if (parts[1] === 'variables') {
+      segments[1].isCurrent = false;
       segments.push({
         labelKey: 'breadcrumb.variables',
         href: null,
         isCurrent: true
       });
     }
-
     return segments;
   }
 
-  if (parts.length >= 2 && parts[1] === 'events') {
-    segments.push({
-      labelKey: 'breadcrumb.events',
-      href: null,
-      isCurrent: true
-    });
-    return segments;
+  if (parts[0] === 'events') {
+    return [
+      home,
+      {
+        labelKey: 'breadcrumb.events',
+        href: null,
+        isCurrent: true
+      }
+    ];
   }
 
-  if (parts.length >= 2 && parts[1] === 'projects') {
-    const projectsUrl = `${baseUrl}/projects`;
-    segments.push({
-      labelKey: 'breadcrumb.projects',
-      href: projectsUrl,
-      isCurrent: parts.length === 2
-    });
+  if (parts[0] === 'projects') {
+    const segments: BreadcrumbSegment[] = [
+      home,
+      {
+        labelKey: 'breadcrumb.projects',
+        href: '/projects',
+        isCurrent: parts.length === 1
+      }
+    ];
 
-    if (parts.length >= 3) {
-      const slug = parts[2];
+    if (parts.length >= 2) {
+      const slug = parts[1];
       if (slug === 'create') {
+        segments[1].isCurrent = false;
         segments.push({ labelKey: 'breadcrumb.newProject', href: null, isCurrent: true });
       } else {
-        const projectUrl = `${projectsUrl}/${slug}`;
+        const projectUrl = getProjectDetailHref(slug);
+        segments[1].isCurrent = false;
         segments.push({
           label: humanizeSlug(slug),
           href: projectUrl,
-          isCurrent: parts.length === 3
+          isCurrent: parts.length === 2
         });
 
-        if (parts.length >= 4) {
-          const tab = parts[3];
+        if (parts.length >= 3) {
+          const tab = parts[2];
           const tabLabelKeys: Record<string, string> = {
             settings: 'breadcrumb.settings',
             releases: 'breadcrumb.releases',
             variables: 'breadcrumb.variables'
           };
 
+          segments[2].isCurrent = false;
           const labelKey = tabLabelKeys[tab];
           if (labelKey) {
             segments.push({ labelKey, href: null, isCurrent: true });
@@ -114,7 +128,9 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
         }
       }
     }
+
+    return segments;
   }
 
-  return segments;
+  return [{ labelKey: 'breadcrumb.home', href: '/', isCurrent: true }];
 }

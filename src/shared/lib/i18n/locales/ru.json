@@ -3,9 +3,6 @@
     "platform": "Платформа",
     "navbar": {
       "dashboard": "Дашборд",
-      "overview": "Обзор",
-      "analytics": "Аналитика",
-      "activity": "Активность",
       "projects": "Проекты",
       "deployments": "Деплои",
       "recent": "Недавние",
@@ -15,19 +12,8 @@
       "variables": "Переменные",
       "allEnvironments": "Все окружения",
       "events": "События",
-      "infrastructure": "Инфраструктура",
-      "clusters": "Кластеры",
-      "nodes": "Узлы",
-      "resources": "Ресурсы",
-      "documentation": "Документация",
-      "gettingStarted": "Начало работы",
-      "apiReference": "API",
-      "guides": "Руководства",
-      "changelog": "История изменений",
       "settings": "Настройки",
       "general": "Основные",
-      "team": "Команда",
-      "billing": "Оплата",
       "security": "Безопасность"
     },
     "recentActivity": {
@@ -43,12 +29,14 @@
       "settings": "Настройки",
       "logOut": "Выйти"
     },
-    "spaces": {
-      "title": "Пространства",
-      "searchPlaceholder": "Поиск пространств...",
-      "noSpacesFound": "Пространства не найдены",
-      "addSpace": "Добавить пространство",
-      "spaceNotSelected": "Пространство не выбрано"
+    "projects": {
+      "title": "Проекты",
+      "searchPlaceholder": "Поиск проектов...",
+      "noProjectsFound": "Проекты не найдены",
+      "addProject": "Создать проект",
+      "selectProject": "Выберите проект",
+      "recent": "Недавние",
+      "allProjects": "Все проекты"
     }
   },
   "breadcrumb": {
@@ -405,10 +393,6 @@
       "goHome": "На главную",
       "goBack": "Назад"
     },
-    "spacesCreate": {
-      "aboutTitle": "О пространствах",
-      "aboutDescription": "Пространство — это рабочая область для организации проектов и ресурсов. У каждого пространства могут быть свои участники, настройки и конфигурации деплоя."
-    },
     "auth": {
       "welcomeBack": "С возвращением",
       "enterEmail": "Введите email для входа в аккаунт",
@@ -439,8 +423,6 @@
     "confirm": "Подтвердить",
     "saveChanges": "Сохранить",
     "saving": "Сохранение...",
-    "createSpace": "Создать пространство",
-    "creating": "Создание...",
     "languageToggle": "Переключить язык",
     "errors": {
       "entityNotFound": "Объект не найден (возможно, он был удалён)."
@@ -584,19 +566,6 @@
         "success": "Проект успешно удалён",
         "failed": "Не удалось удалить проект"
       }
-    }
-  },
-  "space": {
-    "creation": {
-      "title": "Создать пространство",
-      "description": "Создайте рабочую область для организации проектов и ресурсов",
-      "cancel": "Отмена",
-      "createSpace": "Создать пространство",
-      "creating": "Создание...",
-      "success": "Пространство успешно создано!",
-      "failed": "Не удалось создать пространство",
-      "avatar": "Аватар пространства",
-      "defaultInitials": "ПР"
     }
   },
   "auth": {

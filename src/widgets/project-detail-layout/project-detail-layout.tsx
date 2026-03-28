@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
 import { Outlet, useParams, useLocation, NavLink, useNavigate } from 'react-router-dom';
 import { useProjectBySlug, ProjectIcon } from '@/entities/project';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { Tabs, TabsList } from '@/shared/ui/tabs';
-import { useSpaceUrl } from '@/shared/hooks/use-space-url';
 import { cn } from '@/shared/lib/utils';
 import { useTranslation } from '@/shared/lib/i18n';
+import { recordProjectVisit } from '@/shared/lib/project-recent-storage';
 
 const tabLinkClass = (isActive: boolean) =>
   cn(
@@ -19,9 +20,14 @@ export function ProjectDetailLayout() {
   const { slug } = useParams<{ slug: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  const { getSpaceUrl } = useSpaceUrl();
   const { t } = useTranslation();
   const { data: project, isLoading, isError, error } = useProjectBySlug(slug ?? '');
+
+  useEffect(() => {
+    if (slug) {
+      recordProjectVisit(slug);
+    }
+  }, [slug]);
 
   const tabValue =
     location.pathname.endsWith('/settings')
@@ -65,7 +71,7 @@ export function ProjectDetailLayout() {
         <p className="text-destructive">
           {error instanceof Error ? error.message : t('pages.projectDetail.failedToLoad')}
         </p>
-        <Button variant="outline" onClick={() => navigate(getSpaceUrl('/projects'))}>
+        <Button variant="outline" onClick={() => navigate('/projects')}>
           {t('pages.projectDetail.backToProjects')}
         </Button>
       </div>
@@ -76,7 +82,7 @@ export function ProjectDetailLayout() {
     return (
       <div className="space-y-4 py-8">
         <p className="text-muted-foreground">{t('pages.projectDetail.projectNotFound')}</p>
-        <Button variant="outline" onClick={() => navigate(getSpaceUrl('/projects'))}>
+        <Button variant="outline" onClick={() => navigate('/projects')}>
           {t('pages.projectDetail.backToProjects')}
         </Button>
       </div>
@@ -87,7 +93,7 @@ export function ProjectDetailLayout() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-4">
-          <ProjectIcon project={project} className="size-12" />
+          <ProjectIcon project={project} size='xl' radius='xl'/>
           <div className="space-y-1">
             <div className='inline-flex items-center justify-start gap-2'>
               <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>

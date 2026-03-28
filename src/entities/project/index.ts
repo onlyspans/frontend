@@ -12,6 +12,12 @@ export type {
 } from './model/project';
 export { projectApi } from './api/project-api';
 export { ProjectIcon } from './ui/project-icon';
+export type {
+  ProjectIconProps,
+  ProjectIconLabelScale,
+  ProjectIconRadius,
+  ProjectIconSize
+} from './ui/project-icon';
 export {
   useProjects,
   useProjectsList,

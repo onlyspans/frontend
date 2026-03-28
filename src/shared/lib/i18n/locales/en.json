@@ -3,9 +3,6 @@
     "platform": "Platform",
     "navbar": {
       "dashboard": "Dashboard",
-      "overview": "Overview",
-      "analytics": "Analytics",
-      "activity": "Activity",
       "projects": "Projects",
       "deployments": "Deployments",
       "recent": "Recent",
@@ -15,19 +12,8 @@
       "variables": "Variables",
       "allEnvironments": "All Environments",
       "events": "Events",
-      "infrastructure": "Infrastructure",
-      "clusters": "Clusters",
-      "nodes": "Nodes",
-      "resources": "Resources",
-      "documentation": "Documentation",
-      "gettingStarted": "Getting Started",
-      "apiReference": "API Reference",
-      "guides": "Guides",
-      "changelog": "Changelog",
       "settings": "Settings",
       "general": "General",
-      "team": "Team",
-      "billing": "Billing",
       "security": "Security"
     },
     "recentActivity": {
@@ -46,12 +32,14 @@
       "settings": "Settings",
       "logOut": "Log out"
     },
-    "spaces": {
-      "title": "Spaces",
-      "searchPlaceholder": "Search spaces...",
-      "noSpacesFound": "No spaces found",
-      "addSpace": "Add space",
-      "spaceNotSelected": "Space not selected"
+    "projects": {
+      "title": "Projects",
+      "searchPlaceholder": "Search projects...",
+      "noProjectsFound": "No projects found",
+      "addProject": "Create project",
+      "selectProject": "Select a project",
+      "recent": "Recent",
+      "allProjects": "All projects"
     }
   },
   "breadcrumb": {
@@ -408,10 +396,6 @@
       "goHome": "Go Home",
       "goBack": "Go Back"
     },
-    "spacesCreate": {
-      "aboutTitle": "About Spaces",
-      "aboutDescription": "A space is a workspace that helps you organize your projects and resources. Each space can have its own team members, settings, and deployment configurations."
-    },
     "auth": {
       "welcomeBack": "Welcome back",
       "enterEmail": "Enter your email below to login to your account",
@@ -442,8 +426,6 @@
     "confirm": "Confirm",
     "saveChanges": "Save changes",
     "saving": "Saving...",
-    "createSpace": "Create Space",
-    "creating": "Creating...",
     "languageToggle": "Language Toggle",
     "errors": {
       "entityNotFound": "Entity was not found (it may have been deleted)."
@@ -587,19 +569,6 @@
         "success": "Project deleted successfully",
         "failed": "Failed to delete project"
       }
-    }
-  },
-  "space": {
-    "creation": {
-      "title": "Create New Space",
-      "description": "Create a new workspace to organize your projects and resources",
-      "cancel": "Cancel",
-      "createSpace": "Create Space",
-      "creating": "Creating...",
-      "success": "Space created successfully!",
-      "failed": "Failed to create space",
-      "avatar": "Space Avatar",
-      "defaultInitials": "SP"
     }
   },
   "auth": {
