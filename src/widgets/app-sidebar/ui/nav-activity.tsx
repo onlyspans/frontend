@@ -28,7 +28,7 @@ export type NavActivityItem = {
 
 export function NavActivity() {
   const { t, currentLanguage } = useTranslation();
-  const { data, isPending, isError } = useRecentEventsPreview(5);
+  const { data, isPending } = useRecentEventsPreview(5);
 
   const items = useMemo((): NavActivityItem[] => {
     const events = data?.events ?? [];
@@ -48,7 +48,7 @@ export function NavActivity() {
     });
   }, [data, currentLanguage]);
 
-  const show = !isError && (isPending || items.length > 0);
+  const show = isPending || items.length > 0;
   if (!show) return null;
 
   return (
