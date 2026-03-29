@@ -6,6 +6,7 @@ import { eventQueryKeys } from './query-keys';
 export type UseEventsSearchParams = Omit<SearchEventsRequest, 'page'> & {
   page?: number; // 1-based for UI
   enabled?: boolean;
+  staleTime?: number;
 };
 
 function toApiPage(uiPage: number | undefined): number | undefined {
@@ -14,7 +15,7 @@ function toApiPage(uiPage: number | undefined): number | undefined {
 }
 
 export function useEventsSearch(params: UseEventsSearchParams) {
-  const { enabled = true, page, ...rest } = params;
+  const { enabled = true, page, staleTime, ...rest } = params;
 
   const request: SearchEventsRequest = {
     ...rest,
@@ -24,6 +25,7 @@ export function useEventsSearch(params: UseEventsSearchParams) {
   return useQuery({
     queryKey: eventQueryKeys.search(request),
     queryFn: () => eventApi.search(request),
-    enabled
+    enabled,
+    ...(staleTime != null ? { staleTime } : {})
   });
 }

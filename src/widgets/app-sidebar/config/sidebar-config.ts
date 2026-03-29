@@ -6,9 +6,6 @@ import {
   Rocket,
   Layers,
   Activity,
-  CheckCircle2,
-  Code,
-  GitBranch,
   type LucideIcon
 } from 'lucide-react';
 
@@ -29,18 +26,9 @@ export interface SidebarNavItem {
   }[];
 }
 
-export interface SidebarActivity {
-  title: string;
-  url: string;
-  icon: LucideIcon;
-  time: string;
-  type: 'deployment' | 'build' | 'update';
-}
-
 export interface SidebarConfig {
   user: SidebarUser;
   navMain: SidebarNavItem[];
-  activities: SidebarActivity[];
 }
 
 export const sidebarConfig: SidebarConfig = {
@@ -54,7 +42,7 @@ export const sidebarConfig: SidebarConfig = {
       title: 'sidebar.navbar.dashboard',
       url: '/',
       icon: SquareTerminal,
-      isActive: true,
+      isActive: true
     },
     {
       title: 'sidebar.navbar.projects',
@@ -77,7 +65,7 @@ export const sidebarConfig: SidebarConfig = {
       icon: Layers,
       items: [
         { title: 'sidebar.navbar.allEnvironments', url: '/environments' },
-        { title: 'sidebar.navbar.variables', url: '/environments/variables' },
+        { title: 'sidebar.navbar.variables', url: '/environments/variables' }
       ]
     },
     {
@@ -94,29 +82,5 @@ export const sidebarConfig: SidebarConfig = {
         { title: 'sidebar.navbar.security', url: '/settings/security' }
       ]
     }
-  ],
-  activities: [
-    {
-      title: 'Deployment successful',
-      url: '/deployments',
-      icon: CheckCircle2,
-      time: 'sidebar.recentActivity.time2MinAgo',
-      type: 'deployment'
-    },
-    {
-      title: 'Build completed',
-      url: '/projects',
-      icon: Code,
-      time: 'sidebar.recentActivity.time15MinAgo',
-      type: 'build'
-    },
-    {
-      title: 'Project updated',
-      url: '/projects',
-      icon: GitBranch,
-      time: 'sidebar.recentActivity.time1HourAgo',
-      type: 'update'
-    }
   ]
 };
-
