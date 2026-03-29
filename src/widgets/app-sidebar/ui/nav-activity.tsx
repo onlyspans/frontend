@@ -33,16 +33,19 @@ export function NavActivity() {
   const items = useMemo((): NavActivityItem[] => {
     const events = data?.events ?? [];
     const locale = currentLanguage === 'ru' ? ru : enUS;
-    return events.map((e) => ({
-      id: e.id,
-      title: e.action,
-      subtitle: e.entityName?.trim() ? e.entityName : undefined,
-      timeLabel: formatDistanceToNow(new Date(e.timestamp), {
-        addSuffix: true,
-        locale
-      }),
-      to: EVENTS_PATH
-    }));
+    return events.map((e) => {
+      const d = new Date(e.timestamp);
+      const timeLabel = Number.isNaN(d.getTime())
+        ? ''
+        : formatDistanceToNow(d, { addSuffix: true, locale });
+      return {
+        id: e.id,
+        title: e.action,
+        subtitle: e.entityName?.trim() ? e.entityName : undefined,
+        timeLabel,
+        to: EVENTS_PATH
+      };
+    });
   }, [data, currentLanguage]);
 
   const show = !isError && (isPending || items.length > 0);
