@@ -6,6 +6,7 @@
  *   /projects/mobile-sdk → Home > Projects > [Project Name]
  *   /projects/mobile-sdk/settings → Home > Projects > [Project Name] > Settings
  *   /events → Home > Events
+ *   /releases → Home > Releases
  */
 
 export interface BreadcrumbSegment {
@@ -80,6 +81,17 @@ export function getAppBreadcrumbSegments(pathname: string): BreadcrumbSegment[] 
       home,
       {
         labelKey: 'breadcrumb.events',
+        href: null,
+        isCurrent: true
+      }
+    ];
+  }
+
+  if (parts[0] === 'releases' && parts.length === 1) {
+    return [
+      home,
+      {
+        labelKey: 'breadcrumb.releases',
         href: null,
         isCurrent: true
       }

@@ -15,6 +15,7 @@ import { EnvironmentsVariablesPage } from '@/pages/environments/environments-var
 import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
 import { EventsPage } from '@/pages/events/events-page';
+import { ReleasesPage } from '@/pages/releases/releases-page';
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
       {
         path: 'events',
         element: <EventsPage />
+      },
+      {
+        path: 'releases',
+        element: <ReleasesPage />
       }
     ]
   },

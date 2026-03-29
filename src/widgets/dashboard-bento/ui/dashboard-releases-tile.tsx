@@ -1,41 +1,60 @@
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import type { Environment } from '@/entities/environment';
+import type { RecentReleaseItem } from '@/entities/release';
+import { RecentReleasesTable } from '@/features/releases-recent';
+import type { StubDeploymentsMap } from '@/features/project/releases';
 import { useTranslation } from '@/shared/lib/i18n';
 import { cn } from '@/shared/lib/utils';
-import { Badge } from '@/shared/ui/badge';
 import {
   Card,
   CardAction,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle
 } from '@/shared/ui/card';
-import { Skeleton } from '@/shared/ui/skeleton';
-import { dashboardListRowClassName, type DashboardFlatRelease } from '../lib/dashboard-bento-utils';
+
+function getStubKey(releaseId: string, environmentId: string): string {
+  return `${releaseId}:${environmentId}`;
+}
 
 export type DashboardReleasesTileProps = {
   className?: string;
-  flatReleases: DashboardFlatRelease[];
-  showPlaceholder: boolean;
-  isLoadingProjects: boolean;
-  isErrorProjects: boolean;
+  items: RecentReleaseItem[];
+  columnEnvironments: Environment[];
+  environmentsById: Map<string, Environment>;
+  isLoading: boolean;
+  isError: boolean;
 };
 
 export function DashboardReleasesTile({
   className,
-  flatReleases,
-  showPlaceholder,
-  isLoadingProjects,
-  isErrorProjects
+  items,
+  columnEnvironments,
+  environmentsById,
+  isLoading,
+  isError
 }: DashboardReleasesTileProps) {
   const { t } = useTranslation();
+  const [stubDeployments, setStubDeployments] = useState<StubDeploymentsMap>({});
+
+  const handleDeploy = useCallback((releaseId: string, environmentId: string) => {
+    setStubDeployments((prev) => ({
+      ...prev,
+      [getStubKey(releaseId, environmentId)]: {
+        status: 'success',
+        deployedAt: new Date().toISOString()
+      }
+    }));
+  }, []);
+
   return (
     <Card className={cn(className)}>
       <CardHeader>
         <CardTitle>{t('pages.dashboard.cards.releases.title')}</CardTitle>
         <CardAction>
           <Link
-            to="/projects"
+            to="/releases"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {t('pages.dashboard.viewAll')}
@@ -43,42 +62,25 @@ export function DashboardReleasesTile({
         </CardAction>
       </CardHeader>
       <CardContent>
-        {isLoadingProjects ? (
-          <div className="space-y-2">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-9 w-full" />
-            ))}
-          </div>
-        ) : isErrorProjects ? (
+        {isError ? (
           <p className="text-destructive text-sm py-2">{t('pages.dashboard.cards.releases.error')}</p>
-        ) : showPlaceholder ? (
-          <div className="space-y-3 py-1">
-            <CardDescription>{t('pages.dashboard.cards.releases.placeholder')}</CardDescription>
-            <Link
-              to="/projects"
-              className="text-primary text-sm font-medium underline-offset-4 hover:underline inline-block"
-            >
-              {t('pages.dashboard.cards.releases.openProjects')}
-            </Link>
-          </div>
-        ) : flatReleases.length === 0 ? (
-          <p className="text-muted-foreground text-sm py-2">{t('pages.dashboard.cards.releases.empty')}</p>
         ) : (
-          <ul className="space-y-0">
-            {flatReleases.map(({ release, slug, projectName }) => (
-              <li key={release.id}>
-                <Link to={`/projects/${slug}/releases`} className={dashboardListRowClassName()}>
-                  <span className="min-w-0 flex-1 truncate">
-                    <span className="font-medium">{release.version}</span>
-                    <span className="text-muted-foreground text-xs block truncate">{projectName}</span>
-                  </span>
-                  <Badge variant="outline" className="shrink-0 text-xs capitalize">
-                    {release.status}
-                  </Badge>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="max-h-[min(320px,42vh)] w-full overflow-auto rounded-md">
+            <div className="min-w-max">
+              <RecentReleasesTable
+                className="border-none"
+                headerClassName="bg-transparent"
+                items={items}
+                columnEnvironments={columnEnvironments}
+                environmentsById={environmentsById}
+                isLoading={isLoading}
+                stubDeployments={stubDeployments}
+                onDeploy={handleDeploy}
+                maxRows={5}
+                showTagsColumn={false}
+              />
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>

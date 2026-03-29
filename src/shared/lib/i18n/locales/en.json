@@ -12,6 +12,7 @@
       "variables": "Variables",
       "allEnvironments": "All Environments",
       "events": "Events",
+      "releases": "Releases",
       "settings": "Settings",
       "general": "General",
       "security": "Security"
@@ -64,11 +65,8 @@
           "error": "Could not load events."
         },
         "releases": {
-          "title": "Releases",
-          "empty": "No releases in project data yet.",
-          "placeholder": "A cross-project release summary will appear once the API includes release data on projects or a dedicated endpoint is available.",
-          "openProjects": "Browse projects",
-          "error": "Could not load release data."
+          "title": "Recent releases",
+          "error": "Could not load recent releases."
         }
       },
       "placeholders": {
@@ -335,6 +333,21 @@
         "maxExportSize": "Max export size",
         "updated": "Settings updated",
         "updateFailed": "Failed to update settings"
+      }
+    },
+    "releases": {
+      "title": "Releases",
+      "subtitle": "Latest release per project",
+      "searchPlaceholder": "Search by project name...",
+      "table": {
+        "project": "Project",
+        "version": "Version",
+        "createdAt": "Released",
+        "loading": "Loading releases...",
+        "empty": "No releases found"
+      },
+      "pagination": {
+        "range": "Showing {{from}} to {{to}} of {{total}} releases"
       }
     },
     "projectVariables": {

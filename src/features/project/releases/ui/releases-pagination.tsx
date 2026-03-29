@@ -8,6 +8,7 @@ import {
   PaginationPrevious
 } from '@/shared/ui/pagination';
 import { useTranslation } from '@/shared/lib/i18n';
+import type { TranslationKey } from '@/shared/lib/i18n';
 
 interface ReleasesPaginationProps {
   currentPage: number;
@@ -15,6 +16,7 @@ interface ReleasesPaginationProps {
   totalItems: number;
   pageSize?: number;
   onPageChange: (page: number) => void;
+  rangeTranslationKey?: TranslationKey;
 }
 
 export function ReleasesPagination({
@@ -22,7 +24,8 @@ export function ReleasesPagination({
   totalPages,
   totalItems,
   pageSize = 10,
-  onPageChange
+  onPageChange,
+  rangeTranslationKey = 'project.releases.pagination.range'
 }: ReleasesPaginationProps) {
   const { t } = useTranslation();
   const startIndex = (currentPage - 1) * pageSize;
@@ -71,7 +74,7 @@ export function ReleasesPagination({
   return (
     <div className="grid grid-cols-4 items-center">
       <div className="col-span-1 text-sm text-muted-foreground">
-        {t('project.releases.pagination.range', {
+        {t(rangeTranslationKey, {
           from: startIndex + 1,
           to: Math.min(endIndex, totalItems),
           total: totalItems

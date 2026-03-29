@@ -75,9 +75,9 @@ export function ProjectsTable(
 
   if (isLoading) {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-card">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-secondary">
             <TableRow>
               <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
               <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
@@ -101,9 +101,9 @@ export function ProjectsTable(
 
   if (projects.length === 0) {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-card">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-secondary">
             <TableRow>
               <TableHead className="w-[60px]">{t('project.table.icon')}</TableHead>
               <TableHead>{t('project.table.name')}</TableHead>
@@ -126,9 +126,9 @@ export function ProjectsTable(
   }
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border bg-card">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-secondary">
           <TableRow>
             <TableHead className="w-[50px]"></TableHead>
             <SortHeader label={t('project.table.name')} field="name" currentSortBy={sortBy} sortOrder={sortOrder} onSort={onSort} />
@@ -145,7 +145,7 @@ export function ProjectsTable(
               className={onProjectClick ? 'cursor-pointer' : ''}
               onClick={() => onProjectClick?.(project.slug)}
             >
-              <TableCell className="w-[50px] flex items-center justify-center">
+              <TableCell className="w-[50px]">
                 <ProjectIcon project={project} />
               </TableCell>
               <TableCell className="font-medium">{project.name}</TableCell>
