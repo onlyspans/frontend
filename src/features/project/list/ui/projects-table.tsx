@@ -145,7 +145,7 @@ export function ProjectsTable(
               className={onProjectClick ? 'cursor-pointer' : ''}
               onClick={() => onProjectClick?.(project.slug)}
             >
-              <TableCell className="w-[50px] flex items-center justify-center">
+              <TableCell className="w-[50px]">
                 <ProjectIcon project={project} />
               </TableCell>
               <TableCell className="font-medium">{project.name}</TableCell>
