@@ -1,3 +1,12 @@
+export interface RecentReleaseProjectTag {
+  id: string;
+  name: string;
+  description: string | null;
+  color: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface RecentReleaseProjectEnvironment {
   id: string;
   name: string;
@@ -23,6 +32,7 @@ export interface RecentReleaseProject {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  tags?: RecentReleaseProjectTag[];
   environments: RecentReleaseProjectEnvironment[];
 }
 
