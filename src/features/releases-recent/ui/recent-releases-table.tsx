@@ -43,7 +43,7 @@ function canDeployStage(
 }
 
 /** Цепочка деплоя проекта: порядок этапов по данным API / справочнику окружений */
-export function buildRecentReleasePipeline(
+function buildRecentReleasePipeline(
   project: RecentReleaseProject,
   environmentsById: Map<string, Environment>
 ): ProjectEnvironmentRef[] {
