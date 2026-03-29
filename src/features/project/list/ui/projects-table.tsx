@@ -212,7 +212,7 @@ export function ProjectsTable(
                             tag.color
                               ? {
                                   backgroundColor: tag.color,
-                                  color: '#fff',
+                                  color: getContrastTextColor(tag.color),
                                   borderColor: 'transparent'
                                 }
                               : undefined

@@ -8,6 +8,7 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/shared/u
 import { Skeleton } from '@/shared/ui/skeleton';
 import { dashboardListRowClassName } from '../lib/dashboard-bento-utils';
 import { ScrollArea } from '@/shared/ui/scroll-area';
+import { getContrastTextColor } from '@/shared/lib/color/get-contrast-text-color.ts';
 
 export type DashboardProjectsTileProps = {
   className?: string;
@@ -61,7 +62,7 @@ export function DashboardProjectsTile({ className, projects, isLoading, isError 
                           tag.color
                             ? {
                               backgroundColor: tag.color,
-                              color: '#fff',
+                              color: getContrastTextColor(tag.color),
                               borderColor: 'transparent'
                             }
                             : undefined
