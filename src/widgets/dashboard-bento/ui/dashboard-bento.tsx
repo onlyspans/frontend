@@ -1,13 +1,9 @@
 import { useEventsSearch } from '@/entities/event';
 import { useEnvironments } from '@/entities/environment';
 import { useProjects } from '@/entities/project';
+import { useRecentReleases } from '@/entities/release';
 import { useTranslation } from '@/shared/lib/i18n';
-import {
-  flattenRecentReleases,
-  sortEnvironmentsForDashboard,
-  sortProjectsForDashboard,
-  type DashboardFlatRelease
-} from '../lib/dashboard-bento-utils';
+import { sortEnvironmentsForDashboard, sortProjectsForDashboard } from '../lib/dashboard-bento-utils';
 import { DashboardComingSoonTile } from './dashboard-coming-soon-tile';
 import { DashboardEnvironmentsTile } from './dashboard-environments-tile';
 import { DashboardEventsTile } from './dashboard-events-tile';
@@ -18,6 +14,7 @@ export function DashboardBento() {
   const { t } = useTranslation();
   const projectsQuery = useProjects();
   const environmentsQuery = useEnvironments();
+  const recentReleasesQuery = useRecentReleases({ page: 1, pageSize: 5 });
   const eventsQuery = useEventsSearch({
     page: 1,
     size: 20,
@@ -29,11 +26,9 @@ export function DashboardBento() {
   const sortedProjects = projects ? sortProjectsForDashboard(projects).slice(0, 8) : [];
   const environments = environmentsQuery.data;
   const sortedEnvironments = environments ? sortEnvironmentsForDashboard(environments) : [];
+  const environmentsById = new Map((environments ?? []).map((e) => [e.id, e] as const));
+  const recentReleaseItems = recentReleasesQuery.data?.items ?? [];
   const events = eventsQuery.data?.events ?? [];
-
-  const releaseInfo = projects
-    ? flattenRecentReleases(projects)
-    : { items: [] as DashboardFlatRelease[], hasNestedData: false };
 
   const invalidDate = t('pages.events.table.invalidTimestamp');
 
@@ -63,10 +58,11 @@ export function DashboardBento() {
 
       <DashboardReleasesTile
         className="md:col-span-7 md:row-start-2 md:row-end-4"
-        flatReleases={releaseInfo.items}
-        showPlaceholder={projectsQuery.isSuccess && !releaseInfo.hasNestedData}
-        isLoadingProjects={projectsQuery.isLoading}
-        isErrorProjects={projectsQuery.isError}
+        items={recentReleaseItems}
+        columnEnvironments={sortedEnvironments}
+        environmentsById={environmentsById}
+        isLoading={recentReleasesQuery.isLoading}
+        isError={recentReleasesQuery.isError}
       />
 
       <DashboardComingSoonTile

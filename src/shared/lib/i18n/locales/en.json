@@ -65,11 +65,8 @@
           "error": "Could not load events."
         },
         "releases": {
-          "title": "Releases",
-          "empty": "No releases in project data yet.",
-          "placeholder": "A cross-project release summary will appear once the API includes release data on projects or a dedicated endpoint is available.",
-          "openProjects": "Browse projects",
-          "error": "Could not load release data."
+          "title": "Recent releases",
+          "error": "Could not load recent releases."
         }
       },
       "placeholders": {

@@ -15,6 +15,7 @@ import {
 import { Button } from '@/shared/ui/button';
 import { useTranslation } from '@/shared/lib/i18n';
 import type { StubDeploymentsMap } from '@/features/project/releases';
+import { cn } from '@/shared/lib';
 
 function formatDateTime(iso: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -69,6 +70,7 @@ export function buildRecentReleasePipeline(
 }
 
 export interface RecentReleasesTableProps {
+  className?: string;
   items: RecentReleaseItem[];
   columnEnvironments: Environment[];
   environmentsById: Map<string, Environment>;
@@ -79,14 +81,15 @@ export interface RecentReleasesTableProps {
 }
 
 export function RecentReleasesTable({
-                                      items,
-                                      columnEnvironments,
-                                      environmentsById,
-                                      isLoading,
-                                      stubDeployments,
-                                      onDeploy,
-                                      maxRows
-                                    }: RecentReleasesTableProps) {
+  className,
+  items,
+  columnEnvironments,
+  environmentsById,
+  isLoading,
+  stubDeployments,
+  onDeploy,
+  maxRows
+}: RecentReleasesTableProps) {
   const { t } = useTranslation();
   const rows = maxRows != null ? items.slice(0, maxRows) : items;
   const colCount = 3 + columnEnvironments.length + 1;
@@ -105,7 +108,7 @@ export function RecentReleasesTable({
 
   if (isLoading) {
     return (
-      <div className="rounded-md border">
+      <div className={cn('rounded-md border', className)}>
         <Table>
           <TableHeader>
             {headerRow}
@@ -124,7 +127,7 @@ export function RecentReleasesTable({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-md border">
+      <div className={cn('rounded-md border', className)}>
         <Table>
           <TableHeader>
             {headerRow}
@@ -142,7 +145,7 @@ export function RecentReleasesTable({
   }
 
   return (
-    <div className="rounded-md border">
+    <div className={cn('rounded-md border', className)}>
       <Table>
         <TableHeader>
           {headerRow}

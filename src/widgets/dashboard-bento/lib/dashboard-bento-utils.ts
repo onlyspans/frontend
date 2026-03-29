@@ -25,35 +25,6 @@ export function sortEnvironmentsForDashboard(list: Environment[]): Environment[]
   return [...list].sort((a, b) => a.position - b.position);
 }
 
-export type DashboardFlatRelease = {
-  release: NonNullable<Project['releases']>[number];
-  slug: string;
-  projectName: string;
-};
-
-export function flattenRecentReleases(
-  projects: Project[]
-): { items: DashboardFlatRelease[]; hasNestedData: boolean } {
-  let hasNestedData = false;
-  const flat: DashboardFlatRelease[] = [];
-  for (const p of projects) {
-    const rel = p.releases;
-    if (rel == null) continue;
-    hasNestedData = true;
-    if (rel.length === 0) continue;
-    for (const r of rel) {
-      flat.push({ release: r, slug: p.slug, projectName: p.name });
-    }
-  }
-  if (!hasNestedData) {
-    return { items: [], hasNestedData: false };
-  }
-  flat.sort(
-    (a, b) => new Date(b.release.createdAt).getTime() - new Date(a.release.createdAt).getTime()
-  );
-  return { items: flat.slice(0, 6), hasNestedData: true };
-}
-
 export function dashboardListRowClassName(disabled?: boolean) {
   return cn(
     'flex min-h-9 items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
