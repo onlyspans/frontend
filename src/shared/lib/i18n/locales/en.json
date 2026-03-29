@@ -337,6 +337,21 @@
         "updateFailed": "Failed to update settings"
       }
     },
+    "releases": {
+      "title": "Releases",
+      "subtitle": "Latest release per project",
+      "searchPlaceholder": "Search by project name...",
+      "table": {
+        "project": "Project",
+        "version": "Version",
+        "createdAt": "Released",
+        "loading": "Loading releases...",
+        "empty": "No releases found"
+      },
+      "pagination": {
+        "range": "Showing {{from}} to {{to}} of {{total}} releases"
+      }
+    },
     "projectVariables": {
       "title": "Variables",
       "subtitle": "Manage variables and linked sets for {{projectName}}",

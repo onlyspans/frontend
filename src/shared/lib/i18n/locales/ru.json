@@ -337,6 +337,21 @@
         "updateFailed": "Не удалось обновить настройки"
       }
     },
+    "releases": {
+      "title": "Релизы",
+      "subtitle": "Последний релиз по каждому проекту",
+      "searchPlaceholder": "Поиск по названию проекта...",
+      "table": {
+        "project": "Проект",
+        "version": "Версия",
+        "createdAt": "Создан",
+        "loading": "Загрузка релизов...",
+        "empty": "Релизы не найдены"
+      },
+      "pagination": {
+        "range": "Показано {{from}}–{{to}} из {{total}} релизов"
+      }
+    },
     "projectVariables": {
       "title": "Переменные",
       "subtitle": "Управляйте переменными и привязанными наборами для {{projectName}}",
