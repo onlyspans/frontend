@@ -17,16 +17,7 @@
       "security": "Security"
     },
     "recentActivity": {
-      "title": "Recent Activity",
-      "deploymentSuccessful": "Deployment successful",
-      "buildCompleted": "Build completed",
-      "projectUpdated": "Project updated",
-      "time2MinAgo": "2 min ago",
-      "time15MinAgo": "15 min ago",
-      "time1HourAgo": "1 hour ago",
-      "typeDeployment": "deployment",
-      "typeBuild": "build",
-      "typeUpdate": "update"
+      "title": "Recent Activity"
     },
     "user": {
       "settings": "Settings",
