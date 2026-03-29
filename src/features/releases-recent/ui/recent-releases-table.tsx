@@ -13,7 +13,9 @@ import {
   TableRow
 } from '@/shared/ui/table';
 import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/badge';
 import { useTranslation } from '@/shared/lib/i18n';
+import { getContrastTextColor } from '@/shared/lib/color/get-contrast-text-color';
 import type { StubDeploymentsMap } from '@/features/project/releases';
 import { cn } from '@/shared/lib';
 
@@ -78,6 +80,8 @@ export interface RecentReleasesTableProps {
   stubDeployments: StubDeploymentsMap;
   onDeploy: (releaseId: string, environmentId: string) => void;
   maxRows?: number;
+  /** Показывать колонку тегов проекта (на дашборде обычно выключают) */
+  showTagsColumn?: boolean;
 }
 
 export function RecentReleasesTable({
@@ -88,16 +92,21 @@ export function RecentReleasesTable({
   isLoading,
   stubDeployments,
   onDeploy,
-  maxRows
+  maxRows,
+  showTagsColumn = true
 }: RecentReleasesTableProps) {
   const { t } = useTranslation();
   const rows = maxRows != null ? items.slice(0, maxRows) : items;
-  const colCount = 3 + columnEnvironments.length + 1;
+  const tagCol = showTagsColumn ? 1 : 0;
+  const colCount = 3 + tagCol + columnEnvironments.length + 1;
 
   const headerRow = (
     <TableRow>
       <TableHead className="w-10"></TableHead>
       <TableHead>{t('pages.releases.table.project')}</TableHead>
+      {showTagsColumn ? (
+        <TableHead className="min-w-[140px]">{t('project.table.tags')}</TableHead>
+      ) : null}
       <TableHead>{t('pages.releases.table.version')}</TableHead>
       {columnEnvironments.map((env) => (
         <TableHead key={env.id}>{env.name}</TableHead>
@@ -171,6 +180,34 @@ export function RecentReleasesTable({
                     {item.project.name}
                   </Link>
                 </TableCell>
+                {showTagsColumn ? (
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1 max-w-[220px]">
+                      {(item.project.tags ?? []).length > 0
+                        ? (item.project.tags ?? []).map((tag) => (
+                            <Badge
+                              key={tag.id}
+                              variant="secondary"
+                              className="text-xs font-normal"
+                              style={
+                                tag.color
+                                  ? {
+                                      backgroundColor: tag.color,
+                                      color: getContrastTextColor(tag.color),
+                                      borderColor: 'transparent'
+                                    }
+                                  : undefined
+                              }
+                            >
+                              {tag.name}
+                            </Badge>
+                          ))
+                        : (
+                          <span className="text-muted-foreground text-xs">—</span>
+                        )}
+                    </div>
+                  </TableCell>
+                ) : null}
                 <TableCell>{item.version}</TableCell>
                 {columnEnvironments.map((colEnv) => {
                   const stageIndex = pipeline.findIndex((p) => p.id === colEnv.id);

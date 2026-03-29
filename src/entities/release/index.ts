@@ -9,6 +9,7 @@ export type {
   RecentReleaseItem,
   RecentReleaseProject,
   RecentReleaseProjectEnvironment,
+  RecentReleaseProjectTag,
   RecentReleasesListParams
 } from './model/recent-release';
 export { releaseApi } from './api/release-api';

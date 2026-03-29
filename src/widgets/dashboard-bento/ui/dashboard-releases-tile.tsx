@@ -68,7 +68,7 @@ export function DashboardReleasesTile({
           <div className="max-h-[min(320px,42vh)] w-full overflow-auto rounded-md">
             <div className="min-w-max">
               <RecentReleasesTable
-                className='border-none'
+                className="border-none"
                 items={items}
                 columnEnvironments={columnEnvironments}
                 environmentsById={environmentsById}
@@ -76,6 +76,7 @@ export function DashboardReleasesTile({
                 stubDeployments={stubDeployments}
                 onDeploy={handleDeploy}
                 maxRows={5}
+                showTagsColumn={false}
               />
             </div>
           </div>
