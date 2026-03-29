@@ -69,6 +69,7 @@ export function DashboardReleasesTile({
             <div className="min-w-max">
               <RecentReleasesTable
                 className="border-none"
+                headerClassName="bg-transparent"
                 items={items}
                 columnEnvironments={columnEnvironments}
                 environmentsById={environmentsById}
