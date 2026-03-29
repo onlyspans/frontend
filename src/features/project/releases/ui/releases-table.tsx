@@ -63,9 +63,9 @@ export function ReleasesTable({
   if (isLoading) {
     const colCount = 2 + environments.length;
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-card">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-secondary">
             <TableRow>
               <TableHead>{t('project.releases.table.version')}</TableHead>
               {environments.map((env) => (
@@ -89,9 +89,9 @@ export function ReleasesTable({
   if (releases.length === 0) {
     const colCount = 2 + environments.length;
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-card">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-secondary">
             <TableRow>
               <TableHead>{t('project.releases.table.version')}</TableHead>
               {environments.map((env) => (
@@ -113,9 +113,9 @@ export function ReleasesTable({
   }
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border bg-card">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-secondary">
           <TableRow>
             <TableHead>{t('project.releases.table.version')}</TableHead>
             {environments.map((env) => (

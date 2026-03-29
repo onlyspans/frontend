@@ -80,7 +80,6 @@ export interface RecentReleasesTableProps {
   stubDeployments: StubDeploymentsMap;
   onDeploy: (releaseId: string, environmentId: string) => void;
   maxRows?: number;
-  /** Показывать колонку тегов проекта (на дашборде обычно выключают) */
   showTagsColumn?: boolean;
 }
 
@@ -117,9 +116,9 @@ export function RecentReleasesTable({
 
   if (isLoading) {
     return (
-      <div className={cn('rounded-md border', className)}>
+      <div className={cn('rounded-md border bg-card', className)}>
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-secondary">
             {headerRow}
           </TableHeader>
           <TableBody>
@@ -136,9 +135,9 @@ export function RecentReleasesTable({
 
   if (rows.length === 0) {
     return (
-      <div className={cn('rounded-md border', className)}>
+      <div className={cn('rounded-md border bg-card', className)}>
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-secondary">
             {headerRow}
           </TableHeader>
           <TableBody>
@@ -154,9 +153,9 @@ export function RecentReleasesTable({
   }
 
   return (
-    <div className={cn('rounded-md border', className)}>
+    <div className={cn('rounded-md border bg-card', className)}>
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-secondary">
           {headerRow}
         </TableHeader>
         <TableBody>
