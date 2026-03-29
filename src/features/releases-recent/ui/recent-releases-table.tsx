@@ -93,7 +93,7 @@ export function RecentReleasesTable({
 
   const headerRow = (
     <TableRow>
-      <TableHead className="w-10">{t('project.table.icon')}</TableHead>
+      <TableHead className="w-10"></TableHead>
       <TableHead>{t('pages.releases.table.project')}</TableHead>
       <TableHead>{t('pages.releases.table.version')}</TableHead>
       {columnEnvironments.map((env) => (
@@ -163,7 +163,7 @@ export function RecentReleasesTable({
                 <TableCell className="font-medium">
                   <Link
                     to={`/projects/${item.project.slug}/releases`}
-                    className="text-primary hover:underline"
+                    className="hover:underline"
                   >
                     {item.project.name}
                   </Link>

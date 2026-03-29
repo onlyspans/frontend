@@ -6,6 +6,7 @@ import {
   Rocket,
   Layers,
   Activity,
+  Package,
   type LucideIcon
 } from 'lucide-react';
 
@@ -48,6 +49,11 @@ export const sidebarConfig: SidebarConfig = {
       title: 'sidebar.navbar.projects',
       url: '/projects',
       icon: Bot
+    },
+    {
+      title: 'sidebar.navbar.releases',
+      url: '/releases',
+      icon: Package
     },
     {
       title: 'sidebar.navbar.deployments',
