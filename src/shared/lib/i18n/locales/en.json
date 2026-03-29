@@ -45,7 +45,46 @@
   },
   "pages": {
     "dashboard": {
-      "title": "Dashboard"
+      "title": "Dashboard",
+      "viewAll": "View all",
+      "cards": {
+        "projects": {
+          "title": "Projects",
+          "empty": "No projects yet.",
+          "error": "Could not load projects."
+        },
+        "environments": {
+          "title": "Environments",
+          "empty": "No environments yet.",
+          "error": "Could not load environments."
+        },
+        "events": {
+          "title": "Recent activity",
+          "empty": "No events yet.",
+          "error": "Could not load events."
+        },
+        "releases": {
+          "title": "Releases",
+          "empty": "No releases in project data yet.",
+          "placeholder": "A cross-project release summary will appear once the API includes release data on projects or a dedicated endpoint is available.",
+          "openProjects": "Browse projects",
+          "error": "Could not load release data."
+        }
+      },
+      "placeholders": {
+        "monitoring": {
+          "title": "Monitoring",
+          "subtitle": "Coming soon"
+        },
+        "deploys": {
+          "title": "Deploys",
+          "subtitle": "In development"
+        },
+        "integrations": {
+          "title": "Integrations",
+          "subtitle": "Coming soon"
+        }
+      }
     },
     "projects": {
       "title": "Projects",
