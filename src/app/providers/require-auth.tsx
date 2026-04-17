@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTokenStore } from '@/shared/stores';
 import { restoreOidcSession, oidcLogin } from '@/shared/auth/oidc';
 
@@ -36,9 +36,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
 
   if (!checked) return null;
 
-  if (!hasToken) {
-    return <Navigate to="/sign-in" replace />;
-  }
+  if (!hasToken) return null;
 
   return children;
 }

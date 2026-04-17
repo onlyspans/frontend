@@ -12,7 +12,8 @@ function syncTokensFromUser(user: User | null): void {
     return;
   }
 
-  tokenStore.setTokens(user.access_token, user.refresh_token ?? null);
+  // We intentionally do not use refresh tokens in the SPA.
+  tokenStore.setTokens(user.access_token, null);
 }
 
 export async function restoreOidcSession(): Promise<void> {

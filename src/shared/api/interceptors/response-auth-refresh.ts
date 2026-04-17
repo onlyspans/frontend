@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { AxiosError } from 'axios';
 import { useTokenStore } from '@/shared/stores';
 import type { ApiError } from '../types';
-import { renewOidcTokens } from '@/shared/auth/oidc';
+import { oidcLogin } from '@/shared/auth/oidc';
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -57,29 +57,18 @@ export function createAuthRefreshInterceptor() {
           isRefreshing = true;
 
           try {
-            const user = await renewOidcTokens();
-            const accessToken = user?.access_token ?? null;
-
-            if (!accessToken) {
-              useTokenStore.getState().clearTokens();
-              processQueue(error, null);
-              isRefreshing = false;
-
-              if (typeof window !== 'undefined') {
-                window.location.href = '/sign-in';
-              }
-
-              return Promise.reject(error);
-            }
-
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-            }
-
-            processQueue(null, accessToken);
+            // No refresh token in SPA: re-auth via Authentik when we hit 401.
+            useTokenStore.getState().clearTokens();
+            processQueue(error, null);
             isRefreshing = false;
 
-            return client(originalRequest);
+            if (typeof window !== 'undefined') {
+              const returnTo =
+                window.location.pathname + window.location.search + window.location.hash;
+              await oidcLogin(returnTo);
+            }
+
+            return Promise.reject(error);
           } catch (refreshError) {
             useTokenStore.getState().clearTokens();
             processQueue(refreshError as AxiosError, null);
