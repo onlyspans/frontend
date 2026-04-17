@@ -13,7 +13,7 @@ import {
 export interface SidebarUser {
   name: string;
   email: string;
-  avatar: string;
+  avatar?: string;
 }
 
 export interface SidebarNavItem {
@@ -28,16 +28,10 @@ export interface SidebarNavItem {
 }
 
 export interface SidebarConfig {
-  user: SidebarUser;
   navMain: SidebarNavItem[];
 }
 
 export const sidebarConfig: SidebarConfig = {
-  user: {
-    name: 'milkylake',
-    email: 'milkylake@example.com',
-    avatar: 'https://github.com/shadcn.png'
-  },
   navMain: [
     {
       title: 'sidebar.navbar.dashboard',
