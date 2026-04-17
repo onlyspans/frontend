@@ -4,9 +4,9 @@ import { persist } from 'zustand/middleware';
 interface TokenState {
   accessToken: string | null;
   refreshToken: string | null;
-  setTokens: (accessToken: string, refreshToken: string) => void;
-  setAccessToken: (token: string) => void;
-  setRefreshToken: (token: string) => void;
+  setTokens: (accessToken: string | null, refreshToken?: string | null) => void;
+  setAccessToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
   clearTokens: () => void;
   hasToken: () => boolean;
 }
@@ -17,15 +17,15 @@ export const useTokenStore = create<TokenState>()(
       accessToken: null,
       refreshToken: null,
 
-      setTokens: (accessToken: string, refreshToken: string) => {
-        set({ accessToken, refreshToken });
+      setTokens: (accessToken: string | null, refreshToken?: string | null) => {
+        set({ accessToken, refreshToken: refreshToken ?? null });
       },
 
-      setAccessToken: (token: string) => {
+      setAccessToken: (token: string | null) => {
         set({ accessToken: token });
       },
 
-      setRefreshToken: (token: string) => {
+      setRefreshToken: (token: string | null) => {
         set({ refreshToken: token });
       },
 
