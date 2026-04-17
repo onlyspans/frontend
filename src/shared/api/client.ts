@@ -30,17 +30,15 @@ export function createServiceClient(
   return client;
 }
 
-const authClient = createServiceClient(appConfig.api.auth, { bearerToken: false });
 const projectsClient = createServiceClient(appConfig.api.projects);
 const eventsClient = createServiceClient(appConfig.api.events);
 const variablesClient = createServiceClient(appConfig.api.variables);
 
 export const api = {
-  auth: authClient,
   projects: projectsClient,
   events: eventsClient,
   variables: variablesClient
 } as const;
 
-const attachAuthRefresh = createAuthRefreshInterceptor(() => api.auth);
+const attachAuthRefresh = createAuthRefreshInterceptor();
 [api.projects, api.events, api.variables].forEach(attachAuthRefresh);

@@ -39,7 +39,7 @@ export function RecentReleasesFilters({
   };
 
   return (
-    <div className={cn('flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4', className)}>
+    <div className={cn('flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4 justify-between', className)}>
       <div className="relative w-full sm:w-1/3 min-w-[200px]">
         <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input

@@ -43,7 +43,7 @@ function canDeployStage(
 }
 
 /** Цепочка деплоя проекта: порядок этапов по данным API / справочнику окружений */
-export function buildRecentReleasePipeline(
+function buildRecentReleasePipeline(
   project: RecentReleaseProject,
   environmentsById: Map<string, Environment>
 ): ProjectEnvironmentRef[] {
@@ -73,6 +73,7 @@ export function buildRecentReleasePipeline(
 
 export interface RecentReleasesTableProps {
   className?: string;
+  headerClassName?: string;
   items: RecentReleaseItem[];
   columnEnvironments: Environment[];
   environmentsById: Map<string, Environment>;
@@ -80,12 +81,12 @@ export interface RecentReleasesTableProps {
   stubDeployments: StubDeploymentsMap;
   onDeploy: (releaseId: string, environmentId: string) => void;
   maxRows?: number;
-  /** Показывать колонку тегов проекта (на дашборде обычно выключают) */
   showTagsColumn?: boolean;
 }
 
 export function RecentReleasesTable({
   className,
+  headerClassName,
   items,
   columnEnvironments,
   environmentsById,
@@ -117,9 +118,9 @@ export function RecentReleasesTable({
 
   if (isLoading) {
     return (
-      <div className={cn('rounded-md border', className)}>
+      <div className={cn('rounded-md border bg-card', className)}>
         <Table>
-          <TableHeader>
+          <TableHeader className={cn('bg-secondary', headerClassName)}>
             {headerRow}
           </TableHeader>
           <TableBody>
@@ -136,9 +137,9 @@ export function RecentReleasesTable({
 
   if (rows.length === 0) {
     return (
-      <div className={cn('rounded-md border', className)}>
+      <div className={cn('rounded-md border bg-card', className)}>
         <Table>
-          <TableHeader>
+          <TableHeader className={cn('bg-secondary', headerClassName)}>
             {headerRow}
           </TableHeader>
           <TableBody>
@@ -154,9 +155,9 @@ export function RecentReleasesTable({
   }
 
   return (
-    <div className={cn('rounded-md border', className)}>
+    <div className={cn('rounded-md border bg-card', className)}>
       <Table>
-        <TableHeader>
+        <TableHeader className={cn('bg-secondary', headerClassName)}>
           {headerRow}
         </TableHeader>
         <TableBody>

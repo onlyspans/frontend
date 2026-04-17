@@ -23,6 +23,7 @@ import {
   useSidebar
 } from '@/shared/ui/sidebar';
 import { useNavigate } from 'react-router-dom';
+import { oidcLogout } from '@/shared/auth/oidc';
 
 export function NavUser(
   { user }: {
@@ -36,6 +37,16 @@ export function NavUser(
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const onLogout = () => {
+    void (async () => {
+      try {
+        await oidcLogout();
+      } finally {
+        navigate('/sign-in', { replace: true });
+      }
+    })();
+  };
 
   return (
     <SidebarMenu>
@@ -95,7 +106,7 @@ export function NavUser(
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate('/sign-in')}>
+            <DropdownMenuItem onClick={onLogout}>
               <LogOut />
               {t('sidebar.user.logOut')}
             </DropdownMenuItem>

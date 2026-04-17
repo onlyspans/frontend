@@ -16,6 +16,9 @@ import { MainLayout } from '@/app/layouts/main-layout';
 import { AuthLayout } from '@/app/layouts/auth-layout.tsx';
 import { EventsPage } from '@/pages/events/events-page';
 import { ReleasesPage } from '@/pages/releases/releases-page';
+import OidcCallbackPage from '@/pages/auth/oidc-callback-page';
+import SilentRenewPage from '@/pages/auth/silent-renew-page';
+import { RequireAuth } from '@/app/providers/require-auth';
 
 export const router = createBrowserRouter([
   {
@@ -28,11 +31,23 @@ export const router = createBrowserRouter([
       {
         path: 'sign-up',
         element: <SignUpPage />
+      },
+      {
+        path: 'auth/callback',
+        element: <OidcCallbackPage />
+      },
+      {
+        path: 'auth/silent-renew',
+        element: <SilentRenewPage />
       }
     ]
   },
   {
-    element: <MainLayout />,
+    element: (
+      <RequireAuth>
+        <MainLayout />
+      </RequireAuth>
+    ),
     children: [
       {
         index: true,
