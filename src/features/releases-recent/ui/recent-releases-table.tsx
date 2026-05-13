@@ -26,6 +26,18 @@ function formatDateTime(iso: string): string {
   }).format(new Date(iso));
 }
 
+function formatTime(iso: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    timeStyle: 'short'
+  }).format(new Date(iso));
+}
+
+function formatDate(iso: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'short'
+  }).format(new Date(iso));
+}
+
 function getStubKey(releaseId: string, environmentId: string): string {
   return `${releaseId}:${environmentId}`;
 }
@@ -246,7 +258,10 @@ export function RecentReleasesTable({
                               <CircleX className="h-4 w-4" aria-hidden />
                             )}
                           </Button>
-                          {formatDateTime(stub.deployedAt)}
+                          <div className="flex flex-col">
+                            <span className="text-xs">{formatTime(stub.deployedAt)}</span>
+                            <span className="text-xs">{formatDate(stub.deployedAt)}</span>
+                          </div>
                         </span>
                       </TableCell>
                     );

@@ -4,7 +4,6 @@ import { useProjects } from '@/entities/project';
 import { useRecentReleases } from '@/entities/release';
 import { useTranslation } from '@/shared/lib/i18n';
 import { sortEnvironmentsForDashboard, sortProjectsForDashboard } from '../lib/dashboard-bento-utils';
-import { DashboardComingSoonTile } from './dashboard-coming-soon-tile';
 import { DashboardEnvironmentsTile } from './dashboard-environments-tile';
 import { DashboardEventsTile } from './dashboard-events-tile';
 import { DashboardProjectsTile } from './dashboard-projects-tile';
@@ -49,7 +48,7 @@ export function DashboardBento() {
       />
 
       <DashboardEventsTile
-        className="md:col-span-3 md:row-start-1 md:row-end-3"
+        className="md:col-span-4 md:row-start-1 md:row-end-4"
         events={events}
         isLoading={eventsQuery.isLoading}
         isError={eventsQuery.isError}
@@ -64,7 +63,7 @@ export function DashboardBento() {
         isLoading={recentReleasesQuery.isLoading}
         isError={recentReleasesQuery.isError}
       />
-
+{/* 
       <DashboardComingSoonTile
         className="md:col-span-3 md:row-start-3 md:row-end-5"
         title={t('pages.dashboard.placeholders.monitoring.title')}
@@ -79,7 +78,7 @@ export function DashboardBento() {
         className="md:col-span-4"
         title={t('pages.dashboard.placeholders.integrations.title')}
         description={t('pages.dashboard.placeholders.integrations.subtitle')}
-      />
+      /> */}
     </div>
   );
 }

@@ -48,7 +48,7 @@ export function DashboardEventsTile({
         ) : events.length === 0 ? (
           <p className="text-muted-foreground text-sm py-2">{t('pages.dashboard.cards.events.empty')}</p>
         ) : (
-          <ScrollArea className="max-h-96 overflow-y-auto">
+          <ScrollArea className="max-h-[510px] overflow-y-auto">
             <ul className="space-y-0">
               {events.map((ev) => {
                 const label = ev.entityName?.trim() || ev.entityId;
