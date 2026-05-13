@@ -17,16 +17,44 @@ function getSessionStorageStore(): WebStorageStateStore | undefined {
   return new WebStorageStateStore({ store: window.sessionStorage });
 }
 
-export const oidcUserManager = new UserManager({
-  authority: appConfig.oidc.issuer,
-  client_id: appConfig.oidc.clientId,
-  redirect_uri: appConfig.oidc.redirectUri,
-  silent_redirect_uri: appConfig.oidc.silentRedirectUri,
-  post_logout_redirect_uri: getPostLogoutRedirectUri(),
-  response_type: 'code',
-  // No `offline_access` => no refresh token in the SPA.
-  scope: 'openid profile email',
-  loadUserInfo: true,
-  automaticSilentRenew: false,
-  userStore: getSessionStorageStore()
-});
+export const oidcUserManager: UserManager = appConfig.auth.enabled
+  ? new UserManager({
+      authority: appConfig.oidc.issuer!,
+      client_id: appConfig.oidc.clientId!,
+      redirect_uri: appConfig.oidc.redirectUri!,
+      silent_redirect_uri: appConfig.oidc.silentRedirectUri,
+      post_logout_redirect_uri: getPostLogoutRedirectUri(),
+      response_type: 'code',
+      // No `offline_access` => no refresh token in the SPA.
+      scope: 'openid profile email',
+      loadUserInfo: true,
+      automaticSilentRenew: false,
+      userStore: getSessionStorageStore()
+    })
+  : ({
+      async getUser() {
+        return null;
+      },
+      async signinRedirect() {
+        throw new Error('OIDC is disabled (VITE_AUTH_ENABLED=false).');
+      },
+      async signinRedirectCallback() {
+        throw new Error('OIDC is disabled (VITE_AUTH_ENABLED=false).');
+      },
+      async signinSilentCallback() {
+        throw new Error('OIDC is disabled (VITE_AUTH_ENABLED=false).');
+      },
+      async signinSilent() {
+        throw new Error('OIDC is disabled (VITE_AUTH_ENABLED=false).');
+      },
+      async signoutRedirect() {
+        throw new Error('OIDC is disabled (VITE_AUTH_ENABLED=false).');
+      },
+      // `AppSidebar` and other UI subscribe here; real `UserManager` always has `events`.
+      events: {
+        addUserLoaded: () => {},
+        addUserUnloaded: () => {},
+        removeUserLoaded: () => {},
+        removeUserUnloaded: () => {}
+      }
+    } as unknown as UserManager);

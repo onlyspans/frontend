@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { useTokenStore } from '@/shared/stores';
 import type { ApiError } from '../types';
 import { oidcLogin } from '@/shared/auth/oidc';
+import { appConfig } from '@/shared/config/app';
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -35,6 +36,8 @@ export function createAuthRefreshInterceptor() {
     client.interceptors.response.use(
       (response) => response,
       async (error: AxiosError<ApiError>) => {
+        if (!appConfig.auth.enabled) return Promise.reject(error);
+
         const originalRequest = error.config as
           | (AxiosRequestConfig & { _retry?: boolean })
           | undefined;

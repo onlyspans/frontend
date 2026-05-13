@@ -30,9 +30,15 @@ export function createServiceClient(
   return client;
 }
 
-const projectsClient = createServiceClient(appConfig.api.projects);
-const eventsClient = createServiceClient(appConfig.api.events);
-const variablesClient = createServiceClient(appConfig.api.variables);
+const projectsClient = createServiceClient(appConfig.api.projects, {
+  bearerToken: appConfig.auth.enabled
+});
+const eventsClient = createServiceClient(appConfig.api.events, {
+  bearerToken: appConfig.auth.enabled
+});
+const variablesClient = createServiceClient(appConfig.api.variables, {
+  bearerToken: appConfig.auth.enabled
+});
 
 export const api = {
   projects: projectsClient,
@@ -40,5 +46,7 @@ export const api = {
   variables: variablesClient
 } as const;
 
-const attachAuthRefresh = createAuthRefreshInterceptor();
-[api.projects, api.events, api.variables].forEach(attachAuthRefresh);
+if (appConfig.auth.enabled) {
+  const attachAuthRefresh = createAuthRefreshInterceptor();
+  [api.projects, api.events, api.variables].forEach(attachAuthRefresh);
+}

@@ -19,6 +19,7 @@ import { ReleasesPage } from '@/pages/releases/releases-page';
 import OidcCallbackPage from '@/pages/auth/oidc-callback-page';
 import SilentRenewPage from '@/pages/auth/silent-renew-page';
 import { RequireAuth } from '@/app/providers/require-auth';
+import { appConfig } from '@/shared/config/app';
 
 export const router = createBrowserRouter([
   {
@@ -32,21 +33,31 @@ export const router = createBrowserRouter([
         path: 'sign-up',
         element: <SignUpPage />
       },
-      {
-        path: 'auth/callback',
-        element: <OidcCallbackPage />
-      },
-      {
-        path: 'auth/silent-renew',
-        element: <SilentRenewPage />
-      }
+      ...(appConfig.auth.enabled
+        ? ([
+            {
+              path: 'auth/callback',
+              element: <OidcCallbackPage />
+            },
+            {
+              path: 'auth/silent-renew',
+              element: <SilentRenewPage />
+            }
+          ] as const)
+        : [])
     ]
   },
   {
     element: (
-      <RequireAuth>
-        <MainLayout />
-      </RequireAuth>
+      <>
+        {appConfig.auth.enabled ? (
+          <RequireAuth>
+            <MainLayout />
+          </RequireAuth>
+        ) : (
+          <MainLayout />
+        )}
+      </>
     ),
     children: [
       {

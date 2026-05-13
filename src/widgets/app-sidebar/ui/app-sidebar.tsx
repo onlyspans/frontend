@@ -58,13 +58,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       setUser(toSidebarUser(loadedUser as any));
     };
 
+    const onUserUnloaded = () => setUser(undefined);
+
     oidcUserManager.events.addUserLoaded(onUserLoaded);
-    oidcUserManager.events.addUserUnloaded(() => setUser(undefined));
+    oidcUserManager.events.addUserUnloaded(onUserUnloaded);
 
     return () => {
       cancelled = true;
       oidcUserManager.events.removeUserLoaded(onUserLoaded);
-      oidcUserManager.events.removeUserUnloaded(() => setUser(undefined));
+      oidcUserManager.events.removeUserUnloaded(onUserUnloaded);
     };
   }, []);
 
