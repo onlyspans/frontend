@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_PROJECTS_API_URL?: string;
   readonly VITE_EVENTS_API_URL?: string;
   readonly VITE_VARIABLES_API_URL?: string;
+  readonly VITE_AGENTS_API_URL?: string;
 
   readonly VITE_AUTH_ENABLED?: string;
 

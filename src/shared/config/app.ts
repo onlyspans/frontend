@@ -37,7 +37,8 @@ export const appConfig = {
   api: {
     projects: getRequiredEnv('VITE_PROJECTS_API_URL'),
     events: getRequiredEnv('VITE_EVENTS_API_URL'),
-    variables: getRequiredEnv('VITE_VARIABLES_API_URL')
+    variables: getRequiredEnv('VITE_VARIABLES_API_URL'),
+    agents: getRequiredEnv('VITE_AGENTS_API_URL')
   },
   oidc: {
     issuer: getRequiredEnvIf(authEnabled, 'VITE_OIDC_ISSUER'),

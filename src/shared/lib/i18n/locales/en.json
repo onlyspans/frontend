@@ -98,6 +98,7 @@
     "projectDetail": {
       "overview": "Overview",
       "releases": "Releases",
+      "polling": "Polling",
       "variables": "Variables",
       "settings": "Settings",
       "goBack": "Go back",
@@ -426,7 +427,45 @@
     },
     "projectSettings": {
       "general": "General",
+      "repository": "Repository",
       "dangerZone": "Danger Zone"
+    },
+    "projectPolling": {
+      "title": "Polling",
+      "subtitle": "Run repository polling and inspect the latest polling history.",
+      "repository": {
+        "title": "Repository",
+        "description": "Choose one tracked repository for this project.",
+        "placeholder": "Select repository...",
+        "poll": "Run polling",
+        "polling": "Polling..."
+      },
+      "history": {
+        "title": "Polling history",
+        "descriptionSelected": "Showing the latest entries for {{url}}.",
+        "descriptionSelectedPrefix": "Showing the latest entries for",
+        "descriptionEmpty": "Select a repository to load up to 50 latest entries.",
+        "selectRepository": "Select a repository to load history.",
+        "noRepositories": "No tracked repositories yet.",
+        "loading": "Loading polling history...",
+        "refresh": "Refresh",
+        "refreshing": "Refreshing...",
+        "error": "Failed to load polling history.",
+        "empty": "No polling history for this repository.",
+        "table": {
+          "startedAt": "Started",
+          "status": "Status",
+          "ref": "Ref",
+          "commit": "Commit",
+          "artifact": "Artifact",
+          "completedAt": "Completed",
+          "error": "Error"
+        }
+      },
+      "toast": {
+        "pollStarted": "Polling completed",
+        "pollFailed": "Failed to run polling"
+      }
     },
     "projectOverview": {
       "title": "Overview",
@@ -515,6 +554,60 @@
       },
       "pagination": {
         "range": "Showing {{from}} to {{to}} of {{total}} releases"
+      }
+    },
+    "repositories": {
+      "title": "Repository",
+      "description": "Manage git repositories tracked by Agents for this project.",
+      "form": {
+        "url": "Repository URL",
+        "urlPlaceholder": "https://github.com/org/repo.git",
+        "branch": "Branch",
+        "tagPattern": "Tag pattern",
+        "credentialId": "Credential ID",
+        "credentialPlaceholder": "Optional UUID",
+        "pollIntervalSeconds": "Poll interval (seconds)",
+        "enabled": "Polling enabled"
+      },
+      "create": {
+        "action": "Add repository",
+        "creating": "Adding..."
+      },
+      "edit": {
+        "action": "Edit repository",
+        "title": "Edit repository",
+        "confirm": "Save changes",
+        "saving": "Saving..."
+      },
+      "delete": {
+        "action": "Delete repository",
+        "title": "Delete repository?",
+        "description": "Repository \"{{url}}\" will be removed from tracking.",
+        "confirm": "Delete",
+        "deleting": "Deleting..."
+      },
+      "status": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      },
+      "table": {
+        "url": "URL",
+        "branch": "Branch",
+        "enabled": "Status",
+        "interval": "Interval",
+        "lastPolledAt": "Last polled",
+        "actions": "Actions",
+        "loading": "Loading repositories...",
+        "error": "Failed to load repositories.",
+        "empty": "No repositories yet"
+      },
+      "toast": {
+        "created": "Repository added",
+        "createFailed": "Failed to add repository",
+        "updated": "Repository updated",
+        "updateFailed": "Failed to update repository",
+        "deleted": "Repository deleted",
+        "deleteFailed": "Failed to delete repository"
       }
     },
     "creation": {

@@ -1,6 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 import type { Project } from '@/entities/project';
 import {
+  ProjectAgentRepositoriesSection,
   ProjectSettingsGeneralForm,
   ProjectSettingsDangerZone
 } from '@/features/project/settings';
@@ -21,6 +22,12 @@ export function ProjectSettingsTab() {
             {t('pages.projectSettings.general')}
           </a>
           <a
+            href="#repository"
+            className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+          >
+            {t('pages.projectSettings.repository')}
+          </a>
+          <a
             href="#danger-zone"
             className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
           >
@@ -31,6 +38,9 @@ export function ProjectSettingsTab() {
       <div className="min-w-0 flex-1 space-y-6">
         <div id="general">
           <ProjectSettingsGeneralForm project={project} />
+        </div>
+        <div id="repository">
+          <ProjectAgentRepositoriesSection project={project} />
         </div>
         <div id="danger-zone">
           <ProjectSettingsDangerZone project={project} />

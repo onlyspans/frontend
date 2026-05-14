@@ -98,6 +98,7 @@
     "projectDetail": {
       "overview": "Обзор",
       "releases": "Релизы",
+      "polling": "Поллинг",
       "variables": "Переменные",
       "settings": "Настройки",
       "goBack": "Назад",
@@ -426,7 +427,45 @@
     },
     "projectSettings": {
       "general": "Основные",
+      "repository": "Репозиторий",
       "dangerZone": "Опасная зона"
+    },
+    "projectPolling": {
+      "title": "Поллинг",
+      "subtitle": "Запускайте опрос репозитория и смотрите последние записи журнала.",
+      "repository": {
+        "title": "Репозиторий",
+        "description": "Выберите один отслеживаемый репозиторий проекта.",
+        "placeholder": "Выберите репозиторий...",
+        "poll": "Запустить поллинг",
+        "polling": "Поллинг..."
+      },
+      "history": {
+        "title": "Журнал поллинга",
+        "descriptionSelected": "Показаны последние записи для {{url}}.",
+        "descriptionSelectedPrefix": "Показаны последние записи для",
+        "descriptionEmpty": "Выберите репозиторий, чтобы загрузить до 50 последних записей.",
+        "selectRepository": "Выберите репозиторий, чтобы загрузить журнал.",
+        "noRepositories": "Отслеживаемых репозиториев пока нет.",
+        "loading": "Загрузка журнала...",
+        "refresh": "Обновить",
+        "refreshing": "Обновление...",
+        "error": "Не удалось загрузить журнал поллинга.",
+        "empty": "Для этого репозитория пока нет записей.",
+        "table": {
+          "startedAt": "Начало",
+          "status": "Статус",
+          "ref": "Ref",
+          "commit": "Коммит",
+          "artifact": "Артефакт",
+          "completedAt": "Завершение",
+          "error": "Ошибка"
+        }
+      },
+      "toast": {
+        "pollStarted": "Поллинг завершён",
+        "pollFailed": "Не удалось запустить поллинг"
+      }
     },
     "projectOverview": {
       "title": "Обзор",
@@ -515,6 +554,60 @@
       },
       "pagination": {
         "range": "Показано {{from}}–{{to}} из {{total}} релизов"
+      }
+    },
+    "repositories": {
+      "title": "Репозиторий",
+      "description": "Управляйте git-репозиториями проекта, которые отслеживает Agents.",
+      "form": {
+        "url": "URL репозитория",
+        "urlPlaceholder": "https://github.com/org/repo.git",
+        "branch": "Ветка",
+        "tagPattern": "Паттерн тегов",
+        "credentialId": "Credential ID",
+        "credentialPlaceholder": "Необязательный UUID",
+        "pollIntervalSeconds": "Интервал поллинга (секунды)",
+        "enabled": "Поллинг включён"
+      },
+      "create": {
+        "action": "Добавить репозиторий",
+        "creating": "Добавление..."
+      },
+      "edit": {
+        "action": "Редактировать репозиторий",
+        "title": "Редактировать репозиторий",
+        "confirm": "Сохранить",
+        "saving": "Сохранение..."
+      },
+      "delete": {
+        "action": "Удалить репозиторий",
+        "title": "Удалить репозиторий?",
+        "description": "Репозиторий «{{url}}» будет снят с отслеживания.",
+        "confirm": "Удалить",
+        "deleting": "Удаление..."
+      },
+      "status": {
+        "enabled": "Включён",
+        "disabled": "Отключён"
+      },
+      "table": {
+        "url": "URL",
+        "branch": "Ветка",
+        "enabled": "Статус",
+        "interval": "Интервал",
+        "lastPolledAt": "Последний поллинг",
+        "actions": "Действия",
+        "loading": "Загрузка репозиториев...",
+        "error": "Не удалось загрузить репозитории.",
+        "empty": "Репозиториев пока нет"
+      },
+      "toast": {
+        "created": "Репозиторий добавлен",
+        "createFailed": "Не удалось добавить репозиторий",
+        "updated": "Репозиторий обновлён",
+        "updateFailed": "Не удалось обновить репозиторий",
+        "deleted": "Репозиторий удалён",
+        "deleteFailed": "Не удалось удалить репозиторий"
       }
     },
     "creation": {
