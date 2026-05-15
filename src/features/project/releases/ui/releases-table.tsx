@@ -11,13 +11,23 @@ import { Check, CircleX } from 'lucide-react';
 import { useTranslation } from '@/shared/lib/i18n';
 import type { Release } from '@/entities/release';
 import type { ProjectEnvironmentRef } from '@/entities/project';
+import type { ProcessResponse } from '@/entities/process';
 
 export type StubDeployment = {
   status: 'success' | 'failed';
   deployedAt: string;
+  deploymentId?: string;
 };
 
 export type StubDeploymentsMap = Record<string, StubDeployment>;
+
+export interface ReleaseProcessCell {
+  process?: ProcessResponse;
+  isLoading?: boolean;
+  isError?: boolean;
+}
+
+export type ReleaseProcessesMap = Record<string, ReleaseProcessCell>;
 
 function formatDateTime(iso: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -31,7 +41,13 @@ interface ReleasesTableProps {
   isLoading: boolean;
   environments: ProjectEnvironmentRef[];
   stubDeployments: StubDeploymentsMap;
-  onDeploy: (releaseId: string, environmentId: string) => void;
+  releaseProcesses: ReleaseProcessesMap;
+  onDeploy: (
+    release: Release,
+    environment: ProjectEnvironmentRef,
+    process: ProcessResponse,
+    deploymentId?: string
+  ) => void;
 }
 
 function getStubKey(releaseId: string, environmentId: string): string {
@@ -56,6 +72,7 @@ export function ReleasesTable({
   isLoading,
   environments,
   stubDeployments,
+  releaseProcesses,
   onDeploy
 }: ReleasesTableProps) {
   const { t } = useTranslation();
@@ -131,6 +148,8 @@ export function ReleasesTable({
               {environments.map((env, stageIndex) => {
                 const key = getStubKey(release.id, env.id);
                 const stub = stubDeployments[key];
+                const processCell = releaseProcesses[key];
+                const process = processCell?.process;
                 const deployAllowed = canDeployStage(
                   release.id,
                   stageIndex,
@@ -144,11 +163,20 @@ export function ReleasesTable({
                         <Button
                           variant={stub.status === 'success' ? 'default' : 'destructive'}
                           size="icon"
+                          disabled={!process}
                           aria-label={
                             stub.status === 'success'
                               ? t('project.releases.table.deployedSuccess')
                               : t('project.releases.table.deployedFailed')
                           }
+                          title={
+                            process
+                              ? t('project.releases.table.openDeploymentDetails')
+                              : t('project.releases.table.noProcessHint')
+                          }
+                          onClick={() => {
+                            if (process) onDeploy(release, env, process, stub.deploymentId);
+                          }}
                         >
                           {stub.status === 'success' ? (
                             <Check className="h-4 w-4" aria-hidden />
@@ -167,13 +195,19 @@ export function ReleasesTable({
                       type="button"
                       variant="outline"
                       size="sm"
-                      disabled={!deployAllowed}
+                      disabled={!deployAllowed || processCell?.isLoading || !process}
                       title={
                         !deployAllowed
                           ? t('project.releases.table.deployDisabledHint')
-                          : undefined
+                          : processCell?.isLoading
+                            ? t('project.releases.table.processLoadingHint')
+                            : !process
+                              ? t('project.releases.table.noProcessHint')
+                              : undefined
                       }
-                      onClick={() => deployAllowed && onDeploy(release.id, env.id)}
+                      onClick={() => {
+                        if (deployAllowed && process) onDeploy(release, env, process);
+                      }}
                     >
                       {t('project.releases.table.deploy')}
                     </Button>

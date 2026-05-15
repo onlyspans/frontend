@@ -99,6 +99,7 @@
       "overview": "Обзор",
       "releases": "Релизы",
       "polling": "Поллинг",
+      "processes": "Процессы",
       "variables": "Переменные",
       "settings": "Настройки",
       "goBack": "Назад",
@@ -425,6 +426,61 @@
         }
       }
     },
+    "projectProcesses": {
+      "title": "Процессы",
+      "subtitle": "Управляйте процессами деплоя для {{projectName}}",
+      "list": {
+        "title": "Сохранённые процессы",
+        "description": "Процессы показаны от новых к старым.",
+        "loading": "Загрузка процессов...",
+        "error": "Не удалось загрузить процессы.",
+        "retry": "Повторить",
+        "empty": "Процессов пока нет"
+      },
+      "details": {
+        "title": "Детали",
+        "description": "Read-only просмотр выбранного процесса.",
+        "empty": "Выберите процесс, чтобы увидеть детали.",
+        "status": "Статус",
+        "environment": "Окружение",
+        "release": "Версия релиза",
+        "createdAt": "Создан",
+        "steps": "Шаги",
+        "noSteps": "Шагов нет",
+        "variables": "Переменные",
+        "noVariables": "Переменных нет"
+      },
+      "create": {
+        "title": "Создать процесс",
+        "description": "Проверьте YAML перед созданием процесса.",
+        "action": "Создать",
+        "creating": "Создание..."
+      },
+      "form": {
+        "environment": "Окружение",
+        "environmentPlaceholder": "Выберите окружение...",
+        "releaseVersion": "Версия релиза",
+        "releasePlaceholder": "Выберите релиз...",
+        "yaml": "YAML"
+      },
+      "validation": {
+        "action": "Проверить",
+        "validating": "Проверка...",
+        "valid": "YAML валиден",
+        "invalid": "YAML невалиден",
+        "errors": "Ошибки",
+        "warnings": "Предупреждения",
+        "unresolvedVariables": "Неразрешённые переменные",
+        "steps": "Превью шагов",
+        "requiredHint": "Создание доступно после успешной проверки текущей формы."
+      },
+      "toast": {
+        "validated": "YAML процесса проверен",
+        "validationFailed": "Проверка YAML процесса не прошла",
+        "created": "Процесс создан",
+        "createFailed": "Не удалось создать процесс"
+      }
+    },
     "projectSettings": {
       "general": "Основные",
       "repository": "Репозиторий",
@@ -508,6 +564,8 @@
     "confirm": "Подтвердить",
     "saveChanges": "Сохранить",
     "saving": "Сохранение...",
+    "yes": "да",
+    "no": "нет",
     "languageToggle": "Переключить язык",
     "errors": {
       "entityNotFound": "Объект не найден (возможно, он был удалён)."
@@ -547,6 +605,9 @@
         "createdAt": "Создан",
         "deploy": "Деплой",
         "deployDisabledHint": "Сначала задеплойте предыдущий этап",
+        "processLoadingHint": "Идёт resolve процесса...",
+        "noProcessHint": "Нет процесса для этого релиза и окружения",
+        "openDeploymentDetails": "Открыть детали деплоя",
         "deployedSuccess": "Задеплоено (успех)",
         "deployedFailed": "Задеплоено (ошибка)",
         "loading": "Загрузка релизов...",
@@ -554,6 +615,58 @@
       },
       "pagination": {
         "range": "Показано {{from}}–{{to}} из {{total}} релизов"
+      },
+      "drawer": {
+        "title": "Деплой релиза",
+        "description": "Версия {{version}} в {{environment}}",
+        "noContext": "Выберите релиз и окружение для деплоя.",
+        "tabs": {
+          "deploy": "Деплой",
+          "process": "Процесс",
+          "logs": "Логи"
+        },
+        "deploy": {
+          "targetId": "Target ID",
+          "targetIdPlaceholder": "host-01",
+          "targetType": "Target type",
+          "targetTypePlaceholder": "host",
+          "targetTypeHint": "Пока это свободная обязательная строка, типы target не формализованы.",
+          "snapshotKey": "Snapshot key",
+          "start": "Запустить деплой",
+          "starting": "Запуск..."
+        },
+        "process": {
+          "loading": "Загрузка процесса...",
+          "fallbackTitle": "Fallback на pipeline окружения",
+          "fallbackDescription": "Этот процесс относится к другой версии релиза. Версия артефакта всё равно задаётся snapshotKey на вкладке Deploy.",
+          "id": "Process ID",
+          "status": "Статус",
+          "releaseVersion": "Версия релиза процесса",
+          "environmentId": "Environment ID",
+          "steps": "Шаги",
+          "variables": "Переменные",
+          "noVariables": "Переменных нет"
+        },
+        "logs": {
+          "empty": "Запустите деплой, чтобы увидеть логи.",
+          "loading": "Загрузка сохранённых логов...",
+          "noEntries": "Записей лога пока нет.",
+          "trimmed": "Буфер лога обрезан до последних записей.",
+          "connection": {
+            "idle": "Ожидание",
+            "connecting": "Подключение",
+            "connected": "Подключено",
+            "reconnecting": "Переподключение",
+            "disconnected": "Отключено",
+            "error": "Ошибка подключения"
+          }
+        },
+        "toast": {
+          "completed": "Деплой завершён",
+          "started": "Деплой запущен",
+          "failed": "Деплой завершился ошибкой",
+          "startFailed": "Не удалось запустить деплой"
+        }
       }
     },
     "repositories": {

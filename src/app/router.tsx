@@ -8,6 +8,7 @@ import { ProjectsPage } from '@/pages/projects/projects-page';
 import { ProjectPageLayout } from '@/pages/projects/project-page-layout';
 import { ProjectOverviewTab } from '@/pages/projects/project-overview-tab';
 import { ProjectPollingTab } from '@/pages/projects/project-polling-tab';
+import { ProjectProcessesTab } from '@/pages/projects/project-processes-tab';
 import { ProjectReleasesTab } from '@/pages/projects/project-releases-tab';
 import { ProjectSettingsTab } from '@/pages/projects/project-settings-tab';
 import { ProjectVariablesTab } from '@/pages/projects/project-variables-tab';
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
               {
                 path: 'polling',
                 element: <ProjectPollingTab />
+              },
+              {
+                path: 'processes',
+                element: <ProjectProcessesTab />
               },
               {
                 path: 'settings',

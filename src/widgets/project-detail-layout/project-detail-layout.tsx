@@ -36,9 +36,11 @@ export function ProjectDetailLayout() {
         ? 'releases'
         : location.pathname.endsWith('/polling')
           ? 'polling'
-          : location.pathname.endsWith('/variables')
-            ? 'variables'
-            : 'overview';
+          : location.pathname.endsWith('/processes')
+            ? 'processes'
+            : location.pathname.endsWith('/variables')
+              ? 'variables'
+              : 'overview';
 
   if (!slug) {
     return (
@@ -129,6 +131,9 @@ export function ProjectDetailLayout() {
           </NavLink>
           <NavLink to="polling" className={({ isActive }) => tabLinkClass(isActive)}>
             {t('pages.projectDetail.polling')}
+          </NavLink>
+          <NavLink to="processes" className={({ isActive }) => tabLinkClass(isActive)}>
+            {t('pages.projectDetail.processes')}
           </NavLink>
           <NavLink to="variables" className={({ isActive }) => tabLinkClass(isActive)}>
             {t('pages.projectDetail.variables')}

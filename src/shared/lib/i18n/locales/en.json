@@ -99,6 +99,7 @@
       "overview": "Overview",
       "releases": "Releases",
       "polling": "Polling",
+      "processes": "Processes",
       "variables": "Variables",
       "settings": "Settings",
       "goBack": "Go back",
@@ -425,6 +426,61 @@
         }
       }
     },
+    "projectProcesses": {
+      "title": "Processes",
+      "subtitle": "Manage deployment processes for {{projectName}}",
+      "list": {
+        "title": "Saved processes",
+        "description": "Processes are shown from newest to oldest.",
+        "loading": "Loading processes...",
+        "error": "Failed to load processes.",
+        "retry": "Retry",
+        "empty": "No processes yet"
+      },
+      "details": {
+        "title": "Details",
+        "description": "Read-only view of the selected process.",
+        "empty": "Select a process to see details.",
+        "status": "Status",
+        "environment": "Environment",
+        "release": "Release version",
+        "createdAt": "Created",
+        "steps": "Steps",
+        "noSteps": "No steps",
+        "variables": "Variables",
+        "noVariables": "No variables"
+      },
+      "create": {
+        "title": "Create process",
+        "description": "Validate YAML before creating a process.",
+        "action": "Create",
+        "creating": "Creating..."
+      },
+      "form": {
+        "environment": "Environment",
+        "environmentPlaceholder": "Select environment...",
+        "releaseVersion": "Release version",
+        "releasePlaceholder": "Select release...",
+        "yaml": "YAML"
+      },
+      "validation": {
+        "action": "Validate",
+        "validating": "Validating...",
+        "valid": "YAML is valid",
+        "invalid": "YAML is invalid",
+        "errors": "Errors",
+        "warnings": "Warnings",
+        "unresolvedVariables": "Unresolved variables",
+        "steps": "Preview steps",
+        "requiredHint": "Create is available after a successful validation of the current form."
+      },
+      "toast": {
+        "validated": "Process YAML validated",
+        "validationFailed": "Process YAML validation failed",
+        "created": "Process created",
+        "createFailed": "Failed to create process"
+      }
+    },
     "projectSettings": {
       "general": "General",
       "repository": "Repository",
@@ -508,6 +564,8 @@
     "confirm": "Confirm",
     "saveChanges": "Save changes",
     "saving": "Saving...",
+    "yes": "yes",
+    "no": "no",
     "languageToggle": "Language Toggle",
     "errors": {
       "entityNotFound": "Entity was not found (it may have been deleted)."
@@ -547,6 +605,9 @@
         "createdAt": "Created at",
         "deploy": "Deploy",
         "deployDisabledHint": "Deploy the previous stage first",
+        "processLoadingHint": "Resolving process...",
+        "noProcessHint": "No process for this release and environment",
+        "openDeploymentDetails": "Open deployment details",
         "deployedSuccess": "Deployed (success)",
         "deployedFailed": "Deployed (failed)",
         "loading": "Loading releases...",
@@ -554,6 +615,58 @@
       },
       "pagination": {
         "range": "Showing {{from}} to {{to}} of {{total}} releases"
+      },
+      "drawer": {
+        "title": "Deploy release",
+        "description": "Version {{version}} to {{environment}}",
+        "noContext": "Select a release and environment to deploy.",
+        "tabs": {
+          "deploy": "Deploy",
+          "process": "Process",
+          "logs": "Logs"
+        },
+        "deploy": {
+          "targetId": "Target ID",
+          "targetIdPlaceholder": "host-01",
+          "targetType": "Target type",
+          "targetTypePlaceholder": "host",
+          "targetTypeHint": "This is a free required string until target types are formalized.",
+          "snapshotKey": "Snapshot key",
+          "start": "Start deploy",
+          "starting": "Starting..."
+        },
+        "process": {
+          "loading": "Loading process...",
+          "fallbackTitle": "Environment pipeline fallback",
+          "fallbackDescription": "This process belongs to another release version. The artifact version is still selected by snapshotKey on Deploy.",
+          "id": "Process ID",
+          "status": "Status",
+          "releaseVersion": "Process release version",
+          "environmentId": "Environment ID",
+          "steps": "Steps",
+          "variables": "Variables",
+          "noVariables": "No variables"
+        },
+        "logs": {
+          "empty": "Start a deploy to see logs.",
+          "loading": "Loading saved logs...",
+          "noEntries": "No log entries yet.",
+          "trimmed": "Log buffer was trimmed to the latest entries.",
+          "connection": {
+            "idle": "Idle",
+            "connecting": "Connecting",
+            "connected": "Connected",
+            "reconnecting": "Reconnecting",
+            "disconnected": "Disconnected",
+            "error": "Connection error"
+          }
+        },
+        "toast": {
+          "completed": "Deployment completed",
+          "started": "Deployment started",
+          "failed": "Deployment failed",
+          "startFailed": "Failed to start deployment"
+        }
       }
     },
     "repositories": {

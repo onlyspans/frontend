@@ -42,15 +42,21 @@ const variablesClient = createServiceClient(appConfig.api.variables, {
 const agentsClient = createServiceClient(appConfig.api.agents, {
   bearerToken: appConfig.auth.enabled
 });
+const processesClient = createServiceClient(appConfig.api.processes, {
+  bearerToken: appConfig.auth.enabled
+});
 
 export const api = {
   projects: projectsClient,
   events: eventsClient,
   variables: variablesClient,
-  agents: agentsClient
+  agents: agentsClient,
+  processes: processesClient
 } as const;
 
 if (appConfig.auth.enabled) {
   const attachAuthRefresh = createAuthRefreshInterceptor();
-  [api.projects, api.events, api.variables, api.agents].forEach(attachAuthRefresh);
+  [api.projects, api.events, api.variables, api.agents, api.processes].forEach(
+    attachAuthRefresh
+  );
 }
